@@ -61,7 +61,7 @@ def DrawGLScene():
     global agent, target, time
 
     #
-    time += 0.1
+    time += 0.00001
 
     # Clear The Screen And The Depth Buffer
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
@@ -75,7 +75,7 @@ def DrawGLScene():
     # Move Right 0.0 units and into the screen 6.0 units.
     glTranslatef(0.0, -10.0, -70.0)
 
-    #update agent's steering
+    # update agent's steering
     steering = seek(agent,target)
     agent.update(steering,time)
 

@@ -5,7 +5,7 @@ from math import pow , sqrt, atan2
 def getNewOrientation(currentOrientation, velocity):
 
 	# Make sure we have a velocity
-	if velocity.len > 0:
+	if len(velocity) > 0:
 
 	# Calculate orientation using an arc tangent of
  	# the velocity components.
@@ -18,12 +18,17 @@ def getNewOrientation(currentOrientation, velocity):
 
 
 def normalize(vector):
-	return sqrt(pow(vector[0],2) + pow(vector[1],2) + pow(vector[2],2))
+	return [sqrt(pow(vector[0],2) + pow(vector[1],2) + pow(vector[2],2))]
 	
+def vectorTimes(v,x):
+	return [ v[0]*x, v[1]*x, v[2]*x ]
+
 def substraction(v1,v2):
 	return [ v1[0]-v2[0], v1[1]-v2[1], v1[2]-v2[2] ]
 
 def seek(agent, target):
+
+	maxSpeed = 0.5
 
 	#Create the structure for output
 	steering = KinematicSteeringOutput()
@@ -32,8 +37,8 @@ def seek(agent, target):
 	steering.velocity = substraction(target.position,agent.position)
 
 	#The velocity is along this direction, at full speed
-   	steering.velocity = normalize(steering.velocity)
-   	steering.velocity *= maxSpeed
+#   	steering.velocity = normalize(steering.velocity)
+   	steering.velocity = vectorTimes(steering.velocity,maxSpeed)
 
      	# Face in the direction we want to move
 	agent.orientation = getNewOrientation(agent.orientation, steering.velocity)

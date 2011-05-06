@@ -1,3 +1,3 @@
 class KinematicSteeringOutput:
-	velocity = 0
+	velocity = []
 	rotation = 0.0
