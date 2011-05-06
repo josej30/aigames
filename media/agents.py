@@ -20,4 +20,5 @@ class Agent:
         self.velocity = vectorPlus(self.velocity,vectorTimes(steering.velocity,time))
         self.orientation += steering.rotation*time
 
-        print self.position
+        print "position = " + str(self.position)
+        print "velocity = " + str(self.velocity)
