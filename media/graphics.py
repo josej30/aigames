@@ -78,7 +78,7 @@ def DrawGLScene():
     glTranslatef(0.0, -20.0, -140.0)
 
     # update agent's steering
-    steering = arrive(agent,target)
+    steering = getSteering(agent)
     if steering == None:
         print "haciendo seek!"
         steering = seeknflee(agent,target,"seek")

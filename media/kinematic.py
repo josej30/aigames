@@ -1,6 +1,8 @@
 from agents import *
 from kinematicSteeringOutput import *
-from math import pow , sqrt, atan2
+from kinematicWander import *
+from math import pow , sqrt, atan2, sin, cos
+from random import random
 
 maxSpeed = 15
 
@@ -36,6 +38,12 @@ def vectorDivide(v,x):
 
 def brake(v):
 	return [-v[0],v[1],-v[2]]
+
+def randomBinomial():
+	return random() - random()
+
+def orientationAsVector(v):
+	return [sin(v),0,cos(v)]
 
 # Seek/Flee Algorithm
 def seeknflee(agent, target, flag):
@@ -110,3 +118,19 @@ def arrive(agent, target):
 
 
 ################### Parte de Lili ####################
+def getSteering(agent):
+
+	#Cambiar
+	maxSpeed = 5
+	maxRotation = 200
+	#Create the structure for output
+	steering = KinematicSteeringOutput()
+
+	#Get velocity from the vector form of the orientation
+	steering.velocity = vectorTimes(orientationAsVector(agent.orientation),maxSpeed )
+
+	#Change our orientation randomly
+	steering.rotation = randomBinomial() * maxRotation
+
+	#Output the steering
+	return steering
