@@ -42,6 +42,9 @@ def vectorDivide(v,x):
 def brake(v):
 	return [-v[0],v[1],-v[2]]
 
+def vectorLength(vector):
+	return sqrt(pow(vector[0],2) + pow(vector[1],2) + pow(vector[2],2))
+
 # Seek/Flee Algorithm
 def seeknflee(agent, target, flag):
 
@@ -66,41 +69,50 @@ def seeknflee(agent, target, flag):
 
 def arrive(agent, target):
 
-	global maxSpeed
+	global maxSpeed, maxAcceleration
 
 	# Holds the satisfaction radius
-	radius = 1
+	targetRadius = 3
+	slowRadius = 15
 
 	# Holds the time to target constant
-	timeToTarget = 100000
+	timeToTarget = 0.1
 
 	# Create the structure for output
-	steering = KinematicSteeringOutput()
+	steering = SteeringOutput()
 
 	# Get the direction to the target
-	steering.velocity = substraction(target.position,agent.position)
+	direction = substraction(target.position,agent.position)
+	distance = vectorLength(direction)
 
-	# Check if we're within radius
-	if distanceToRadius(agent,target) > radius:
-		print distanceToRadius(agent,target)
-		# We can return no steering request
+	# Check if we are there, return no steering
+	if distance < targetRadius:
 		return None
-	
-	print "Dentro del radio"
 
-	# We need to move to our target, we'd like to
-	# get there in timeToTarget seconds
-   	steering.velocity = vectorDivide(steering.velocity,timeToTarget)
+	# If we are outside the slowRadius, then go max speed
+	if distance > slowRadius:
+		targetSpeed = maxSpeed
+	# Otherwise calculate a scaled speed
+	else:
+		targetSpeed = maxSpeed * distance / slowRadius
 
-	# Face in the direction we want to move
-	agent.orientation = getNewOrientation(agent.orientation, steering.velocity)
+
+	# The target velocity combines speed and direction
+	targetVelocity = direction
+	targetVelocity = normalize(targetVelocity)
+	targetVelocity = vectorTimes(targetVelocity,targetSpeed)
+
+	# Acceleration tries to get to the target velocity
+	steering.linear = substraction(targetVelocity,agent.velocity)
+	steering.linear = vectorDivide(steering.linear,timeToTarget)
+
+	# Check if the acceleration is too fast
+	if vectorLength(steering.linear) > maxAcceleration:
+		steering.linear = normalize(steering.linear)
+		steering.linear = vectorTimes(steering.linear,maxAcceleration)
 
 	# Output the steering
-	steering.rotation = 0
-
-	steering.velocity = brake(steering.velocity)
-
+	steering.angular = 0
 	return steering
-
 
 ################### Parte de Lili ####################

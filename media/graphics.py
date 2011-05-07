@@ -77,15 +77,16 @@ def DrawGLScene():
     glTranslatef(0.0, -20.0, -140.0)
 
     # update agent's steering
-#    steering = arrive(agent,target)
-#    if steering == None:
-    print " ---> Haciendo seek!"
-    steering = seeknflee(agent,target,"seek")
+    steering = arrive(agent,target)
+    if steering == None:
+        print " ---> Haciendo seek!"
+        steering = seeknflee(agent,target,"seek")
     agent.update(steering,maxSpeed,time)
 
     #######################
     # Draw the Objects
     drawPlane()
+    drawObjective()
     drawAgent()
     #######################
 
@@ -137,6 +138,7 @@ def drawAgent():
 		cubex = cubex + 0.5
 		pressed = ""
 
+        glTranslatef(-target.position[0], -target.position[1], -target.position[2]);
         glTranslatef(agent.position[0], agent.position[1], agent.position[2]);  
 
 	glBegin(GL_QUADS);              
@@ -159,24 +161,60 @@ def drawAgent():
         glVertex3f(-1.0,-1.0, 1.0);     
         glVertex3f( 1.0,-1.0, 1.0);     
 
-        glColor3f(1.0,1.0,0.0);               # Set The Color To Yellow
-        glVertex3f( 1.0,-1.0,-1.0);             # Bottom Left Of The Quad (Back)
-        glVertex3f(-1.0,-1.0,-1.0);             # Bottom Right Of The Quad (Back)
-        glVertex3f(-1.0, 1.0,-1.0);             # Top Right Of The Quad (Back)
-        glVertex3f( 1.0, 1.0,-1.0);             # Top Left Of The Quad (Back)
+        glColor3f(1.0,1.0,0.0);    
+        glVertex3f( 1.0,-1.0,-1.0);
+        glVertex3f(-1.0,-1.0,-1.0);
+        glVertex3f(-1.0, 1.0,-1.0);
+        glVertex3f( 1.0, 1.0,-1.0);
 
-        glColor3f(0.0,0.0,1.0);                 # Set The Color To Blue
-        glVertex3f(-1.0, 1.0, 1.0);             # Top Right Of The Quad (Left)
-        glVertex3f(-1.0, 1.0,-1.0);             # Top Left Of The Quad (Left)
-        glVertex3f(-1.0,-1.0,-1.0);             # Bottom Left Of The Quad (Left)
-        glVertex3f(-1.0,-1.0, 1.0);             # Bottom Right Of The Quad (Left)
+        glColor3f(0.0,0.0,1.0);    
+        glVertex3f(-1.0, 1.0, 1.0);
+        glVertex3f(-1.0, 1.0,-1.0);
+        glVertex3f(-1.0,-1.0,-1.0);
+        glVertex3f(-1.0,-1.0, 1.0);
 
-        glColor3f(1.0,0.0,1.0);                 # Set The Color To Violet
-        glVertex3f( 1.0, 1.0,-1.0);             # Top Right Of The Quad (Right)
-        glVertex3f( 1.0, 1.0, 1.0);             # Top Left Of The Quad (Right)
-        glVertex3f( 1.0,-1.0, 1.0);             # Bottom Left Of The Quad (Right)
-        glVertex3f( 1.0,-1.0,-1.0);             # Bottom Right Of The Quad (Right)
-        glEnd();                                # Done Drawing The Quad
+        glColor3f(1.0,0.0,1.0);    
+        glVertex3f( 1.0, 1.0,-1.0);
+        glVertex3f( 1.0, 1.0, 1.0);
+        glVertex3f( 1.0,-1.0, 1.0);
+        glVertex3f( 1.0,-1.0,-1.0);
+        glEnd();
+
+def drawObjective():
+
+    global target
+
+    glTranslatef(target.position[0], target.position[1], target.position[2]);
+    glBegin(GL_TRIANGLES);
+
+    glColor3f(1.0,0.0,0.0);
+    glVertex3f( 0.0, 1.0, 0.0);
+    glColor3f(0.0,1.0,0.0);
+    glVertex3f(-1.0,-1.0, 1.0);
+    glColor3f(0.0,0.0,1.0);
+    glVertex3f( 1.0,-1.0, 1.0);
+
+    glColor3f(1.0,0.0,0.0);	
+    glVertex3f( 0.0, 1.0, 0.0);
+    glColor3f(0.0,0.0,1.0);	
+    glVertex3f( 1.0,-1.0, 1.0);
+    glColor3f(0.0,1.0,0.0);	
+    glVertex3f( 1.0,-1.0, -1.0);
+		
+    glColor3f(1.0,0.0,0.0);	
+    glVertex3f( 0.0, 1.0, 0.0);
+    glColor3f(0.0,1.0,0.0);	
+    glVertex3f( 1.0,-1.0, -1.0);
+    glColor3f(0.0,0.0,1.0);	
+    glVertex3f(-1.0,-1.0, -1.0);
+		
+    glColor3f(1.0,0.0,0.0);
+    glVertex3f( 0.0, 1.0, 0.0);
+    glColor3f(0.0,0.0,1.0);	
+    glVertex3f(-1.0,-1.0,-1.0);
+    glColor3f(0.0,1.0,0.0);	
+    glVertex3f(-1.0,-1.0, 1.0);
+    glEnd();			
 
 
 # The function called whenever a key is pressed. Note the use of Python tuples to pass in: (key, x, y)  
@@ -204,17 +242,21 @@ def keyPressed(*args):
     	
 def execute(self):
 
-    glutInit(sys.argv)
-    glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH)
-    glutInitWindowSize(640, 480)
-    glutInitWindowPosition(0, 0)
-    window = glutCreateWindow("Battle Cars")
-    glutDisplayFunc(DrawGLScene)
+    try:
+        glutInit(sys.argv)
+        glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH)
+        glutInitWindowSize(640, 480)
+        glutInitWindowPosition(0, 0)
+        window = glutCreateWindow("Battle Cars")
+        glutDisplayFunc(DrawGLScene)
+        
+        glutFullScreen()
     
-#    glutFullScreen()
-    
-    glutIdleFunc(DrawGLScene)
-    glutReshapeFunc(ReSizeGLScene)
-    glutKeyboardFunc(keyPressed)
-    InitGL(640, 480)
-    glutMainLoop()
+        glutIdleFunc(DrawGLScene)
+        glutReshapeFunc(ReSizeGLScene)
+        glutKeyboardFunc(keyPressed)
+        InitGL(640, 480)
+        glutMainLoop()
+    except Exception:
+        print "ERROR SAPIN@"
+        sys.exit()
