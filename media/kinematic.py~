@@ -1,10 +1,16 @@
 from agents import *
 from kinematicSteeringOutput import *
+<<<<<<< HEAD
 from kinematicWander import *
 from math import pow , sqrt, atan2, sin, cos
 from random import random
+=======
+from math import pow , sqrt, atan2
+from steeringOutput import *
+>>>>>>> c43109489eba069a2f0d5239e790ca2dc62bb4cc
 
 maxSpeed = 15
+maxAcceleration = 5
 
 def getNewOrientation(currentOrientation, velocity):
 
@@ -21,8 +27,11 @@ def getNewOrientation(currentOrientation, velocity):
 
 
 def normalize(vector):
-	return sqrt(pow(vector[0],2) + pow(vector[2],2))
-	#return [sqrt(pow(vector[0],2) + pow(vector[1],2) + pow(vector[2],2))]
+	factor = sqrt(pow(vector[0],2) + pow(vector[1],2) + pow(vector[2],2))
+	if factor != 0:
+		return [vector[0]/factor,vector[1]/factor,vector[2]/factor]
+	else:
+		return vector
 	
 def distanceToRadius(agent,target):
 	return sqrt(pow(target.position[0]-agent.position[0],2) + pow(target.position[2]-agent.position[2],2))
@@ -48,28 +57,23 @@ def orientationAsVector(v):
 # Seek/Flee Algorithm
 def seeknflee(agent, target, flag):
 
-	global maxSpeed
+	global maxAcceleration
 
-	#Create the structure for output
-	steering = KinematicSteeringOutput()
+	# Create the structure for output
+	steering = SteeringOutput()
 
-	#Get the direction of the target
+	# Get the direction of the target
 	if flag == "seek":
-		steering.velocity = substraction(target.position,agent.position)
+		steering.linear = substraction(target.position,agent.position)
 	elif flag == "flee":
 		steering.velocity = substraction(agent.position,target.position)
 
-	# The velocity is along this direction, at full speed
-#	steering.velocity = normalize(steering.velocity)
-	steering.velocity = [1,0,1]
-   	steering.velocity = vectorTimes(steering.velocity,maxSpeed)
-
-     	# Face in the direction we want to move
-	agent.orientation = getNewOrientation(agent.orientation, steering.velocity)
+	# Give full acceleration is along this direction
+	steering.linear = normalize(steering.linear)
+	steering.linear = vectorTimes(steering.linear,maxAcceleration)
 
 	# Output the steering
-	steering.rotation = 0
-
+	steering.angular = 0
 	return steering
 
 def arrive(agent, target):
@@ -77,7 +81,7 @@ def arrive(agent, target):
 	global maxSpeed
 
 	# Holds the satisfaction radius
-	radius = 20
+	radius = 1
 
 	# Holds the time to target constant
 	timeToTarget = 100000
@@ -100,12 +104,6 @@ def arrive(agent, target):
 	# get there in timeToTarget seconds
    	steering.velocity = vectorDivide(steering.velocity,timeToTarget)
 
-	# If this is too fast, clip it to the max speed
-	if normalize(steering.velocity) > maxSpeed:
-		print "holaaaa"
-		steering.velocity = [1,0,1]
-		steering.velocity = vectorTimes(steering.velocity,maxSpeed)
-
 	# Face in the direction we want to move
 	agent.orientation = getNewOrientation(agent.orientation, steering.velocity)
 
@@ -122,7 +120,7 @@ def getSteering(agent):
 
 	#Cambiar
 	maxSpeed = 5
-	maxRotation = 100
+	maxRotation = 200
 	#Create the structure for output
 	steering = KinematicSteeringOutput()
 

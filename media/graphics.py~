@@ -24,12 +24,11 @@ cubex = 0.0
 cubez = 0.0
 
 agent = Agent()
-agent.position = [-48,1,-48]
+agent.position = [-50,1,-50]
+agent.velocity = [10,0,0]
 
 target = Agent()
-target.position = [48,1,48] 
-
-time = 0
+target.position = [0,1,0] 
 
 # A general OpenGL initialization function.  Sets all of the initial parameters. 
 def InitGL(Width, Height):
@@ -61,7 +60,7 @@ def ReSizeGLScene(Width, Height):
 # The main drawing function. 
 def DrawGLScene():
     
-    global agent, target, time
+    global agent, target, time, maxSpeed
 
     time = 0.01
 
@@ -78,11 +77,19 @@ def DrawGLScene():
     glTranslatef(0.0, -20.0, -140.0)
 
     # update agent's steering
+<<<<<<< HEAD
     steering = getSteering(agent)
     if steering == None:
         print "haciendo seek!"
         steering = seeknflee(agent,target,"seek")
     agent.update(steering,time)
+=======
+#    steering = arrive(agent,target)
+#    if steering == None:
+    print " ---> Haciendo seek!"
+    steering = seeknflee(agent,target,"seek")
+    agent.update(steering,maxSpeed,time)
+>>>>>>> c43109489eba069a2f0d5239e790ca2dc62bb4cc
 
     #######################
     # Draw the Objects
@@ -212,7 +219,7 @@ def execute(self):
     window = glutCreateWindow("Battle Cars")
     glutDisplayFunc(DrawGLScene)
     
-    glutFullScreen()
+#    glutFullScreen()
     
     glutIdleFunc(DrawGLScene)
     glutReshapeFunc(ReSizeGLScene)
