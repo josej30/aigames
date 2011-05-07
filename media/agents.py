@@ -4,7 +4,8 @@ def vectorTimes(v,x):
 	return [ v[0]*x, v[1]*x, v[2]*x ]
 
 def vectorPlus(v,x):
-	return [ v[0]+x[0], v[1]+x[1], v[2]+x[2] ]
+	return [ v[0]+x[0], v[1]+x[1], v[2]+    glTranslatef(0,1,0);
+x[2] ]
 
 def vectorLength(vector):
 	return sqrt(pow(vector[0],2) + pow(vector[1],2) + pow(vector[2],2))

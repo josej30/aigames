@@ -1,8 +1,11 @@
 from OpenGL.GL import *
 from OpenGL.GLUT import *
 from OpenGL.GLU import *
+
 from agents import *
 from kinematic import *
+from kinematicSteeringOutput import *
+
 import sys
 
 ESCAPE = '\033'
@@ -21,10 +24,11 @@ cubex = 0.0
 cubez = 0.0
 
 agent = Agent()
-agent.position = [-20,1,-20]
+agent.position = [-50,1,-50]
+agent.velocity = [10,0,0]
 
 target = Agent()
-target.position = [20,1,20] 
+target.position = [0,1,0] 
 
 # A general OpenGL initialization function.  Sets all of the initial parameters. 
 def InitGL(Width, Height):
@@ -49,14 +53,16 @@ def ReSizeGLScene(Width, Height):
     glViewport(0, 0, Width, Height)
     glMatrixMode(GL_PROJECTION)
     glLoadIdentity()
-    gluPerspective(45.0, float(Width)/float(Height), 0.1, 100.0)
+    gluPerspective(45.0, float(Width)/float(Height), 0.1, 300.0)
     glMatrixMode(GL_MODELVIEW)
 
 
 # The main drawing function. 
 def DrawGLScene():
     
-    global agent
+    global agent, target, time, maxSpeed
+
+    time = 0.01
 
     # Clear The Screen And The Depth Buffer
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
@@ -68,9 +74,22 @@ def DrawGLScene():
     glLoadIdentity()
     
     # Move Right 0.0 units and into the screen 6.0 units.
-    glTranslatef(0.0, -10.0, -70.0)
+    glTranslatef(0.0, -20.0, -140.0)
 
-    seek(agent,target)
+    # update agent's steering
+<<<<<<< HEAD
+    steering = getSteering(agent)
+    if steering == None:
+        print "haciendo seek!"
+        steering = seeknflee(agent,target,"seek")
+    agent.update(steering,time)
+=======
+#    steering = arrive(agent,target)
+#    if steering == None:
+    print " ---> Haciendo seek!"
+    steering = seeknflee(agent,target,"seek")
+    agent.update(steering,maxSpeed,time)
+>>>>>>> c43109489eba069a2f0d5239e790ca2dc62bb4cc
 
     #######################
     # Draw the Objects
@@ -104,10 +123,10 @@ def drawPlane():
 
 	glColor3f(0.3, 0.5, 1.0)            # Bluish shade
 	glBegin(GL_QUADS)                   # Start drawing a 4 sided polygon
-	glVertex3f(-20.0, 0.0, 20.0)          # Top Left
-	glVertex3f(20.0, 0.0, 20.0)           # Top Right
-	glVertex3f(20.0, 0.0, -20.0)          # Bottom Right
-	glVertex3f(-20.0, 0.0, -20.0)         # Bottom Left
+	glVertex3f(-50.0, 0.0, 50.0)          # Top Left
+	glVertex3f(50.0, 0.0, 50.0)           # Top Right
+	glVertex3f(50.0, 0.0, -50.0)          # Bottom Right
+	glVertex3f(-50.0, 0.0, -50.0)         # Bottom Left
 	glEnd()                             # We are done with the polygon
 
 def drawAgent():
@@ -200,7 +219,7 @@ def execute(self):
     window = glutCreateWindow("Battle Cars")
     glutDisplayFunc(DrawGLScene)
     
-    glutFullScreen()
+#    glutFullScreen()
     
     glutIdleFunc(DrawGLScene)
     glutReshapeFunc(ReSizeGLScene)

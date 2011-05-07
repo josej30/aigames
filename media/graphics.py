@@ -83,6 +83,7 @@ def DrawGLScene():
         steering = seeknflee(agent,target,"seek")
     agent.update(steering,maxSpeed,time)
 
+
     #######################
     # Draw the Objects
     drawPlane()
