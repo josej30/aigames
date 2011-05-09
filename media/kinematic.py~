@@ -1,13 +1,10 @@
 from agents import *
 from kinematicSteeringOutput import *
-<<<<<<< HEAD
 from kinematicWander import *
 from math import pow , sqrt, atan2, sin, cos
 from random import random
-=======
-from math import pow , sqrt, atan2
 from steeringOutput import *
->>>>>>> c43109489eba069a2f0d5239e790ca2dc62bb4cc
+
 
 maxSpeed = 15
 maxAcceleration = 5

@@ -113,19 +113,4 @@ def arrive(agent, target):
 
 
 ################### Parte de Lili ####################
-def getSteering(agent):
 
-	#Cambiar
-	maxSpeed = 5
-	maxRotation = 200
-	#Create the structure for output
-	steering = KinematicSteeringOutput()
-
-	#Get velocity from the vector form of the orientation
-	steering.velocity = vectorTimes(orientationAsVector(agent.orientation),maxSpeed )
-
-	#Change our orientation randomly
-	steering.rotation = randomBinomial() * maxRotation
-
-	#Output the steering
-	return steering

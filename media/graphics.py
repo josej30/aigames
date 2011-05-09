@@ -78,12 +78,12 @@ def DrawGLScene():
 
     # update agent's steering
 
-    steering = getSteering(agent)
+ 
 
-#    steering = arrive(agent,target)
+   # steering = arrive(agent,target)
 #    if steering == None:
     print " ---> Haciendo seek!"
-   # steering = seeknflee(agent,target,"seek")
+    steering = seeknflee(agent,target,"seek")
     agent.update(steering,maxSpeed,time)
 
 
