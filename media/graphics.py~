@@ -25,14 +25,14 @@ cubez = 0.0
 
 agent = Agent()
 agent.position = [0,1,-50]
-agent.velocity = [0,0,0]
+agent.velocity = [10,0,0]
 
 agent.orientation = 10.0
 
 
 target = Agent()
 target.position = [0,1,0] 
-target.orientation = 45.6
+target.orientation = 20.0
 
 # A general OpenGL initialization function.  Sets all of the initial parameters. 
 def InitGL(Width, Height):
@@ -90,7 +90,7 @@ def DrawGLScene():
 #        print " ---> Haciendo seek!"
 #        steering = seeknflee(agent,target,"seek")
 
-    steering = face(aligne, agent, target)
+    steering =  lookWhereYoureGoing(Aligne,agent, target)
     if steering == None:
         print " ---> Haciendo seek!"
         steering = arrive(agent,target)
@@ -102,98 +102,112 @@ def DrawGLScene():
 
     #######################
     # Draw the Objects
+
+    # Plane
     drawPlane()
+
+    # Walls
+    drawWalls(100.0,3)
+
+    # Objective
     glPushMatrix();
     drawObjective()
     glPopMatrix();
+
+    # Agent
     glPushMatrix();
     drawAgent()
     glPopMatrix();
+
     #######################
 
     #  since this is double buffered, swap the buffers to display what just got drawn. 
     glutSwapBuffers()
 
 
+def drawWalls(tam,altura):
+
+    glBegin(GL_QUADS);
+     
+    t = tam/2
+
+    glColor3f(0.2, 0.6, 0.2);
+    glVertex3f(-t, altura, -t);
+    glVertex3f(t, altura, -t); 
+    glVertex3f(t, 0.0, -t);    
+    glVertex3f(-t, 0.0, -t);     
+
+    glVertex3f(-t, altura, t);   
+    glVertex3f(-t, altura, -t);  
+    glVertex3f(-t, 0.0, -t);     
+    glVertex3f(-t, 0.0, t);      
+
+    glVertex3f(t, altura, t);    
+    glVertex3f(t, altura, -t);   
+    glVertex3f(t, 0.0, -t);      
+    glVertex3f(t, 0.0, t);       
+
+    glVertex3f(-t, altura, t);   
+    glVertex3f(t, altura, t);    
+    glVertex3f(t, 0.0, t);       
+    glVertex3f(-t, 0.0, t);      
+
+    glEnd();       
+
 def drawPlane():
-	global rquadx, rquady, pressed
-	
-	# Draw a square (quadrilateral) rotated on the X axis
-	if pressed == "a":
-		rquadx = rquadx - 3.0                 # Decrease The Rotation Variable For The Quad
-		pressed = ""
-	if pressed == "w":
-		rquady = rquady - 3.0                 # Decrease The Rotation Variable For The Quad
-		pressed = ""
-	if pressed == "s":
-		rquady = rquady + 3.0                 # Decrease The Rotation Variable For The Quad
-		pressed = ""
-	if pressed == "d":
-		rquadx = rquadx + 3.0                 # Decrease The Rotation Variable For The Quad
-		pressed = ""
 
-	glRotatef(rquadx, 0.0, 1.0, 0.0)      # Rotate X
-	glRotatef(rquady, 1.0, 0.0, 0.0)      # Rotate Y
+	global rquadx, rquady
 
-	glColor3f(0.3, 0.5, 1.0)            # Bluish shade
-	glBegin(GL_QUADS)                   # Start drawing a 4 sided polygon
-	glVertex3f(-50.0, 0.0, 50.0)          # Top Left
-	glVertex3f(50.0, 0.0, 50.0)           # Top Right
-	glVertex3f(50.0, 0.0, -50.0)          # Bottom Right
-	glVertex3f(-50.0, 0.0, -50.0)         # Bottom Left
-	glEnd()                             # We are done with the polygon
+	glRotatef(rquadx, 0.0, 1.0, 0.0)  
+	glRotatef(rquady, 1.0, 0.0, 0.0)  
+
+	glColor3f(0.5, 0.5, 0.5)           
+	glBegin(GL_QUADS)                  
+	glVertex3f(-50.0, 0.0, 50.0)      
+	glVertex3f(50.0, 0.0, 50.0)       
+	glVertex3f(50.0, 0.0, -50.0)      
+	glVertex3f(-50.0, 0.0, -50.0)     
+	glEnd()                           
 
 def drawAgent():
-	global cubex, cubez, pressed, agent
 
-	if pressed == "up":
-		cubez = cubez - 0.5
-		pressed = ""
-	if pressed == "down":
-		cubez = cubez + 0.5		
-		pressed = ""
-	if pressed == "left":
-		cubex = cubex - 0.5
-		pressed = ""
-	if pressed == "right":
-		cubex = cubex + 0.5
-		pressed = ""
+	global agent
 
         glTranslatef(agent.position[0], agent.position[1], agent.position[2]);  
 
 	glBegin(GL_QUADS);              
 
-        glColor3f(0.0,1.0,0.0);         
+        glColor3f(0.0,0.0,0.8);         
         glVertex3f( 1.0, 1.0,-1.0);     
         glVertex3f(-1.0, 1.0,-1.0);     
         glVertex3f(-1.0, 1.0, 1.0);     
         glVertex3f( 1.0, 1.0, 1.0);     
 
-        glColor3f(1.0,0.5,0.0);         
+        glColor3f(0.0,0.0,0.8);         
         glVertex3f( 1.0,-1.0, 1.0);     
         glVertex3f(-1.0,-1.0, 1.0);     
         glVertex3f(-1.0,-1.0,-1.0);     
         glVertex3f( 1.0,-1.0,-1.0);
 
-        glColor3f(1.0,0.0,0.0);         
+        glColor3f(0.0,0.0,0.8);         
         glVertex3f( 1.0, 1.0, 1.0);     
         glVertex3f(-1.0, 1.0, 1.0);     
         glVertex3f(-1.0,-1.0, 1.0);     
         glVertex3f( 1.0,-1.0, 1.0);     
 
-        glColor3f(1.0,1.0,0.0);    
+        glColor3f(0.0,0.0,0.5);    
         glVertex3f( 1.0,-1.0,-1.0);
         glVertex3f(-1.0,-1.0,-1.0);
         glVertex3f(-1.0, 1.0,-1.0);
         glVertex3f( 1.0, 1.0,-1.0);
 
-        glColor3f(0.0,0.0,1.0);    
+        glColor3f(0.0,0.0,0.5);    
         glVertex3f(-1.0, 1.0, 1.0);
         glVertex3f(-1.0, 1.0,-1.0);
         glVertex3f(-1.0,-1.0,-1.0);
         glVertex3f(-1.0,-1.0, 1.0);
 
-        glColor3f(1.0,0.0,1.0);    
+        glColor3f(0.0,0.0,0.5);    
         glVertex3f( 1.0, 1.0,-1.0);
         glVertex3f( 1.0, 1.0, 1.0);
         glVertex3f( 1.0,-1.0, 1.0);
@@ -202,79 +216,66 @@ def drawAgent():
 
 def drawObjective():
 
-    global pressed, target
-
-    step = 0.5
-
-    if pressed == "up":
-        target.position[2] = target.position[2] - step
-        pressed = ""
-    if pressed == "down":
-        target.position[2] = target.position[2] + step
-        pressed = ""
-    if pressed == "left":
-        target.position[0] = target.position[0] - step
-        pressed = ""
-    if pressed == "right":
-        target.position[0] = target.position[0] + step
-        pressed = ""
+    global target
 
     glTranslatef(target.position[0], target.position[1], target.position[2]);
 
     glBegin(GL_TRIANGLES);
 
-    glColor3f(1.0,0.0,0.0);
+    glColor3f(0.9,0.0,0.0);
     glVertex3f( 0.0, 1.0, 0.0);
-    glColor3f(0.0,1.0,0.0);
     glVertex3f(-1.0,-1.0, 1.0);
-    glColor3f(0.0,0.0,1.0);
     glVertex3f( 1.0,-1.0, 1.0);
 
-    glColor3f(1.0,0.0,0.0);	
+    glColor3f(0.6,0.0,0.0);	
     glVertex3f( 0.0, 1.0, 0.0);
-    glColor3f(0.0,0.0,1.0);	
     glVertex3f( 1.0,-1.0, 1.0);
-    glColor3f(0.0,1.0,0.0);	
     glVertex3f( 1.0,-1.0, -1.0);
 		
-    glColor3f(1.0,0.0,0.0);	
+    glColor3f(0.9,0.0,0.0);	
     glVertex3f( 0.0, 1.0, 0.0);
-    glColor3f(0.0,1.0,0.0);	
     glVertex3f( 1.0,-1.0, -1.0);
-    glColor3f(0.0,0.0,1.0);	
     glVertex3f(-1.0,-1.0, -1.0);
 		
-    glColor3f(1.0,0.0,0.0);
+    glColor3f(0.6,0.0,0.0);
     glVertex3f( 0.0, 1.0, 0.0);
-    glColor3f(0.0,0.0,1.0);	
     glVertex3f(-1.0,-1.0,-1.0);
-    glColor3f(0.0,1.0,0.0);	
     glVertex3f(-1.0,-1.0, 1.0);
     glEnd();			
 
 
 # The function called whenever a key is pressed. Note the use of Python tuples to pass in: (key, x, y)  
 def keyPressed(*args):
-    global pressed
+
+    global target, rquadx, rquady
+
+    # Step (rate) to move the target
+    # Increase this and the target will move faster
+    step_t = 0.5
+
+    # Step (rate) to rotate the plane
+    # Increase this and the plane will rotate faster
+    step_p = 3.0
+
     # If escape is pressed, kill everything.
     if args[0] == ESCAPE:
 	    sys.exit()
     if args[0] == '\141':
-	    pressed = "a"
+        rquadx = rquadx - step_p
     if args[0] == '\167':
-	    pressed = "w"
+        rquady = rquady - step_p
     if args[0] == '\163':
-	    pressed = "s"
+        rquady = rquady + step_p   
     if args[0] == '\144':
-	    pressed = "d"
+        rquadx = rquadx + step_p   
     if args[0] == '\152':
-	    pressed = "left"
+        target.position[0] = target.position[0] - step_t
     if args[0] == '\151':
-	    pressed = "up"
+        target.position[2] = target.position[2] - step_t
     if args[0] == '\154':
-	    pressed = "right"
+        target.position[0] = target.position[0] + step_t
     if args[0] == '\153':
-	    pressed = "down"
+        target.position[2] = target.position[2] + step_t
     	
 def execute(self):
 

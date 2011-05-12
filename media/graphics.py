@@ -25,14 +25,14 @@ cubez = 0.0
 
 agent = Agent()
 agent.position = [0,1,-50]
-agent.velocity = [0,0,0]
+agent.velocity = [10,0,0]
 
 agent.orientation = 10.0
 
 
 target = Agent()
-target.position = [0,1,50] 
-target.orientation = 45.6
+target.position = [0,1,0] 
+target.orientation = 20.0
 
 # A general OpenGL initialization function.  Sets all of the initial parameters. 
 def InitGL(Width, Height):
@@ -90,7 +90,7 @@ def DrawGLScene():
 #        print " ---> Haciendo seek!"
 #        steering = seeknflee(agent,target,"seek")
 
-    steering = face(aligne, agent, target)
+    steering =  lookWhereYoureGoing(aligne,agent, target)
     if steering == None:
         print " ---> Haciendo seek!"
         steering = arrive(agent,target)

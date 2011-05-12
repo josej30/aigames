@@ -136,8 +136,8 @@ def aligne(agent, target):
 
      	# Holds the max angular acceleration and rotation
      	# of the character
-     	maxAngularAcceleration = 500.0
-    	maxRotation = 300.0
+     	maxAngularAcceleration = 50.0
+    	maxRotation = 30.0
      
      	# Holds the radius for arriving at the target
      	targetRadius = 3
@@ -163,7 +163,7 @@ def aligne(agent, target):
 	print rotationDirection
 	print rotation
      	print rotationSize
-     	print targetRadius
+     
 
     	# Check if we are there, return no steering
 	if rotationSize < targetRadius:
@@ -283,11 +283,25 @@ def face(aligne, agent, target):
    		return target
 
    	# Put the target together
-	target.position = orientationAsVector(atan2(-direction[0],direction[2]))
+	target.orientation = atan2(-direction[0],direction[2])
 
    	# 2. Delegate to align
 
    	return aligne(agent, target)
+
+def lookWhereYoureGoing(aligne,agent, target):
+
+   	# Check for a zero direction, and make no change if so
+   	if vectorLength(agent.velocity) == 0: return
+
+   	# Otherwise set the target based on the velocity
+   	target.orientation = atan2(-agent.velocity[0], agent.velocity[2])
+
+   	# 2. Delegate to align
+   	return aligne(agent,target)
+
+
+
 
 
 
