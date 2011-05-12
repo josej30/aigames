@@ -98,6 +98,8 @@ def DrawGLScene():
     agent.update(steering,maxSpeed,time)
 
 
+##### 12-05 12:48 ####### De aqui para arriba es lili y para abajo es pinky ##############
+
     #######################
     # Draw the Objects
     drawPlane()
