@@ -3,7 +3,8 @@ from OpenGL.GLUT import *
 from OpenGL.GLU import *
 
 from agents import *
-from kinematic import *
+from walls import *
+from steeringBehaviours import *
 from kinematicSteeringOutput import *
 
 import sys
@@ -23,16 +24,39 @@ rquady = 0.0
 cubex = 0.0
 cubez = 0.0
 
+# Size of the world
+size = 100
+
+# Agent stuff
 agent = Agent()
 agent.position = [0,1,-50]
+<<<<<<< HEAD
 agent.velocity = [10,0,0]
 
+=======
+agent.velocity = [0,0,0]
+>>>>>>> e2299cd490a5837a93fde686ee48237b48c4a35e
 agent.orientation = 10.0
 
-
+# Target Stuff
 target = Agent()
 target.position = [0,1,0] 
 target.orientation = 20.0
+
+# Array that contains all the proyections of
+# the walls and obstacles of the game
+obs = []
+
+# Walls representing the limits of the world
+c = size/2
+limits = [
+    Wall(-c,-c,-c,c,3),
+    Wall(-c,-c,c,-c,3),
+    Wall(c,c,-c,c,3),
+    Wall(c,c,c,-c,3)
+    ]
+#for i in limits:
+#    obs.append(limits[i].get_proyection())
 
 # A general OpenGL initialization function.  Sets all of the initial parameters. 
 def InitGL(Width, Height):
@@ -64,7 +88,7 @@ def ReSizeGLScene(Width, Height):
 # The main drawing function. 
 def DrawGLScene():
     
-    global agent, target, time, maxSpeed
+    global agent, target, time, maxSpeed, limits
    
     time = 0.01
 
@@ -106,8 +130,8 @@ def DrawGLScene():
     # Plane
     drawPlane()
 
-    # Walls
-    drawWalls(100.0,3)
+    # Limits of the world
+    drawLimits(limits)
 
     # Objective
     glPushMatrix();
@@ -125,32 +149,30 @@ def DrawGLScene():
     glutSwapBuffers()
 
 
-def drawWalls(tam,altura):
+def drawLimits(limits):
 
     glBegin(GL_QUADS);
      
-    t = tam/2
-
     glColor3f(0.2, 0.6, 0.2);
-    glVertex3f(-t, altura, -t);
-    glVertex3f(t, altura, -t); 
-    glVertex3f(t, 0.0, -t);    
-    glVertex3f(-t, 0.0, -t);     
+    glVertex3f(limits[0].x1, limits[0].height, limits[0].z1);
+    glVertex3f(limits[0].x2, limits[0].height, limits[0].z2);
+    glVertex3f(limits[0].x2, 0.0, limits[0].z2);
+    glVertex3f(limits[0].x1, 0.0, limits[0].z1);
 
-    glVertex3f(-t, altura, t);   
-    glVertex3f(-t, altura, -t);  
-    glVertex3f(-t, 0.0, -t);     
-    glVertex3f(-t, 0.0, t);      
+    glVertex3f(limits[1].x1, limits[1].height, limits[1].z1);
+    glVertex3f(limits[1].x2, limits[1].height, limits[1].z2);
+    glVertex3f(limits[1].x2, 0.0, limits[1].z2);
+    glVertex3f(limits[1].x1, 0.0, limits[1].z1);
 
-    glVertex3f(t, altura, t);    
-    glVertex3f(t, altura, -t);   
-    glVertex3f(t, 0.0, -t);      
-    glVertex3f(t, 0.0, t);       
+    glVertex3f(limits[2].x1, limits[2].height, limits[2].z1);
+    glVertex3f(limits[2].x2, limits[2].height, limits[2].z2);
+    glVertex3f(limits[2].x2, 0.0, limits[2].z2);
+    glVertex3f(limits[2].x1, 0.0, limits[2].z1);
 
-    glVertex3f(-t, altura, t);   
-    glVertex3f(t, altura, t);    
-    glVertex3f(t, 0.0, t);       
-    glVertex3f(-t, 0.0, t);      
+    glVertex3f(limits[3].x1, limits[3].height, limits[3].z1);
+    glVertex3f(limits[3].x2, limits[3].height, limits[3].z2);
+    glVertex3f(limits[3].x2, 0.0, limits[3].z2);
+    glVertex3f(limits[3].x1, 0.0, limits[3].z1);
 
     glEnd();       
 
@@ -279,6 +301,8 @@ def keyPressed(*args):
     	
 def execute(self):
 
+    global obs
+
     try:
         glutInit(sys.argv)
         glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH)
@@ -287,13 +311,16 @@ def execute(self):
         window = glutCreateWindow("Battle Cars")
         glutDisplayFunc(DrawGLScene)
         
-        glutFullScreen()
+#        glutFullScreen()
     
         glutIdleFunc(DrawGLScene)
         glutReshapeFunc(ReSizeGLScene)
         glutKeyboardFunc(keyPressed)
         InitGL(640, 480)
         glutMainLoop()
+        
+        print obs
+
     except Exception:
         print "ERROR SAPIN@"
         sys.exit()
