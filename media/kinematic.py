@@ -230,7 +230,7 @@ def Pursue(seeknflee,target_p, agent_p,):
 
 	print "Pursue"
      	# Holds the maximum prediction time
-     	maxPrediction = 500
+     	maxPrediction = 5
      	
   
 

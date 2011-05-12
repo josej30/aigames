@@ -85,12 +85,12 @@ def DrawGLScene():
 
  
 
-   # steering = arrive(agent,target)
+#    steering = arrive(agent,target)
 #    if steering == None:
- #   print " ---> Haciendo seek!"
-#    steering = seeknflee(agent,target,"seek")
+#        print " ---> Haciendo seek!"
+#        steering = seeknflee(agent,target,"seek")
 
-    steering = seeknflee(target, agent)
+    steering = Pursue(seeknflee,target, agent)
     if steering == None:
         print " ---> Haciendo seek!"
         steering = arrive(agent,target)
@@ -101,8 +101,12 @@ def DrawGLScene():
     #######################
     # Draw the Objects
     drawPlane()
+    glPushMatrix();
     drawObjective()
+    glPopMatrix();
+    glPushMatrix();
     drawAgent()
+    glPopMatrix();
     #######################
 
     #  since this is double buffered, swap the buffers to display what just got drawn. 
@@ -153,7 +157,6 @@ def drawAgent():
 		cubex = cubex + 0.5
 		pressed = ""
 
-        glTranslatef(-target.position[0], -target.position[1], -target.position[2]);
         glTranslatef(agent.position[0], agent.position[1], agent.position[2]);  
 
 	glBegin(GL_QUADS);              
@@ -197,9 +200,25 @@ def drawAgent():
 
 def drawObjective():
 
-    global target
+    global pressed, target
+
+    step = 0.5
+
+    if pressed == "up":
+        target.position[2] = target.position[2] - step
+        pressed = ""
+    if pressed == "down":
+        target.position[2] = target.position[2] + step
+        pressed = ""
+    if pressed == "left":
+        target.position[0] = target.position[0] - step
+        pressed = ""
+    if pressed == "right":
+        target.position[0] = target.position[0] + step
+        pressed = ""
 
     glTranslatef(target.position[0], target.position[1], target.position[2]);
+
     glBegin(GL_TRIANGLES);
 
     glColor3f(1.0,0.0,0.0);
