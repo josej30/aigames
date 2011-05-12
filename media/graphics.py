@@ -4,7 +4,7 @@ from OpenGL.GLU import *
 
 from agents import *
 from walls import *
-from kinematic import *
+from steeringBehaviours import *
 from kinematicSteeringOutput import *
 
 import sys
@@ -50,8 +50,8 @@ limits = [
     Wall(c,c,-c,c,3),
     Wall(c,c,c,-c,3)
     ]
-for i in limits:
-    obs.append(limits[i].getproyection)
+#for i in limits:
+#    obs.append(limits[i].get_proyection())
 
 # A general OpenGL initialization function.  Sets all of the initial parameters. 
 def InitGL(Width, Height):
@@ -296,6 +296,8 @@ def keyPressed(*args):
     	
 def execute(self):
 
+    global obs
+
     try:
         glutInit(sys.argv)
         glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH)
@@ -311,6 +313,9 @@ def execute(self):
         glutKeyboardFunc(keyPressed)
         InitGL(640, 480)
         glutMainLoop()
+        
+        print obs
+
     except Exception:
         print "ERROR SAPIN@"
         sys.exit()
