@@ -69,9 +69,9 @@ def seeknflee(agent, target, flag):
 
 	# Get the direction of the target
 	if flag == "seek":
-               steering.linear = substraction(agent.position,target.position)
-       	elif flag == "flee":
-               steering.linear = substraction(target.position,agent.position)
+		steering.linear = substraction(agent.position,target.position)
+	elif flag == "flee":
+		steering.linear = substraction(target.position,agent.position)
 
 	# Give full acceleration is along this direction
 	steering.linear = normalize(steering.linear)
@@ -212,7 +212,7 @@ def VelocityM(agent,target):
 	steering = SteeringOutput()
 	
 	# Acceleration tries to get to the target velocity
-	steering.linear = substraction(target.velocity,agent.velocity)
+	substraction(target.velocity,agent.velocity)
 	steering.linear = vectorDivide(steering.linear,timeToTarget)
 
 	# Check if the acceleration is too fast
@@ -230,7 +230,7 @@ def Pursue(seeknflee,target_p, agent_p,):
 
 	print "Pursue"
      	# Holds the maximum prediction time
-     	maxPrediction = 5
+     	maxPrediction = 500
      	
   
 

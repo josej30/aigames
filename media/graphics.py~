@@ -33,7 +33,6 @@ agent.orientation = 10.0
 target = Agent()
 target.position = [0,1,0] 
 target.orientation = 45.6
-target.velocity = [13,0,0]
 
 # A general OpenGL initialization function.  Sets all of the initial parameters. 
 def InitGL(Width, Height):
@@ -86,15 +85,15 @@ def DrawGLScene():
 
  
 
-    steering = Pursue(seeknflee,target, agent)
-    if steering == None:
-    	print " ---> Haciendo seek!"
-    	steering = seeknflee(agent,target,"seek")
+   # steering = arrive(agent,target)
+#    if steering == None:
+ #   print " ---> Haciendo seek!"
+#    steering = seeknflee(agent,target,"seek")
 
-   # steering = seeknflee(target, agent,"seek")
-    #if steering == None:
-     #   print " ---> Haciendo seek!"
-      #  steering = arrive(agent,target)
+    steering = seeknflee(target, agent)
+    if steering == None:
+        print " ---> Haciendo seek!"
+        steering = arrive(agent,target)
 
     agent.update(steering,maxSpeed,time)
 
