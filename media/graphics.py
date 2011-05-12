@@ -6,6 +6,7 @@ from agents import *
 from walls import *
 from steeringBehaviours import *
 from kinematicSteeringOutput import *
+from kinematic import *
 
 import sys
 
@@ -30,12 +31,10 @@ size = 100
 # Agent stuff
 agent = Agent()
 agent.position = [0,1,-50]
-<<<<<<< HEAD
+
 agent.velocity = [10,0,0]
 
-=======
-agent.velocity = [0,0,0]
->>>>>>> e2299cd490a5837a93fde686ee48237b48c4a35e
+
 agent.orientation = 10.0
 
 # Target Stuff
@@ -114,7 +113,7 @@ def DrawGLScene():
 #        print " ---> Haciendo seek!"
 #        steering = seeknflee(agent,target,"seek")
 
-    steering =  lookWhereYoureGoing(aligne,agent, target)
+    steering = face(aligne, agent, target)
     if steering == None:
         print " ---> Haciendo seek!"
         steering = arrive(agent,target)
