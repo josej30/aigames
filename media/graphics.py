@@ -2,44 +2,42 @@ from OpenGL.GL import *
 from OpenGL.GLUT import *
 from OpenGL.GLU import *
 
-from agents import *
-from walls import *
-from steeringBehaviours import *
-from kinematicSteeringOutput import *
+from structures.agents import *
+from structures.walls import *
+from ia.steeringBehaviours import *
 
 import sys
 
-ESCAPE = '\033'
-
-# Tecla presionada
-pressed = ""
-
-# Number of the glut window.
-window = 0
-
-# Rotation angle for the quadrilateral.
-rquadx = 0.0
-rquady = 0.0
-
-cubex = 0.0
-cubez = 0.0
+############### TODO ESTO DEBERIA IR EN EL MAIN ###########
+############### O EN ALGUN LUGAR FUERA DE AQUI  ##########
 
 # Size of the world
 size = 100
 
-# Agent stuff
+# Rotation angles for the floor
+rquadx = 0.0
+rquady = 0.0
+
+
+###############
+# Agent stuff #
+###############
 agent = Agent()
 agent.position = [0,1,-50]
 agent.velocity = [0,0,0]
 agent.orientation = 10.0
 
-# Target Stuff
+
+################
+# Target Stuff #
+################
 target = Agent()
 target.position = [0,1,0] 
 target.orientation = 45.6
 
+
 # Array that contains all the proyections of
-# the walls and obstacles of the game
+# the walls and obstacles of the world
 obs = []
 
 # Walls representing the limits of the world
@@ -50,11 +48,21 @@ limits = [
     Wall(c,c,-c,c,3),
     Wall(c,c,c,-c,3)
     ]
-#for i in limits:
-#    obs.append(limits[i].get_proyection())
+# Inserting every wall into the world
+for i in limits:
+    obs.append(i.get_proyection())
+
+############### FIN DE TODO LO QUE DEBERIA IR EN EL MAIN ###########
+################## O EN ALGUN LUGAR FUERA DE AQUI  #################
+
+# Escape key code
+ESCAPE = '\033'
+
+# Number of the glut window.
+window = 0
 
 # A general OpenGL initialization function.  Sets all of the initial parameters. 
-def InitGL(Width, Height):
+def InitWorld(Width, Height):
     glClearColor(0.0, 0.0, 0.0, 0.0)
     glClearDepth(1.0)		
     glDepthFunc(GL_LESS)	
@@ -69,7 +77,7 @@ def InitGL(Width, Height):
     glMatrixMode(GL_MODELVIEW)
 
 # The function called when our window is resized (which shouldn't happen if you enable fullscreen, below)
-def ReSizeGLScene(Width, Height):
+def ReSizeWorld(Width, Height):
     if Height == 0:
 	    Height = 1
 
@@ -81,10 +89,12 @@ def ReSizeGLScene(Width, Height):
 
 
 # The main drawing function. 
-def DrawGLScene():
+def PaintWorld():
     
-    global agent, target, time, maxSpeed, limits
+    global agent, target, time, maxSpeed, limits, obs
    
+    print obs
+
     time = 0.01
 
     # Clear The Screen And The Depth Buffer
@@ -232,7 +242,7 @@ def drawAgent():
         glEnd();
 
 def drawObjective():
-
+    
     global target
 
     glTranslatef(target.position[0], target.position[1], target.position[2]);
@@ -294,9 +304,7 @@ def keyPressed(*args):
     if args[0] == '\153':
         target.position[2] = target.position[2] + step_t
     	
-def execute(self):
-
-    global obs
+def execute():
 
     try:
         glutInit(sys.argv)
@@ -304,17 +312,15 @@ def execute(self):
         glutInitWindowSize(640, 480)
         glutInitWindowPosition(0, 0)
         window = glutCreateWindow("Battle Cars")
-        glutDisplayFunc(DrawGLScene)
+        glutDisplayFunc(PaintWorld)
         
 #        glutFullScreen()
     
-        glutIdleFunc(DrawGLScene)
-        glutReshapeFunc(ReSizeGLScene)
+        glutIdleFunc(PaintWorld)
+        glutReshapeFunc(ReSizeWorld)
         glutKeyboardFunc(keyPressed)
-        InitGL(640, 480)
+        InitWorld(640, 480)
         glutMainLoop()
-        
-        print obs
 
     except Exception:
         print "ERROR SAPIN@"

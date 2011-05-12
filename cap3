@@ -1,9 +1,0 @@
-movimientos sensibly(con sentido).
-Movimiento nuvel mas bajo
-Overlap between AI and animation. Largos movimientos no movimientos de cara y brazos.
-
-3.1 Basic mmovement
- character with current position and physical properties.
- * Kinematic movement: two speeds, stationary and running, output direction to move in. Dont care about avvelerate and slow down.
- * Dynamic movement; taakes current motion of the character (velocities, position), output force or accelerations.
- 
