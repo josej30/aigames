@@ -230,7 +230,7 @@ def Pursue(seeknflee,target_p, agent_p,):
 
 	print "Pursue"
      	# Holds the maximum prediction time
-     	maxPrediction = 500
+     	maxPrediction = 1
      	
   
 
@@ -271,6 +271,25 @@ def Pursue(seeknflee,target_p, agent_p,):
 
        # 2. Delegate to seek
        	return seeknflee(target_p, agent_p,"seek")
+
+def face(aligne, agent, target):
+   	# Work out the direction to target
+   	print target.position
+   	print agent.position
+	direction = substraction(target.position,agent.position)
+
+   	# Check for a zero direction, and make no change if so
+   	if vectorLength(direction) == 0:
+   		return target
+
+   	# Put the target together
+	target.position = atan2(-direction[0],direction[2])
+
+   	# 2. Delegate to align
+
+   	return aligne(agent, target)
+
+
 
 
 

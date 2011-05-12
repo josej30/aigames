@@ -25,7 +25,7 @@ cubez = 0.0
 
 agent = Agent()
 agent.position = [0,1,-50]
-agent.velocity = [10,0,0]
+agent.velocity = [0,0,0]
 
 agent.orientation = 10.0
 
@@ -90,13 +90,15 @@ def DrawGLScene():
 #        print " ---> Haciendo seek!"
 #        steering = seeknflee(agent,target,"seek")
 
-    steering = Pursue(seeknflee,target, agent)
+    steering = face(aligne, agent, target)
     if steering == None:
         print " ---> Haciendo seek!"
         steering = arrive(agent,target)
 
     agent.update(steering,maxSpeed,time)
 
+
+##### 12-05 12:48 ####### De aqui para arriba es lili y para abajo es pinky ##############
 
     #######################
     # Draw the Objects
