@@ -85,15 +85,15 @@ def DrawGLScene():
 
  
 
-   # steering = arrive(agent,target)
-#    if steering == None:
- #   print " ---> Haciendo seek!"
-#    steering = seeknflee(agent,target,"seek")
-
-    steering = seeknflee(target, agent,"seek")
+    steering = Pursue(seeknflee,target, agent)
     if steering == None:
-        print " ---> Haciendo seek!"
-        steering = arrive(agent,target)
+    	print " ---> Haciendo seek!"
+    	steering = seeknflee(agent,target,"seek")
+
+   # steering = seeknflee(target, agent,"seek")
+    #if steering == None:
+     #   print " ---> Haciendo seek!"
+      #  steering = arrive(agent,target)
 
     agent.update(steering,maxSpeed,time)
 
