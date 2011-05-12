@@ -1,4 +1,4 @@
-from structures.point import *
+from structures.segments import *
 
 # Class that represents a wall in the world
 # and contains the data related of it
@@ -24,4 +24,4 @@ class Wall:
         self.height = h
 
     def get_proyection(self):
-        return ((self.x1,self.z1),(self.x2,self.z2))
+        return Segment(self.x1,self.z1,self.x2,self.z2)
