@@ -39,6 +39,9 @@ def vectorTimes(v,x):
 def substraction(v1,v2):
 	return [ v1[0]-v2[0], v1[1]-v2[1], v1[2]-v2[2] ]
 
+def addition(v1,v2):
+	return [ v1[0]+v2[0], v1[1]+v2[1], v1[2]+v2[2] ]
+
 def vectorDivide(v,x):
 	return [ v[0]/x, v[1]/x, v[2]/x ]
 
@@ -133,8 +136,8 @@ def aligne(agent, target):
 
      	# Holds the max angular acceleration and rotation
      	# of the character
-     	maxAngularAcceleration = 50.0
-    	maxRotation = 30.0
+     	maxAngularAcceleration = 500.0
+    	maxRotation = 300.0
      
      	# Holds the radius for arriving at the target
      	targetRadius = 3
@@ -202,6 +205,9 @@ def aligne(agent, target):
 
 def VelocityM(agent,target):
 
+	# Holds the time to target constant
+	timeToTarget = 0.1
+	
 	# Create the structure to hold our output
 	steering = SteeringOutput()
 	
@@ -219,6 +225,54 @@ def VelocityM(agent,target):
      	steering.angular = 0
 
      	return steering
+
+def Pursue(seeknflee,target_p, agent_p,):
+
+	print "Pursue"
+     	# Holds the maximum prediction time
+     	maxPrediction = 500
+     	
+  
+
+     	# OVERRIDES the target data in seek (in other words
+     	# this class has two bits of data called target:
+     	# Seek.target is the superclass target which
+     	# will be automatically calculated and shouldnt
+     	# be set, and Pursue.target is the target were
+     	# pursuing).
+
+     
+
+
+     	# ... Other data is derived from the superclass ...
+
+       # 1. Calculate the target to delegate to seek
+       # Work out the distance to target
+       	direction = substraction(target_p.position , agent_p.position)
+       	distance = vectorLength(direction)
+
+       # Work out our current speed
+       	speed = vectorLength(agent_p.velocity)
+
+       # Check if speed is too small to give a reasonable
+       # prediction time
+       	if speed <= distance / maxPrediction:
+       
+       		prediction = maxPrediction
+
+       # Otherwise calculate the prediction time
+       	else:
+
+      		prediction = distance / speed
+
+       # Put the target together
+       
+       	target_p.position = addition(target_p.position,vectorTimes(target_p.velocity , prediction))
+
+       # 2. Delegate to seek
+       	return seeknflee(target_p, agent_p,"flee")
+
+
 
                 
 
