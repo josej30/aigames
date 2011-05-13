@@ -28,4 +28,16 @@ def orientationAsVector(v):
 def randomBinomial():
 	return random() - random()
 
+def dotProduct(v1,v2):
+	return (v1[0]*v2[0]) + (v1[1]*v2[1]) + (v1[2]*v2[2])
+
+def similarity(v1,v2):
+	return dotProduct(v1,v2)/ (vectorLength(v1) * vectorLength(v2))
+
+def near (v1,v2):
+	if similarity(v1,v2)> .74 :
+		return 1
+	else:
+		return 0
+
 

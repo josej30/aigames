@@ -3,6 +3,8 @@ from structures.kinematicSteeringOutput import *
 from structures.kinematicWander import *
 from structures.steeringOutput import *
 from structures.agents import *
+from structures.jump import *
+from structures.jumpPoint import *
 from misc.misc import *
 from misc.vector3 import *
 from random import random
@@ -312,4 +314,7 @@ def wander(face,agent,target):
    	# Return it
    	
    	return steering
+       		
+
+
 

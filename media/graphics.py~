@@ -12,6 +12,7 @@ from structures.agents import *
 from structures.walls import *
 from ia.steeringBehaviours import *
 from ia.collisions import *
+from ia.jumps import *
 
 
 import traceback
@@ -33,7 +34,7 @@ rquady = 0.0
 # Agent stuff #
 ###############
 agent = Agent()
-agent.position = [0,0,10]
+agent.position = [0,0,40]
 
 agent.velocity = [0,0,0]
 
@@ -129,17 +130,15 @@ def PaintWorld():
          #  steering = arrive(agent,target)
 
         #steering = Pursue(seeknflee,target, agent)
-
-        #pepe = collisionDetect(agent)
-        
+        #pepe = collisionDetect(agent,obs)
         #if steering == None:
          #   print " ---> Haciendo seek!"
           #  steering = arrive(agent,target)
-
+        #agent.update(steering,maxSpeed,time)
 
        
 
-    	steering = wander(face, agent, target)
+    	steering = Jump(agent)
     	if steering == None:
         	print " ---> Haciendo seek!"
         	steering = arrive(agent,target)
@@ -221,7 +220,7 @@ def drawAgent():
 
 	global agent
 
-        glTranslatef(agent.position[0], agent.position[1], agent.position[2]);  
+        glTranslatef(agent.position[0], agent.position[1]+1, agent.position[2]);  
 
 	glBegin(GL_QUADS);              
 
@@ -266,7 +265,7 @@ def drawObjective():
     
     global target
 
-    glTranslatef(target.position[0], target.position[1], target.position[2]);
+    glTranslatef(target.position[0], target.position[1]+1, target.position[2]);
 
     glBegin(GL_TRIANGLES);
 
