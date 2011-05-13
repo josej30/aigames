@@ -33,7 +33,7 @@ rquady = 0.0
 # Agent stuff #
 ###############
 agent = Agent()
-agent.position = [0,0,10]
+agent.position = [0,0,40]
 
 agent.velocity = [0,0,0]
 
@@ -46,7 +46,7 @@ agent.orientation = 10.0
 ################
 target = Agent()
 target.position = [0,0,0] 
-target.orientation = 20.0
+target.orientation = 300.0
 
 
 # Array that contains all the proyections of
@@ -139,7 +139,7 @@ def PaintWorld():
 
        
 
-    	steering = wander(face,agent,target)
+    	steering = wander(face, agent, target)
     	if steering == None:
         	print " ---> Haciendo seek!"
         	steering = arrive(agent,target)

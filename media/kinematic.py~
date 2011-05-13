@@ -136,17 +136,17 @@ def aligne(agent, target):
 
      	# Holds the max angular acceleration and rotation
      	# of the character
-     	maxAngularAcceleration = 1
-    	maxRotation = .2
+     	maxAngularAcceleration = .4
+    	maxRotation = 10
      
      	# Holds the radius for arriving at the target
-     	targetRadius = 2
+     	targetRadius = 5
 
      	# Holds the radius for beginning to slow down
-     	slowRadius = 3
+     	slowRadius = 5
 
      	# Holds the time over which to achieve target speed
-    	timeToTarget = 0.1
+    	timeToTarget = .1
 
      	# Create the structure to hold our output
      	steering = SteeringOutput()
@@ -305,19 +305,19 @@ def wander(face,agent,target):
  
      	# Holds the radius and forward offset of the wander
      	# circle.
-     	wanderOffset = 10.0
-     	wanderRadius = 20.0
+     	wanderOffset = 4.0
+     	wanderRadius = 4.0
  
      	# Holds the maximum rate at which the wander orientation
      	# can change 
-     	wanderRate = .001
+     	wanderRate = 10
 
      	# Holds the current orientation of the wander target
      	wanderOrientation = 0
 
 
      	# Holds the maximum acceleration of the character
-     	maxAcceleration = .01
+     	maxAcceleration = 2
 
      	# Again we dont need a new target
      	# ... Other data is derived from the superclass ...

@@ -46,7 +46,7 @@ agent.orientation = 10.0
 ################
 target = Agent()
 target.position = [0,0,0] 
-target.orientation = 20.0
+target.orientation = 300.0
 
 
 # Array that contains all the proyections of
@@ -122,24 +122,24 @@ def PaintWorld():
         #        print " ---> Haciendo seek!"
         #        steering = seeknflee(agent,target,"seek")
 
-<<<<<<< HEAD
+
         #steering = Pursue(seeknflee,target, agent)
         #if steering == None:
          #   print " ---> Haciendo seek!"
          #  steering = arrive(agent,target)
-=======
-        steering = Pursue(seeknflee,target, agent)
 
-        pepe = collisionDetect(agent)
+        #steering = Pursue(seeknflee,target, agent)
+
+        #pepe = collisionDetect(agent)
         
-        if steering == None:
-            print " ---> Haciendo seek!"
-            steering = arrive(agent,target)
->>>>>>> 619c04bc249e83ecd039cf7589f4b2fec5c88b93
+        #if steering == None:
+         #   print " ---> Haciendo seek!"
+          #  steering = arrive(agent,target)
+
 
        
 
-    	steering = wander(face,agent,target)
+    	steering = wander(face, agent, target)
     	if steering == None:
         	print " ---> Haciendo seek!"
         	steering = arrive(agent,target)
