@@ -13,6 +13,8 @@ from structures.walls import *
 from ia.steeringBehaviours import *
 
 
+import traceback
+
 import sys
 
 ############### TODO ESTO DEBERIA IR EN EL MAIN ###########
@@ -103,65 +105,63 @@ def PaintWorld():
     
     global agent, target, time, maxSpeed, limits, obs
    
-    print obs
+    try:
 
-    time = 0.01
-
-    # Clear The Screen And The Depth Buffer
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-    glLoadIdentity()	
-
-    # We are "undoing" the rotation so that we may rotate the quad on its own axis.
-    # We also "undo" the prior translate.  This could also have been done using the
-    # matrix stack.
-    glLoadIdentity()
+        time = 0.01
+        
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+        glLoadIdentity()	        
+        glLoadIdentity()
     
-    # Move Right 0.0 units and into the screen 6.0 units.
-    glTranslatef(0.0, -20.0, -140.0)
-
-    # update agent's steering
+        glTranslatef(0.0, -20.0, -140.0)
 
 
- 
+        #    steering = arrive(agent,target)
+        #    if steering == None:
+        #        print " ---> Haciendo seek!"
+        #        steering = seeknflee(agent,target,"seek")
 
-#    steering = arrive(agent,target)
-#    if steering == None:
-#        print " ---> Haciendo seek!"
-#        steering = seeknflee(agent,target,"seek")
+        #steering = Pursue(seeknflee,target, agent)
+        #if steering == None:
+         #   print " ---> Haciendo seek!"
+         #  steering = arrive(agent,target)
 
-    steering = wander(face,agent,target)
-    if steering == None:
-        print " ---> Haciendo seek!"
-        steering = arrive(agent,target)
+       
 
-    agent.update(steering,maxSpeed,time)
+    	steering = wander(face,agent,target)
+    	if steering == None:
+        	print " ---> Haciendo seek!"
+        	steering = arrive(agent,target)
+    	agent.update(steering,maxSpeed,time)
+  
+        ##### 12-05 12:48 ####### De aqui para arriba es lili y para abajo es pinky ##############
 
 
-##### 12-05 12:48 ####### De aqui para arriba es lili y para abajo es pinky ##############
+        #######################
+        # Draw the Objects
 
-    #######################
-    # Draw the Objects
+        # Plane
+        drawPlane()
 
-    # Plane
-    drawPlane()
+        # Limits of the world
+        drawLimits(limits)
 
-    # Limits of the world
-    drawLimits(limits)
+        # Objective
+        glPushMatrix();
+        drawObjective()
+        glPopMatrix();
 
-    # Objective
-    glPushMatrix();
-    drawObjective()
-    glPopMatrix();
+        # Agent
+        glPushMatrix();
+        drawAgent()
+        glPopMatrix();
 
-    # Agent
-    glPushMatrix();
-    drawAgent()
-    glPopMatrix();
+        #######################
 
-    #######################
-
-    #  since this is double buffered, swap the buffers to display what just got drawn. 
-    glutSwapBuffers()
+        glutSwapBuffers()
+    except Exception, e:
+        traceback.print_exc()
+        sys.exit(-1)
 
 
 def drawLimits(limits):
@@ -316,22 +316,17 @@ def keyPressed(*args):
     	
 def execute():
 
-    try:
-        glutInit(sys.argv)
-        glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH)
-        glutInitWindowSize(640, 480)
-        glutInitWindowPosition(0, 0)
-        window = glutCreateWindow("Battle Cars")
-        glutDisplayFunc(PaintWorld)
-        
-#        glutFullScreen()
+    glutInit(sys.argv)
+    glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH)
+    glutInitWindowSize(640, 480)
+    glutInitWindowPosition(0, 0)
+    window = glutCreateWindow("Battle Cars")
+    glutDisplayFunc(PaintWorld)
     
-        glutIdleFunc(PaintWorld)
-        glutReshapeFunc(ReSizeWorld)
-        glutKeyboardFunc(keyPressed)
-        InitWorld(640, 480)
-        glutMainLoop()
-
-    except Exception:
-        print "ERROR SAPIN@"
-        sys.exit()
+    #        glutFullScreen()
+    
+    glutIdleFunc(PaintWorld)
+    glutReshapeFunc(ReSizeWorld)
+    glutKeyboardFunc(keyPressed)
+    InitWorld(640, 480)
+    glutMainLoop()
