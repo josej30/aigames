@@ -305,19 +305,19 @@ def wander(face,agent,target):
  
      	# Holds the radius and forward offset of the wander
      	# circle.
-     	wanderOffset = 10.0
-     	wanderRadius = 20.0
+     	wanderOffset = 5.0
+     	wanderRadius = 5.0
  
      	# Holds the maximum rate at which the wander orientation
      	# can change 
-     	wanderRate = .001
+     	wanderRate = 0.5
 
      	# Holds the current orientation of the wander target
-     	wanderOrientation = 0
+     	wanderOrientation = 0.0
 
 
      	# Holds the maximum acceleration of the character
-     	maxAcceleration = .01
+     	maxAcceleration = 0.7
 
      	# Again we dont need a new target
      	# ... Other data is derived from the superclass ...

@@ -128,22 +128,20 @@ def PaintWorld():
          #   print " ---> Haciendo seek!"
          #  steering = arrive(agent,target)
 
-        #steering = Pursue(seeknflee,target, agent)
-
-        #pepe = collisionDetect(agent)
-        
-        #if steering == None:
-         #   print " ---> Haciendo seek!"
-          #  steering = arrive(agent,target)
-
+        steering = Pursue(seeknflee,target, agent)
+        pepe = collisionDetect(agent,obs)
+        if steering == None:
+            print " ---> Haciendo seek!"
+            steering = arrive(agent,target)
+        agent.update(steering,maxSpeed,time)
 
        
 
-    	steering = wander(face,agent,target)
-    	if steering == None:
-        	print " ---> Haciendo seek!"
-        	steering = arrive(agent,target)
-    	agent.update(steering,maxSpeed,time)
+#    	steering = wander(face,agent,target)
+#    	if steering == None:
+#        	print " ---> Haciendo seek!"
+#        	steering = arrive(agent,target)
+#    	agent.update(steering,maxSpeed,time)
   
         ##### 12-05 12:48 ####### De aqui para arriba es lili y para abajo es pinky ##############
 
@@ -221,7 +219,7 @@ def drawAgent():
 
 	global agent
 
-        glTranslatef(agent.position[0], agent.position[1], agent.position[2]);  
+        glTranslatef(agent.position[0], agent.position[1]+1, agent.position[2]);  
 
 	glBegin(GL_QUADS);              
 
@@ -266,7 +264,7 @@ def drawObjective():
     
     global target
 
-    glTranslatef(target.position[0], target.position[1], target.position[2]);
+    glTranslatef(target.position[0], target.position[1]+1, target.position[2]);
 
     glBegin(GL_TRIANGLES);
 

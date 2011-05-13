@@ -3,9 +3,7 @@ from structures.collisionDetector import *
 from misc.misc import *
 from misc.vector3 import *
 
-def collisionDetect(agent):
-
-    collisionDetector = CollisionDetector()
+def collisionDetect(agent,obs):
 
     # Holds the minimum distance to a wall (i.e., how far
     # to avoid collision) should be greater than the
@@ -19,11 +17,9 @@ def collisionDetect(agent):
     # 1. Calculate the target to delegate to seek
         
     # Calculate the collision ray vector
-    rayVector = agent.velocity
+    rayVector = agent.position
     rayVector = normalize(rayVector)
     rayVector = vectorTimes(rayVector,lookahead)
-
-    print rayVector
 
     glPushMatrix();
     glBegin(GL_LINES);
@@ -34,13 +30,11 @@ def collisionDetect(agent):
     glPopMatrix();
 
     # Find the collision
-    #collision = collisionDetector.getCollision(character.position, rayVector)
+    collision = getCollision(agent.position, rayVector, obs)
 
     # If have no collision, do nothing
         #if not collision: 
             #return None
-
-        #print " ----------- COLISION ------------ "
 
         # Otherwise create a target
         #target = Agent()

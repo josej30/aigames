@@ -21,3 +21,5 @@ class Segment:
             return p1 == 0
         g = ((self.y1-self.y2)/(self.x1-self.x2))
         return ((g*p1)+self.y1-(g*self.x1)-p2)==0
+
+    
