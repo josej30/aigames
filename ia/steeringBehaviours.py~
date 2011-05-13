@@ -5,6 +5,7 @@ from structures.steeringOutput import *
 from structures.agents import *
 from misc.misc import *
 from misc.vector3 import *
+from agents import *
 from random import random
 
 
@@ -312,4 +313,9 @@ def wander(face,agent,target):
    	# Return it
    	
    	return steering
+
+
+
+                
+
 
