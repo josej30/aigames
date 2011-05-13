@@ -1,10 +1,10 @@
-from agents import *
-from kinematicSteeringOutput import *
-from kinematicWander import *
 from math import pow , sqrt, atan2, sin, cos, fabs
-from random import random
-from steeringOutput import *
-
+from structures.kinematicSteeringOutput import *
+from structures.kinematicWander import *
+from structures.steeringOutput import *
+from structures.agents import *
+from misc.misc import *
+from misc.vector3 import *
 
 maxSpeed = 15
 maxAcceleration = 5
@@ -21,42 +21,6 @@ def getNewOrientation(currentOrientation, velocity):
 
    	else:
    		return currentOrientation
-
-
-def normalize(vector):
-	factor = sqrt(pow(vector[0],2) + pow(vector[1],2) + pow(vector[2],2))
-	if factor != 0:
-		return [vector[0]/factor,vector[1]/factor,vector[2]/factor]
-	else:
-		return vector
-	
-def distanceToRadius(agent,target):
-	return sqrt(pow(target.position[0]-agent.position[0],2) + pow(target.position[2]-agent.position[2],2))
-
-def vectorTimes(v,x):
-	return [ v[0]*x, v[1]*x, v[2]*x ]
-
-def substraction(v1,v2):
-	return [ v1[0]-v2[0], v1[1]-v2[1], v1[2]-v2[2] ]
-
-def addition(v1,v2):
-	return [ v1[0]+v2[0], v1[1]+v2[1], v1[2]+v2[2] ]
-
-def vectorDivide(v,x):
-	return [ v[0]/x, v[1]/x, v[2]/x ]
-
-def brake(v):
-	return [-v[0],v[1],-v[2]]
-
-
-def vectorLength(vector):
-	return sqrt(pow(vector[0],2) + pow(vector[1],2) + pow(vector[2],2))
-
-def randomBinomial():
-	return random() - random()
-
-def orientationAsVector(v):
-	return [sin(v),0,cos(v)]
 
 
 # Seek/Flee Algorithm
@@ -86,7 +50,7 @@ def arrive(agent, target):
 	global maxSpeed, maxAcceleration
 
 	# Holds the satisfaction radius
-	targetRadius = 3
+	targetRadius = 5
 	slowRadius = 15
 
 	# Holds the time to target constant
@@ -96,7 +60,7 @@ def arrive(agent, target):
 	steering = SteeringOutput()
 
 	# Get the direction to the target
-	direction = substraction(target.position,agent.position)
+	direction = substraction(agent.position,target.position)
 	distance = vectorLength(direction)
 
 	# Check if we are there, return no steering
@@ -136,14 +100,14 @@ def aligne(agent, target):
 
      	# Holds the max angular acceleration and rotation
      	# of the character
-     	maxAngularAcceleration = 1
-    	maxRotation = .2
+     	maxAngularAcceleration = 500.0
+    	maxRotation = 300.0
      
      	# Holds the radius for arriving at the target
-     	targetRadius = 2
+     	targetRadius = 3
 
      	# Holds the radius for beginning to slow down
-     	slowRadius = 3
+     	slowRadius = 1
 
      	# Holds the time over which to achieve target speed
     	timeToTarget = 0.1
@@ -163,7 +127,7 @@ def aligne(agent, target):
 	print rotationDirection
 	print rotation
      	print rotationSize
-     
+     	print targetRadius
 
     	# Check if we are there, return no steering
 	if rotationSize < targetRadius:
@@ -230,7 +194,7 @@ def Pursue(seeknflee,target_p, agent_p,):
 
 	print "Pursue"
      	# Holds the maximum prediction time
-     	maxPrediction = 1
+     	maxPrediction = 5
      	
   
 
@@ -270,87 +234,7 @@ def Pursue(seeknflee,target_p, agent_p,):
        	target_p.position = addition(target_p.position,vectorTimes(target_p.velocity , prediction))
 
        # 2. Delegate to seek
-       	return seeknflee(target_p, agent_p,"seek")
-
-def face(aligne, agent, target):
-   	# Work out the direction to target
-   	#print target.position
-   	#print agent.position
-	direction = substraction(target.position,agent.position)
-
-   	# Check for a zero direction, and make no change if so
-   	if vectorLength(direction) == 0:
-   		return target
-
-   	# Put the target together
-	target.orientation = atan2(-direction[0],direction[2])
-
-   	# 2. Delegate to align
-
-   	return aligne(agent, target)
-
-def lookWhereYoureGoing(aligne,agent, target):
-
-   	# Check for a zero direction, and make no change if so
-   	if vectorLength(agent.velocity) == 0: return
-
-   	# Otherwise set the target based on the velocity
-   	target.orientation = atan2(-agent.velocity[0], agent.velocity[2])
-
-   	# 2. Delegate to align
-   	return aligne(agent,target)
-
-def wander(face,agent,target):
- 
- 
-     	# Holds the radius and forward offset of the wander
-     	# circle.
-     	wanderOffset = 10.0
-     	wanderRadius = 20.0
- 
-     	# Holds the maximum rate at which the wander orientation
-     	# can change 
-     	wanderRate = .001
-
-     	# Holds the current orientation of the wander target
-     	wanderOrientation = 0
-
-
-     	# Holds the maximum acceleration of the character
-     	maxAcceleration = .01
-
-     	# Again we dont need a new target
-     	# ... Other data is derived from the superclass ...
-      	# 1. Calculate the target to delegate to face
-       	# Update the wander orientation
-       	wanderOrientation += randomBinomial() * wanderRate
-
-                                            
-   	# Calculate the combined target orientation
-   	targetOrientation = wanderOrientation + agent.orientation
-
-   	# Calculate the center of the wander circle
-   	target.position = addition(agent.position,  vectorTimes(orientationAsVector(agent.orientation),wanderOffset))
-
-   	# Calculate the target location
-   	target.position =  addition(target.position, vectorTimes(orientationAsVector(targetOrientation),wanderRadius))
-
-   	# 2. Delegate to face
-   	steering = face(aligne, agent, target)
-
-   	# 3. Now set the linear acceleration to be at full
-   	# acceleration in the direction of the orientation
-
-   	steering.linear =vectorTimes(orientationAsVector(agent.orientation), maxAcceleration)
-
-   	# Return it
-   	
-   	return steering
-
-
-
-
-
+       	return seeknflee(target_p, agent_p, "seek")
 
 
 

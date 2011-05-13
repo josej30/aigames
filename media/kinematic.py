@@ -136,14 +136,14 @@ def aligne(agent, target):
 
      	# Holds the max angular acceleration and rotation
      	# of the character
-     	maxAngularAcceleration = 50.0
-    	maxRotation = 30.0
+     	maxAngularAcceleration = 1
+    	maxRotation = .2
      
      	# Holds the radius for arriving at the target
-     	targetRadius = 3
+     	targetRadius = 2
 
      	# Holds the radius for beginning to slow down
-     	slowRadius = 1
+     	slowRadius = 5
 
      	# Holds the time over which to achieve target speed
     	timeToTarget = 0.1
@@ -274,8 +274,8 @@ def Pursue(seeknflee,target_p, agent_p,):
 
 def face(aligne, agent, target):
    	# Work out the direction to target
-   	print target.position
-   	print agent.position
+   	#print target.position
+   	#print agent.position
 	direction = substraction(target.position,agent.position)
 
    	# Check for a zero direction, and make no change if so
@@ -299,6 +299,53 @@ def lookWhereYoureGoing(aligne,agent, target):
 
    	# 2. Delegate to align
    	return aligne(agent,target)
+
+def wander(face,agent,target):
+ 
+ 
+     	# Holds the radius and forward offset of the wander
+     	# circle.
+     	wanderOffset = 10.0
+     	wanderRadius = 20.0
+ 
+     	# Holds the maximum rate at which the wander orientation
+     	# can change 
+     	wanderRate = .001
+
+     	# Holds the current orientation of the wander target
+     	wanderOrientation = 0
+
+
+     	# Holds the maximum acceleration of the character
+     	maxAcceleration = .01
+
+     	# Again we dont need a new target
+     	# ... Other data is derived from the superclass ...
+      	# 1. Calculate the target to delegate to face
+       	# Update the wander orientation
+       	wanderOrientation += randomBinomial() * wanderRate
+
+                                            
+   	# Calculate the combined target orientation
+   	targetOrientation = wanderOrientation + agent.orientation
+
+   	# Calculate the center of the wander circle
+   	target.position = addition(agent.position,  vectorTimes(orientationAsVector(agent.orientation),wanderOffset))
+
+   	# Calculate the target location
+   	target.position =  addition(target.position, vectorTimes(orientationAsVector(targetOrientation),wanderRadius))
+
+   	# 2. Delegate to face
+   	steering = face(aligne, agent, target)
+
+   	# 3. Now set the linear acceleration to be at full
+   	# acceleration in the direction of the orientation
+
+   	steering.linear =vectorTimes(orientationAsVector(agent.orientation), maxAcceleration)
+
+   	# Return it
+   	
+   	return steering
 
 
 
