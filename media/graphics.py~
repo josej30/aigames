@@ -11,6 +11,7 @@ from kinematic import *
 from structures.agents import *
 from structures.walls import *
 from ia.steeringBehaviours import *
+from ia.collisions import *
 
 
 import traceback
@@ -121,18 +122,28 @@ def PaintWorld():
         #        print " ---> Haciendo seek!"
         #        steering = seeknflee(agent,target,"seek")
 
+<<<<<<< HEAD
         #steering = Pursue(seeknflee,target, agent)
         #if steering == None:
          #   print " ---> Haciendo seek!"
          #  steering = arrive(agent,target)
+=======
+        steering = Pursue(seeknflee,target, agent)
+
+        pepe = collisionDetect(agent)
+        
+        if steering == None:
+            print " ---> Haciendo seek!"
+            steering = arrive(agent,target)
+>>>>>>> 619c04bc249e83ecd039cf7589f4b2fec5c88b93
 
        
 
-    steering = wander(face,agent,target)
-    if steering == None:
-        print " ---> Haciendo seek!"
-        steering = arrive(agent,target)
-    agent.update(steering,maxSpeed,time)
+    	steering = wander(face,agent,target)
+    	if steering == None:
+        	print " ---> Haciendo seek!"
+        	steering = arrive(agent,target)
+    	agent.update(steering,maxSpeed,time)
   
         ##### 12-05 12:48 ####### De aqui para arriba es lili y para abajo es pinky ##############
 
