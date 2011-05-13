@@ -4,9 +4,6 @@ from OpenGL.GLU import *
 
 from agents import *
 from walls import *
-from steeringBehaviours import *
-from kinematicSteeringOutput import *
-from kinematic import *
 
 from structures.agents import *
 from structures.walls import *
@@ -47,6 +44,14 @@ agent.orientation = 10.0
 target = Agent()
 target.position = [0,0,0] 
 target.orientation = 300.0
+
+
+####################
+# 2nd Target Stuff #
+####################
+target2 = Agent()
+target2.position = [0,0,0] 
+target2.orientation = 0.0
 
 
 # Array that contains all the proyections of
@@ -128,20 +133,20 @@ def PaintWorld():
          #   print " ---> Haciendo seek!"
          #  steering = arrive(agent,target)
 
-        steering = Pursue(seeknflee,target, agent)
+        steering = seeknflee(target, agent, "seek")
         pepe = collisionDetect(agent,obs)
-        if steering == None:
-            print " ---> Haciendo seek!"
-            steering = arrive(agent,target)
+#        if steering == None:
+#            print " ---> Haciendo seek!"
+#            steering = arrive(agent,target)
         agent.update(steering,maxSpeed,time)
 
        
 
-    	steering = wander(face,agent,target)
-    	if steering == None:
-        	print " ---> Haciendo seek!"
-        	steering = arrive(agent,target)
-    	agent.update(steering,maxSpeed,time)
+#    	steering = wander(face,agent,target)
+#    	if steering == None:
+#        	print " ---> Haciendo seek!"
+#        	steering = arrive(agent,target)
+#    	agent.update(steering,maxSpeed,time)
   
         ##### 12-05 12:48 ####### De aqui para arriba es lili y para abajo es pinky ##############
 

@@ -26,4 +26,3 @@ def vectorLength(vector):
 def orientationAsVector(v):
 	return [sin(v),0,cos(v)]
 
-
