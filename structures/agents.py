@@ -1,3 +1,6 @@
+from OpenGL.GL import *
+from OpenGL.GLUT import *
+from OpenGL.GLU import *
 from math import pow, sqrt
 
 def vectorTimes(v,x):
@@ -43,3 +46,11 @@ class Agent:
 
 		print "position = " + str(self.position)
 		print "velocity = " + str(self.velocity)
+
+		# glPushMatrix();
+		# glBegin(GL_LINES);
+		# glColor3f(1.0,0.0,0.0);
+		# glVertex3f(self.position[0],self.position[1]+2,self.position[2]);
+		# glVertex3f(self.velocity[0],self.velocity[1]+2,self.velocity[2]);
+		# glEnd();
+		# glPopMatrix();

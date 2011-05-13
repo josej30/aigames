@@ -313,8 +313,3 @@ def wander(face,agent,target):
    	
    	return steering
 
-
-
-                
-
-
