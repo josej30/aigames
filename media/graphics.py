@@ -5,6 +5,7 @@ from OpenGL.GLU import *
 from structures.agents import *
 from structures.walls import *
 from ia.steeringBehaviours import *
+from ia.collisions import *
 
 import traceback
 import sys
@@ -111,6 +112,9 @@ def PaintWorld():
         #        steering = seeknflee(agent,target,"seek")
 
         steering = Pursue(seeknflee,target, agent)
+
+        pepe = collisionDetect(agent)
+        
         if steering == None:
             print " ---> Haciendo seek!"
             steering = arrive(agent,target)
