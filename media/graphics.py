@@ -9,6 +9,7 @@ from structures.agents import *
 from structures.walls import *
 from ia.steeringBehaviours import *
 from ia.collisions import *
+from ia.jumps import *
 
 
 import traceback
@@ -32,17 +33,17 @@ rquady = 0.0
 agent = Agent()
 agent.position = [0,0,40]
 
-agent.velocity = [0,0,0]
+agent.velocity = [3,0,0]
 
 
-agent.orientation = 10.0
+agent.orientation = 100.0
 
 
 ################
 # Target Stuff #
 ################
 target = Agent()
-target.position = [0,0,0] 
+target.position = [-10,0,-10] 
 target.orientation = 300.0
 
 
@@ -133,12 +134,21 @@ def PaintWorld():
          #   print " ---> Haciendo seek!"
          #  steering = arrive(agent,target)
 
-        steering = seeknflee(target, agent, "seek")
+
+        steering = Pursue(seeknflee,target, agent)
         pepe = collisionDetect(agent,obs)
-#        if steering == None:
-#            print " ---> Haciendo seek!"
-#            steering = arrive(agent,target)
+        if steering == None:
+            print " ---> Haciendo seek!"
+            steering = arrive(agent,target)
         agent.update(steering,maxSpeed,time)
+
+       
+
+    	#steering = Jump(agent)
+    	#if steering == None:
+        #	print " ---> Haciendo seek!"
+        #	steering = arrive(agent,target)
+    	#agent.update(steering,maxSpeed,time)
 
        
 

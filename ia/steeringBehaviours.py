@@ -3,6 +3,8 @@ from structures.kinematicSteeringOutput import *
 from structures.kinematicWander import *
 from structures.steeringOutput import *
 from structures.agents import *
+from structures.jump import *
+from structures.jumpPoint import *
 from misc.misc import *
 from misc.vector3 import *
 from random import random
@@ -236,7 +238,7 @@ def Pursue(seeknflee,target_p, agent_p,):
        	target_p.position = addition(target_p.position,vectorTimes(target_p.velocity , prediction))
 
        # 2. Delegate to seek
-       	return seeknflee(target_p, agent_p,"seek")
+       	return arrive(target_p, agent_p)
 
 def face(aligne, agent, target):
    	# Work out the direction to target
@@ -312,4 +314,7 @@ def wander(face,agent,target):
    	# Return it
    	
    	return steering
+       		
+
+
 
