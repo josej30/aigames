@@ -2,11 +2,11 @@ from misc.vector3 import *
 class JumpPoint: 
  
      	# The position of the jump point
-     	jumpLocation = [0, 0 , 0]
+     	jumpLocation = [2, 0 , 2]
  
  
      	# The position of the landing pad
-     	landingLocation = [10, 0, 0]
+     	landingLocation = [10, 0, 10]
  
  
      	# The change in position from jump to landing

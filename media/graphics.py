@@ -33,17 +33,17 @@ rquady = 0.0
 agent = Agent()
 agent.position = [0,0,40]
 
-agent.velocity = [10,0,0]
+agent.velocity = [3,0,0]
 
 
-agent.orientation = 10.0
+agent.orientation = 100.0
 
 
 ################
 # Target Stuff #
 ################
 target = Agent()
-target.position = [0,0,0] 
+target.position = [-10,0,-10] 
 target.orientation = 300.0
 
 
@@ -135,20 +135,20 @@ def PaintWorld():
          #  steering = arrive(agent,target)
 
 
-        #steering = Pursue(seeknflee,target, agent)
-        #pepe = collisionDetect(agent,obs)
-        #if steering == None:
-         #   print " ---> Haciendo seek!"
-          #  steering = arrive(agent,target)
-        #agent.update(steering,maxSpeed,time)
+        steering = Pursue(seeknflee,target, agent)
+        pepe = collisionDetect(agent,obs)
+        if steering == None:
+            print " ---> Haciendo seek!"
+            steering = arrive(agent,target)
+        agent.update(steering,maxSpeed,time)
 
        
 
-    	steering = Jump(agent)
-    	if steering == None:
-        	print " ---> Haciendo seek!"
-        	steering = arrive(agent,target)
-    	agent.update(steering,maxSpeed,time)
+    	#steering = Jump(agent)
+    	#if steering == None:
+        #	print " ---> Haciendo seek!"
+        #	steering = arrive(agent,target)
+    	#agent.update(steering,maxSpeed,time)
 
        
 
@@ -157,7 +157,6 @@ def PaintWorld():
 #        	print " ---> Haciendo seek!"
 #        	steering = arrive(agent,target)
 #    	agent.update(steering,maxSpeed,time)
->>>>>>> 5ee0d9b9b5e3472fd4bf6b6b13ea48e45cc7d99a
   
         ##### 12-05 12:48 ####### De aqui para arriba es lili y para abajo es pinky ##############
 

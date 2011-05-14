@@ -32,10 +32,13 @@ def dotProduct(v1,v2):
 	return (v1[0]*v2[0]) + (v1[1]*v2[1]) + (v1[2]*v2[2])
 
 def similarity(v1,v2):
-	return dotProduct(v1,v2)/ (vectorLength(v1) * vectorLength(v2))
+	if vectorLength(v1) * vectorLength(v2) == 0:
+		return 0
+	else:
+		return dotProduct(v1,v2) / (vectorLength(v1) * vectorLength(v2))
 
 def near (v1,v2):
-	if similarity(v1,v2)> .74 :
-		return 1
+	if similarity(v1,v2)> .2 :
+		return True
 	else:
-		return 0
+		return False

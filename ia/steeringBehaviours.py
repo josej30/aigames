@@ -238,7 +238,7 @@ def Pursue(seeknflee,target_p, agent_p,):
        	target_p.position = addition(target_p.position,vectorTimes(target_p.velocity , prediction))
 
        # 2. Delegate to seek
-       	return seeknflee(target_p, agent_p,"seek")
+       	return arrive(target_p, agent_p)
 
 def face(aligne, agent, target):
    	# Work out the direction to target

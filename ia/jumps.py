@@ -4,26 +4,27 @@ from structures.jump import *
 from structures.jumpPoint import *
 from misc.misc import *
 from misc.vector3 import *
+from ia.steeringBehaviours import *
 
 	# Holds the jump point to use
 jumpPoint = JumpPoint()
 
     	# Keeps track of whether the jump is achievable
-canAchieve = False
+canAchieve = True
 
     	# Holds the maximum speed of the character                                  
-maxSpeed = 8
+maxSpeed = 10
 
    	# Holds the maximum vertical jump velocity
 maxYVelocity = 10
 
-maxVelocity = 7
+maxVelocity = 5
 
    	# Retrieve the steering for this jump
 t = True
 
-def scheduleJumpAction(agent,target):
-	agent.velocity[1] = 5.0
+def scheduleJumpAction(agent):
+	agent.velocity[1] = 10.0
 	
 # Retrieve the steering for this jump
 def Jump(agent):
@@ -34,13 +35,18 @@ def Jump(agent):
      	# one if not.
      	if t:
      		print "LLamando a calcular target"
-       		target = calculateTarget()
+       		target = calculateTarget(agent)
 
+	if not canAchieve:
      	# Check if the trajectory is zero
-     	if not canAchieve:
-     		print "No hay aceleracion"
+     	
+     		print "no puede saltar, llamada a arrive"
+     		print target.position
+     		print "near"
+     		print near(agent.position,target.position)
+     		print near(agent.velocity,target.velocity)
        		# If not, we have no acceleration
-       		return SteeringOutput()
+       	 	seeknflee(agent,target,"seek")
 
      	# Check if we ve hit the jump point (character
      	# is inherited from the VelocityMatch base class)
@@ -59,7 +65,7 @@ def Jump(agent):
 
 
 # Works out the trajectory calculation
-def calculateTarget():
+def calculateTarget(agent):
 	print "Calcular Target"
 	t = False
      	target = Agent()
@@ -68,9 +74,14 @@ def calculateTarget():
 
 
      	# Calculate the first jump time
-     	sqrtTerm = sqrt(20*jumpPoint.deltaPosition[1] + maxYVelocity*maxVelocity)
+     	sqrtTerm = sqrt(2*(-10)*jumpPoint.deltaPosition[1] + maxYVelocity*maxVelocity)
 
-     	time = (maxYVelocity - sqrtTerm) / 10
+	aux = near(agent.position,target.position)-10
+
+	if aux == 0:
+		time = 0
+	else:
+     		time = (maxYVelocity - sqrtTerm) / aux
 
 
      	# Check if we can use it
@@ -78,7 +89,7 @@ def calculateTarget():
 		
   		# Otherwise try the other time
 
-   		time = (maxYVelocity + sqrtTerm) / 10
+   		time = (maxYVelocity + sqrtTerm) / -10
 
    		checkJumpTime(time,target)
    		
@@ -87,7 +98,7 @@ def calculateTarget():
    # Private helper method for the calculateTarget
    # function
 def checkJumpTime(time, target):
-
+	print "checkJumpTime"
      	# Calculate the planar speed
      	vx = jumpPoint.deltaPosition[0] / time
 
@@ -104,5 +115,5 @@ def checkJumpTime(time, target):
 
        		target.velocity[2] = vz
 
-       		canAchieve = True
+    		canAchieve = True
        		
