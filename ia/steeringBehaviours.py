@@ -69,7 +69,6 @@ def arrive(agent, target):
 
 	# Check if we are there, return no steering
 	if distance < targetRadius:
-		agent.position = [0,0,0]
 		return steering
 
 	# If we are outside the slowRadius, then go max speed
