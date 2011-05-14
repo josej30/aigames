@@ -27,29 +27,7 @@ def getNewOrientation(currentOrientation, velocity):
    		return currentOrientation
 
 
-# Seek/Flee Algorithm
-def seeknflee(agent, target, flag):
-
-	global maxAcceleration
-
-	# Create the structure for output
-	steering = SteeringOutput()
-
-	# Get the direction of the target
-	if flag == "seek":
-		steering.linear = substraction(agent.position,target.position)
-	elif flag == "flee":
-		steering.linear = substraction(target.position,agent.position)
-
-	# Give full acceleration is along this direction
-	steering.linear = normalize(steering.linear)
-	steering.linear = vectorTimes(steering.linear,maxAcceleration)
-
-	# Output the steering
-	steering.angular = 0
-	return steering
-
-def arrive(agent, target):
+def seek(agent, target, flag):
 
 	global maxSpeed, maxAcceleration
 
@@ -63,8 +41,11 @@ def arrive(agent, target):
 	# Create the structure for output
 	steering = SteeringOutput()
 
-	# Get the direction to the target
-	direction = substraction(target.position,agent.position)
+	# Get the direction of the target
+	if flag == "seek":
+		direction = substraction(target.position,agent.position)
+	elif flag == "flee":
+		direction = substraction(agent.position,target.position)
 	distance = vectorLength(direction)
 
 	# Check if we are there, return no steering
@@ -238,7 +219,7 @@ def Pursue(seeknflee,target_p, agent_p,):
        	target_p.position = addition(target_p.position,vectorTimes(target_p.velocity , prediction))
 
        # 2. Delegate to seek
-       	return arrive(agent_p, target_p)
+       	return seek(agent_p, target_p, "seek")
 
 def face(aligne, agent, target):
    	# Work out the direction to target

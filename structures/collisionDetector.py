@@ -8,8 +8,10 @@ def getCollision(position, moveAmount, obs):
 
     ray = Segment(position[0],position[2],moveAmount[0],moveAmount[2])
 
-    for seg in obs:
-        inter = inter_rects(ray,seg)
+    # For each obstacle in the world, we search for intersections
+    # between the ray vector and the obstacle
+    for ob in obs:
+        inter = inter_rects(ray,ob['seg'])
 
         # If there was an intersection
         if len(inter) > 0:
@@ -20,7 +22,7 @@ def getCollision(position, moveAmount, obs):
                 
                 print " Colision inminente en el punto (" + str(inter[0]) + "," + str(inter[1]) + ")"
 
-                return Collision(position,[1,0,0])
+                return Collision([inter[0],0,inter[1]],ob['normal'])
 
     return None
                 
