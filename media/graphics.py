@@ -12,7 +12,6 @@ from ia.steeringBehaviours import *
 from ia.collisions import *
 from ia.jumps import *
 
-
 import traceback
 
 import sys
@@ -74,7 +73,7 @@ for i in limits:
 ######################
 # 1st Obstacle Stuff #
 ######################
-obstacle1 = Obstacle(0,0,0,10,10,3)
+obstacle1 = Obstacle(0,0,0,5,20,3)
 segments1 = obstacle1.segments()
 normals1 = obstacle1.normals()
 for i in range(0,len(segments1)):
@@ -157,29 +156,24 @@ def PaintWorld():
 
         #######################
 
+
+        #############
+        # Behaviour #
+        #############
+
+        agent.position[1] = 0
+
         steering = collisionDetect(agent,obs)
         if steering == None:
             steering = Pursue(seek,target, agent)
         else:
             print "------------ HUBO COLISION ------------"
         agent.update(steering,maxSpeed,time)
+        
+        ####################
+        # End of Behaviour #
+        ####################         
 
-       
-
-    	#steering = Jump(agent)
-    	#if steering == None:
-        #	print " ---> Haciendo seek!"
-        #	steering = arrive(agent,target)
-    	#agent.update(steering,maxSpeed,time)
-
-       
-
-#    	steering = wander(face,agent,target)
-#    	if steering == None:
-#        	print " ---> Haciendo seek!"
-#        	steering = arrive(agent,target)
-#    	agent.update(steering,maxSpeed,time)
-  
         glutSwapBuffers()
 
     except Exception, e:
