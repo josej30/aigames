@@ -236,6 +236,7 @@ def Pursue(seeknflee,target_p, agent_p,):
        # Put the target together
        
        	target_p.position = addition(target_p.position,vectorTimes(target_p.velocity , prediction))
+       	
 
        # 2. Delegate to seek
        	return arrive(agent_p, target_p)

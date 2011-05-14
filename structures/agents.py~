@@ -34,17 +34,12 @@ class Agent:
 		self.position = vectorPlus(self.position,vectorTimes(self.velocity,time))
 		self.orientation += self.rotation*time
 
-		#negative position check
 		if self.position[1] < 0 :
 			self.position[1] = 0
 		
 		# and the velocity and rotation
 		self.velocity = vectorPlus(self.velocity,vectorTimes(steering.linear,time))
 		self.orientation += steering.angular*time
-
-		#negative position check
-		if self.position[1] == 0 and self.velocity[1] < 0 :
-			self.velocity[1] = 0
 
 		# The velocity is along this direction, at full speed
 		# If this is too fast, clip it to the max speed
