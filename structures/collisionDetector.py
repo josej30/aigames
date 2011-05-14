@@ -2,6 +2,7 @@ from media.graphics import *
 from misc.misc import *
 from misc.vector3 import *
 from structures.segments import *
+from structures.Collision import *
 
 def getCollision(position, moveAmount, obs):
 
@@ -18,6 +19,11 @@ def getCollision(position, moveAmount, obs):
             if ray.point_in_segment(inter):
                 
                 print " Colision inminente en el punto (" + str(inter[0]) + "," + str(inter[1]) + ")"
+
+                return Collision(position,[1,0,0])
+
+    return None
+                
 
         
             

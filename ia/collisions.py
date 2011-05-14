@@ -33,14 +33,13 @@ def collisionDetect(agent,obs):
     collision = getCollision(agent.position, rayVector, obs)
 
     # If have no collision, do nothing
-        #if not collision: 
-            #return None
+    if collision == None:
+        return None
 
-        # Otherwise create a target
-        #target = Agent()
-        #target.position = addition(collision.position,collision.normal)
-        #target.position = vectorTimes(target.position,avoidDistance)
+    # Otherwise create a target
+    target = Agent()
+    target.position = addition(collision.position,collision.normal)
+    target.position = vectorTimes(target.position,avoidDistance)
 
-        # 2. Delegate to seek
-        #return seeknflee(agent,target,"seek")
-    return 0
+    # 2. Delegate to seek
+    return seeknflee(agent,target,"seek")

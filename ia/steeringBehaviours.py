@@ -54,8 +54,8 @@ def arrive(agent, target):
 	global maxSpeed, maxAcceleration
 
 	# Holds the satisfaction radius
-	targetRadius = 5
-	slowRadius = 15
+	targetRadius = 1
+	slowRadius = 20
 
 	# Holds the time to target constant
 	timeToTarget = 0.1
@@ -64,12 +64,13 @@ def arrive(agent, target):
 	steering = SteeringOutput()
 
 	# Get the direction to the target
-	direction = substraction(agent.position,target.position)
+	direction = substraction(target.position,agent.position)
 	distance = vectorLength(direction)
 
 	# Check if we are there, return no steering
 	if distance < targetRadius:
-		return None
+		agent.position = [0,0,0]
+		return steering
 
 	# If we are outside the slowRadius, then go max speed
 	if distance > slowRadius:
@@ -238,7 +239,7 @@ def Pursue(seeknflee,target_p, agent_p,):
        	target_p.position = addition(target_p.position,vectorTimes(target_p.velocity , prediction))
 
        # 2. Delegate to seek
-       	return arrive(target_p, agent_p)
+       	return arrive(agent_p, target_p)
 
 def face(aligne, agent, target):
    	# Work out the direction to target

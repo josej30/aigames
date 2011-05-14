@@ -134,9 +134,11 @@ def PaintWorld():
          #   print " ---> Haciendo seek!"
          #  steering = arrive(agent,target)
 
-
-        steering = Pursue(seeknflee,target, agent)
-        pepe = collisionDetect(agent,obs)
+        steering = collisionDetect(agent,obs)
+        if steering == None:
+            steering = Pursue(seeknflee,target, agent)
+        else:
+            print "------------ HUBO COLISION ------------"
         if steering == None:
             print " ---> Haciendo seek!"
             steering = arrive(agent,target)
