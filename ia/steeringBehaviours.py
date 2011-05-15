@@ -10,7 +10,7 @@ from misc.vector3 import *
 from random import random
 
 
-maxSpeed = 15
+maxSpeed = 45
 maxAcceleration = 5
 
 def getNewOrientation(currentOrientation, velocity):
@@ -65,10 +65,11 @@ def seek(agent, target, flag):
 	targetVelocity = normalize(targetVelocity)
 	targetVelocity = vectorTimes(targetVelocity,targetSpeed)
 
-	if agent.position[1] > 0.99:
-		# Acceleration tries to get to the target velocity
+	#checks the agent position
+	if agent.position[1] > 0:
+	
+		# Acceleration in y-axes (gravity)
 		steering.linear = airSubstraction(targetVelocity,agent.velocity)
-		#steering.linear = vectorDivide(steering.linear,timeToTarget)
 	else:
 		steering.linear = substraction(targetVelocity,agent.velocity)
 		steering.linear = vectorDivide(steering.linear,timeToTarget)
@@ -178,7 +179,7 @@ def VelocityM(agent,target):
 
      	return steering
 
-def Pursue(seeknflee,target_p, agent_p,):
+def Pursue(seeknflee,target, agent):
 
 	print "Pursue"
      	# Holds the maximum prediction time
@@ -193,18 +194,16 @@ def Pursue(seeknflee,target_p, agent_p,):
      	# be set, and Pursue.target is the target were
      	# pursuing).
 
-     
-
 
      	# ... Other data is derived from the superclass ...
 
        # 1. Calculate the target to delegate to seek
        # Work out the distance to target
-       	direction = substraction(target_p.position , agent_p.position)
+       	direction = substraction(target.position , agent.position)
        	distance = vectorLength(direction)
 
        # Work out our current speed
-       	speed = vectorLength(agent_p.velocity)
+       	speed = vectorLength(agent.velocity)
 
        # Check if speed is too small to give a reasonable
        # prediction time
@@ -219,11 +218,11 @@ def Pursue(seeknflee,target_p, agent_p,):
 
        # Put the target together
        
-       	target_p.position = addition(target_p.position,vectorTimes(target_p.velocity , prediction))
+       	target.position = addition(target.position,vectorTimes(target.velocity , prediction))
        	
 
        # 2. Delegate to seek
-       	return seek(agent_p, target_p, "seek")
+       	return seek(agent, target, "seek")
 
 def face(aligne, agent, target):
    	# Work out the direction to target
