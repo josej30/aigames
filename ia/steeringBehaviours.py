@@ -65,14 +65,17 @@ def seek(agent, target, flag):
 	targetVelocity = normalize(targetVelocity)
 	targetVelocity = vectorTimes(targetVelocity,targetSpeed)
 
-	# Acceleration tries to get to the target velocity
-	steering.linear = substraction(targetVelocity,agent.velocity)
-	steering.linear = vectorDivide(steering.linear,timeToTarget)
-
-	# Check if the acceleration is too fast
-	if vectorLength(steering.linear) > maxAcceleration:
-		steering.linear = normalize(steering.linear)
-		steering.linear = vectorTimes(steering.linear,maxAcceleration)
+	if agent.position[1] > 0.99:
+		# Acceleration tries to get to the target velocity
+		steering.linear = airSubstraction(targetVelocity,agent.velocity)
+		#steering.linear = vectorDivide(steering.linear,timeToTarget)
+	else:
+		steering.linear = substraction(targetVelocity,agent.velocity)
+		steering.linear = vectorDivide(steering.linear,timeToTarget)
+		# Check if the acceleration is too fast
+		if vectorLength(steering.linear) > maxAcceleration:
+			steering.linear = normalize(steering.linear)
+			steering.linear = vectorTimes(steering.linear,maxAcceleration)
 
 	# Output the steering
 	steering.angular = 0

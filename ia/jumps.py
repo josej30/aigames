@@ -24,7 +24,7 @@ maxVelocity = 5
 t = True
 
 def scheduleJumpAction(agent):
-	agent.velocity[1] = 10.0
+	agent.velocity[1] = 100.0
 	
 # Retrieve the steering for this jump
 def Jump(agent):

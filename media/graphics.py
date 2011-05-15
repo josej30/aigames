@@ -161,7 +161,7 @@ def PaintWorld():
         # Behaviour #
         #############
 
-        agent.position[1] = 0
+        
 
         steering = collisionDetect(agent,obs)
         if steering == None:
