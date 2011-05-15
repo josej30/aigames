@@ -161,7 +161,7 @@ def PaintWorld():
         # Behaviour #
         #############
 
-        steering = collisionDetect(agent,obs)
+        steering = Pursue(seek,target, agent)
         if steering == None:
             steering = Pursue(seek,target, agent)
         else:
