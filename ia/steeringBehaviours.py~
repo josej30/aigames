@@ -10,7 +10,7 @@ from misc.vector3 import *
 from random import random
 
 
-maxSpeed = 15
+maxSpeed = 45
 maxAcceleration = 5
 
 def getNewOrientation(currentOrientation, velocity):
@@ -27,35 +27,13 @@ def getNewOrientation(currentOrientation, velocity):
    		return currentOrientation
 
 
-# Seek/Flee Algorithm
-def seeknflee(agent, target, flag):
-
-	global maxAcceleration
-
-	# Create the structure for output
-	steering = SteeringOutput()
-
-	# Get the direction of the target
-	if flag == "seek":
-		steering.linear = substraction(agent.position,target.position)
-	elif flag == "flee":
-		steering.linear = substraction(target.position,agent.position)
-
-	# Give full acceleration is along this direction
-	steering.linear = normalize(steering.linear)
-	steering.linear = vectorTimes(steering.linear,maxAcceleration)
-
-	# Output the steering
-	steering.angular = 0
-	return steering
-
-def arrive(agent, target):
+def seek(agent, target, flag):
 
 	global maxSpeed, maxAcceleration
 
 	# Holds the satisfaction radius
-	targetRadius = 5
-	slowRadius = 15
+	targetRadius = 1
+	slowRadius = 20
 
 	# Holds the time to target constant
 	timeToTarget = 0.1
@@ -63,13 +41,16 @@ def arrive(agent, target):
 	# Create the structure for output
 	steering = SteeringOutput()
 
-	# Get the direction to the target
-	direction = substraction(agent.position,target.position)
+	# Get the direction of the target
+	if flag == "seek":
+		direction = substraction(target.position,agent.position)
+	elif flag == "flee":
+		direction = substraction(agent.position,target.position)
 	distance = vectorLength(direction)
 
 	# Check if we are there, return no steering
 	if distance < targetRadius:
-		return None
+		return steering
 
 	# If we are outside the slowRadius, then go max speed
 	if distance > slowRadius:
@@ -84,14 +65,18 @@ def arrive(agent, target):
 	targetVelocity = normalize(targetVelocity)
 	targetVelocity = vectorTimes(targetVelocity,targetSpeed)
 
-	# Acceleration tries to get to the target velocity
-	steering.linear = substraction(targetVelocity,agent.velocity)
-	steering.linear = vectorDivide(steering.linear,timeToTarget)
-
-	# Check if the acceleration is too fast
-	if vectorLength(steering.linear) > maxAcceleration:
-		steering.linear = normalize(steering.linear)
-		steering.linear = vectorTimes(steering.linear,maxAcceleration)
+	#checks the agent position
+	if agent.position[1] > 0:
+	
+		# Acceleration in y-axes (gravity)
+		steering.linear = airSubstraction(targetVelocity,agent.velocity)
+	else:
+		steering.linear = substraction(targetVelocity,agent.velocity)
+		steering.linear = vectorDivide(steering.linear,timeToTarget)
+		# Check if the acceleration is too fast
+		if vectorLength(steering.linear) > maxAcceleration:
+			steering.linear = normalize(steering.linear)
+			steering.linear = vectorTimes(steering.linear,maxAcceleration)
 
 	# Output the steering
 	steering.angular = 0
@@ -194,7 +179,7 @@ def VelocityM(agent,target):
 
      	return steering
 
-def Pursue(seeknflee,target_p, agent_p,):
+def Pursue(seeknflee,target, agent):
 
 	print "Pursue"
      	# Holds the maximum prediction time
@@ -216,11 +201,11 @@ def Pursue(seeknflee,target_p, agent_p,):
 
        # 1. Calculate the target to delegate to seek
        # Work out the distance to target
-       	direction = substraction(target_p.position , agent_p.position)
+       	direction = substraction(target.position , agent.position)
        	distance = vectorLength(direction)
 
        # Work out our current speed
-       	speed = vectorLength(agent_p.velocity)
+       	speed = vectorLength(agent.velocity)
 
        # Check if speed is too small to give a reasonable
        # prediction time
@@ -235,10 +220,11 @@ def Pursue(seeknflee,target_p, agent_p,):
 
        # Put the target together
        
-       	target_p.position = addition(target_p.position,vectorTimes(target_p.velocity , prediction))
+       	target.position = addition(target.position,vectorTimes(target.velocity , prediction))
+       	
 
        # 2. Delegate to seek
-       	return seeknflee(target_p, agent_p,"seek")
+       	return seek(agent, target, "seek")
 
 def face(aligne, agent, target):
    	# Work out the direction to target

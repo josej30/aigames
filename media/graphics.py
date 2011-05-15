@@ -368,6 +368,8 @@ def keyPressed(*args):
         target.position[0] = target.position[0] + step_t
     if args[0] == '\153':
         target.position[2] = target.position[2] + step_t
+    if args[0] == '\040':
+        scheduleJumpAction(agent)
     	
 def execute():
 
