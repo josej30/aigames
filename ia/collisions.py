@@ -12,14 +12,14 @@ def collisionDetect(agent,obs):
 
     # Holds the distance to look ahead for a collision
     # (i.e., the length of the collision ray)
-    lookahead = 2
+    lookahead = 8.0
 
     # 1. Calculate the target to delegate to seek
         
     # Calculate the collision ray vector
     rayVector = agent.velocity
-    rayVector = addition(agent.position,vectorTimes(agent.velocity,2))
-#    rayVector = normalize(rayVector)
+    rayVector = normalize(rayVector)
+    rayVector = addition(agent.position,vectorTimes(rayVector,lookahead)) 
 #    rayVector = vectorTimes(rayVector,lookahead)
 #    rayVector[1] = 0
 
@@ -36,7 +36,7 @@ def collisionDetect(agent,obs):
 
     # If have no collision, do nothing
     if collision == None:
-        return None
+        return SteeringOutput()
 
     # Otherwise create a target
     target = Agent()
@@ -50,5 +50,4 @@ def collisionDetect(agent,obs):
     glPopMatrix()
 
     # 2. Delegate to seek
-    return Pursue(seek, target, agent)
-#    return seek(agent,target,"seek")
+    return seek(agent, target, "collision")
