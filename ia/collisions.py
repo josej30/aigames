@@ -8,19 +8,20 @@ def collisionDetect(agent,obs):
     # Holds the minimum distance to a wall (i.e., how far
     # to avoid collision) should be greater than the
     # radius of the character.
-    avoidDistance = 3
+    avoidDistance = 4
 
     # Holds the distance to look ahead for a collision
     # (i.e., the length of the collision ray)
-    lookahead = 0.5
+    lookahead = 2
 
     # 1. Calculate the target to delegate to seek
         
     # Calculate the collision ray vector
     rayVector = agent.velocity
-    rayVector = normalize(rayVector)
-    rayVector = vectorTimes(rayVector,lookahead)
-    rayVector[1] = 0
+    rayVector = addition(agent.position,vectorTimes(agent.velocity,2))
+#    rayVector = normalize(rayVector)
+#    rayVector = vectorTimes(rayVector,lookahead)
+#    rayVector[1] = 0
 
     glPushMatrix();
     glBegin(GL_LINES);
