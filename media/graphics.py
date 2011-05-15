@@ -7,10 +7,10 @@ from walls import *
 
 from structures.agents import *
 from structures.walls import *
+from structures.obstacles import *
 from ia.steeringBehaviours import *
 from ia.collisions import *
 from ia.jumps import *
-
 
 import traceback
 
@@ -32,10 +32,7 @@ rquady = 0.0
 ###############
 agent = Agent()
 agent.position = [0,0,40]
-
 agent.velocity = [3,0,0]
-
-
 agent.orientation = 100.0
 
 
@@ -56,20 +53,32 @@ target2.orientation = 0.0
 
 
 # Array that contains all the proyections of
-# the walls and obstacles of the world
+# the walls and obstacles of the world with
+# their respectives normal vectors
 obs = []
 
 # Walls representing the limits of the world
 c = size/2
 limits = [
-    Wall(-c,-c,-c,c,3),
-    Wall(-c,-c,c,-c,3),
-    Wall(c,c,-c,c,3),
-    Wall(c,c,c,-c,3)
+    Wall(-c,-c,-c,c,3,[1,0,0]),
+    Wall(-c,-c,c,-c,3,[0,0,1]),
+    Wall(c,c,-c,c,3,[0,0,-1]),
+    Wall(c,c,c,-c,3,[-1,0,0])
     ]
+
 # Inserting every wall into the world
 for i in limits:
-    obs.append(i.get_proyection())
+    obs.append( { 'seg': i.get_proyection() , 'normal': i.normal } )
+
+######################
+# 1st Obstacle Stuff #
+######################
+obstacle1 = Obstacle(0,0,0,5,20,3)
+segments1 = obstacle1.segments()
+normals1 = obstacle1.normals()
+for i in range(0,len(segments1)):
+    obs.append( { 'seg': segments1[i] , 'normal': normals1[i] } )
+
 
 ############### FIN DE TODO LO QUE DEBERIA IR EN EL MAIN ###########
 ################## O EN ALGUN LUGAR FUERA DE AQUI  #################
@@ -110,8 +119,8 @@ def ReSizeWorld(Width, Height):
 # The main drawing function. 
 def PaintWorld():
     
-    global agent, target, time, maxSpeed, limits, obs
-   
+    global agent, target, maxSpeed, limits, obs, obstacle1
+
     try:
 
         time = 0.01
@@ -123,46 +132,6 @@ def PaintWorld():
         glTranslatef(0.0, -20.0, -140.0)
 
 
-        #    steering = arrive(agent,target)
-        #    if steering == None:
-        #        print " ---> Haciendo seek!"
-        #        steering = seeknflee(agent,target,"seek")
-
-
-        #steering = Pursue(seeknflee,target, agent)
-        #if steering == None:
-         #   print " ---> Haciendo seek!"
-         #  steering = arrive(agent,target)
-
-        steering = collisionDetect(agent,obs)
-        if steering == None:
-            steering = Pursue(seeknflee,target, agent)
-        else:
-            print "------------ HUBO COLISION ------------"
-        if steering == None:
-            print " ---> Haciendo seek!"
-            steering = arrive(agent,target)
-        agent.update(steering,maxSpeed,time)
-
-       
-
-    	#steering = Jump(agent)
-    	#if steering == None:
-        #	print " ---> Haciendo seek!"
-        #	steering = arrive(agent,target)
-    	#agent.update(steering,maxSpeed,time)
-
-       
-
-#    	steering = wander(face,agent,target)
-#    	if steering == None:
-#        	print " ---> Haciendo seek!"
-#        	steering = arrive(agent,target)
-#    	agent.update(steering,maxSpeed,time)
-  
-        ##### 12-05 12:48 ####### De aqui para arriba es lili y para abajo es pinky ##############
-
-
         #######################
         # Draw the Objects
 
@@ -172,23 +141,85 @@ def PaintWorld():
         # Limits of the world
         drawLimits(limits)
 
+        # Obstacle 1
+        drawObstacle(obstacle1)
+        
         # Objective
-        glPushMatrix();
+        glPushMatrix()
         drawObjective()
-        glPopMatrix();
+        glPopMatrix()
 
         # Agent
-        glPushMatrix();
+        glPushMatrix()
         drawAgent()
-        glPopMatrix();
+        glPopMatrix()
 
         #######################
 
+
+        #############
+        # Behaviour #
+        #############
+
+        agent.position[1] = 0
+
+        steering = collisionDetect(agent,obs)
+        if steering == None:
+            steering = Pursue(seek,target, agent)
+        else:
+            print "------------ HUBO COLISION ------------"
+        agent.update(steering,maxSpeed,time)
+        
+        ####################
+        # End of Behaviour #
+        ####################         
+
         glutSwapBuffers()
+
     except Exception, e:
         traceback.print_exc()
         sys.exit(-1)
 
+def drawObstacle(obstacle):
+
+    x = obstacle.x
+    y = obstacle.y
+    z = obstacle.z
+    widex = obstacle.widex
+    widez = obstacle.widez
+    height = obstacle.height
+
+    glBegin(GL_QUADS);
+
+    glColor3f(0.2, 0.5, 0.2);
+    glVertex3f(x-widex,height,z-widez);
+    glVertex3f(x-widex,height,z+widez);
+    glVertex3f(x-widex,0,z+widez);
+    glVertex3f(x-widex,0,z-widez);
+    
+    glVertex3f(x-widex,height,z+widez);
+    glVertex3f(x+widex,height,z+widez);
+    glVertex3f(x+widex,0,z+widez);
+    glVertex3f(x-widex,0,z+widez);
+
+    glVertex3f(x+widex,height,z+widez);
+    glVertex3f(x+widex,height,z-widez);
+    glVertex3f(x+widex,0,z-widez);
+    glVertex3f(x+widex,0,z+widez);
+
+    glVertex3f(x+widex,height,z-widez);
+    glVertex3f(x-widex,height,z-widez);
+    glVertex3f(x-widex,0,z-widez);
+    glVertex3f(x+widex,0,z-widez);
+
+    # Roof
+    glColor3f(0.2, 0.6, 0.2);
+    glVertex3f(x-widex,height,z+widez);
+    glVertex3f(x+widex,height,z+widez);
+    glVertex3f(x+widex,height,z-widez);
+    glVertex3f(x-widex,height,z-widez);
+
+    glEnd();
 
 def drawLimits(limits):
 
@@ -351,7 +382,7 @@ def execute():
     window = glutCreateWindow("Battle Cars")
     glutDisplayFunc(PaintWorld)
     
-    #        glutFullScreen()
+    #glutFullScreen()
     
     glutIdleFunc(PaintWorld)
     glutReshapeFunc(ReSizeWorld)

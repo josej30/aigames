@@ -8,8 +8,12 @@ def getCollision(position, moveAmount, obs):
 
     ray = Segment(position[0],position[2],moveAmount[0],moveAmount[2])
 
-    for seg in obs:
-        inter = inter_rects(ray,seg)
+    collisions = []
+
+    # For each obstacle in the world, we search for intersections
+    # between the ray vector and the obstacle
+    for ob in obs:
+        inter = inter_rects(ray,ob['seg'])
 
         # If there was an intersection
         if len(inter) > 0:
@@ -18,13 +22,11 @@ def getCollision(position, moveAmount, obs):
             # is contained into the segment
             if ray.point_in_segment(inter):
                 
-                print " Colision inminente en el punto (" + str(inter[0]) + "," + str(inter[1]) + ")"
+                # print " Colision en el punto (" + str(inter[0]) + "," + str(inter[1]) + ")"
 
-                return Collision(position,[1,0,0])
+                collisions.append(Collision([inter[0],0,inter[1]],ob['normal']))
 
-    return None
-                
-
+    return priorCollisions(collisions,position)
         
             
 # Returns the intersection of the rects using the 
@@ -72,3 +74,33 @@ def inter_rects(p,q):
         # print "intery = " + str(intery)
 
         return [interx,intery]
+
+
+def priorCollisions(colis,pos_agent):
+
+    n = len(colis)
+
+    # In case we have no collisions
+    if  n == 0:
+        return None
+
+    # In case we have just one collision
+    if n == 1:
+        return colis[0]
+
+    # In case we have many collisions, return the nearest
+    # to the agent
+
+    d = two_point_distance(colis[0].position,pos_agent)
+    c = 0
+    for i in range(1,n):
+        new_d = two_point_distance(colis[i].position,pos_agent)
+        if new_d < d:
+            d = new_d
+            c = i
+
+    return colis[c]
+        
+
+
+    

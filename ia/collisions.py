@@ -1,4 +1,4 @@
-from ia.steeringBehaviours import seeknflee
+from ia.steeringBehaviours import seek
 from structures.collisionDetector import *
 from misc.misc import *
 from misc.vector3 import *
@@ -8,18 +8,19 @@ def collisionDetect(agent,obs):
     # Holds the minimum distance to a wall (i.e., how far
     # to avoid collision) should be greater than the
     # radius of the character.
-    avoidDistance = 15
+    avoidDistance = 3
 
     # Holds the distance to look ahead for a collision
     # (i.e., the length of the collision ray)
-    lookahead = 30
+    lookahead = 0.5
 
     # 1. Calculate the target to delegate to seek
         
     # Calculate the collision ray vector
-    rayVector = agent.position
+    rayVector = agent.velocity
     rayVector = normalize(rayVector)
     rayVector = vectorTimes(rayVector,lookahead)
+    rayVector[1] = 0
 
     glPushMatrix();
     glBegin(GL_LINES);
@@ -38,8 +39,15 @@ def collisionDetect(agent,obs):
 
     # Otherwise create a target
     target = Agent()
-    target.position = addition(collision.position,collision.normal)
-    target.position = vectorTimes(target.position,avoidDistance)
+    normal = vectorTimes(collision.normal, avoidDistance)
+    target.position = addition(collision.position, normal)
+
+    glPushMatrix()
+    glColor3f(1.0,1.0,0.0)
+    glTranslatef(target.position[0], 2.0, target.position[2])
+    glutSolidSphere(0.5,20,20)
+    glPopMatrix()
 
     # 2. Delegate to seek
-    return seeknflee(agent,target,"seek")
+    return Pursue(seek, target, agent)
+#    return seek(agent,target,"seek")
