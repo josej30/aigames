@@ -3,7 +3,7 @@ from structures.steeringOutput import *
 from misc.vector3 import *
 from ia.steeringBehaviours import *
 
-pursue = BehaviorAndWeight("Pursue()",0.2)
+pursue = BehaviorAndWeight(Pursue,0.2)
 
 # Holds a list of BehaviorAndWeight instances.
 behaviors = []
