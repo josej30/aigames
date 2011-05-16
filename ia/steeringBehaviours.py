@@ -10,8 +10,8 @@ from misc.vector3 import *
 from random import random
 
 
-maxSpeed = 15
-maxAcceleration = 15
+maxSpeed = 5
+maxAcceleration = 10
 
 def getNewOrientation(currentOrientation, velocity):
 
