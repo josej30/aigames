@@ -16,7 +16,10 @@ def getSteering(target,agent,obs,flag):
 
     if (steeringObstacleAvoidance.linear == [0,0,0]):
         PursueWeight = 1.0
+<<<<<<< HEAD
         WanderWeight = 1.0
+=======
+>>>>>>> 41b2c988886419e7188b953afbcd8958530464da
         ObstacleAvoidanceWeight = 0.0
 
     # Holds a list of BehaviorAndWeight instances.

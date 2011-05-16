@@ -13,6 +13,7 @@ from random import random
 maxSpeed = 5
 maxAcceleration = 10
 
+
 def getNewOrientation(currentOrientation, velocity):
 
 	# Make sure we have a velocity
@@ -33,7 +34,7 @@ def seek(agent, target, flag):
 
 	# Holds the satisfaction radius
 	targetRadius = 1
-	slowRadius = 20
+	slowRadius = 30
 
 	# Holds the time to target constant
 	timeToTarget = 0.1
@@ -191,12 +192,11 @@ def VelocityM(agent,target):
 
      	return steering
 
-def Pursue(seeknflee,target, agent):
+def Pursue(seek,target, agent):
 
 #	print "Pursue"
      	# Holds the maximum prediction time
      	maxPrediction = 1
-     	
   
 
      	# OVERRIDES the target data in seek (in other words
@@ -351,13 +351,22 @@ def wander(face,agent,target):
    	# Calculate the target location
    	target.position =  addition(target.position, vectorTimes(orientationAsVector(targetOrientation),wanderRadius))
 
-   	# 2. Delegate to face
-   	steering = face(aligne, agent, target)
+	#checks the agent position
 
+	# 2. Delegate to face
+   	
+   		
+	if agent.position[1] > 0:	
+		steering = SteeringOutput()
+		# Acceleration in y-axes (gravity)
+		steering.linear = airSubstraction([0,0,0],agent.velocity)
+	else:
+   	
+		steering = face(aligne, agent, target)
    	# 3. Now set the linear acceleration to be at full
    	# acceleration in the direction of the orientation
 
-   	steering.linear =vectorTimes(orientationAsVector(agent.orientation), maxAcceleration)
+   		steering.linear =vectorTimes(orientationAsVector(agent.orientation), maxAcceleration)
 
    	# Return it
    	
