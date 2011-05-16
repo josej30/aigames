@@ -10,7 +10,7 @@ from misc.vector3 import *
 from random import random
 
 
-maxSpeed = 45
+maxSpeed = 15
 maxAcceleration = 5
 
 def getNewOrientation(currentOrientation, velocity):
@@ -33,7 +33,7 @@ def seek(agent, target, flag):
 
 	# Holds the satisfaction radius
 	targetRadius = 1
-	slowRadius = 50
+	slowRadius = 30
 
 	# Holds the time to target constant
 	timeToTarget = 0.1
