@@ -16,7 +16,10 @@ def getSteering(target,agent,obs,flag):
 
     if (steeringObstacleAvoidance.linear == [0,0,0]):
         PursueWeight = 1.0
+<<<<<<< HEAD
         WanderWeight = 1.0
+=======
+>>>>>>> 41b2c988886419e7188b953afbcd8958530464da
         ObstacleAvoidanceWeight = 0.0
 
     # Holds a list of BehaviorAndWeight instances.
@@ -39,7 +42,6 @@ def getSteering(target,agent,obs,flag):
 
     # Accumulate all accelerations
     if flag == "Pursue":
-    	print "en purssdfsdgdsg"
     	for behavior in behaviors:
         	temp = behavior[0].scale_steering(behavior[1])
         	steering = sum_steering(steering, temp)

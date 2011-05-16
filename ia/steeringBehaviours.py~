@@ -11,7 +11,11 @@ from random import random
 
 
 maxSpeed = 15
+<<<<<<< HEAD
 maxAcceleration = 5
+=======
+maxAcceleration = 15
+>>>>>>> 41b2c988886419e7188b953afbcd8958530464da
 
 def getNewOrientation(currentOrientation, velocity):
 
@@ -33,16 +37,13 @@ def seek(agent, target, flag):
 
 	# Holds the satisfaction radius
 	targetRadius = 1
-	slowRadius = 50
+	slowRadius = 30
 
 	# Holds the time to target constant
 	timeToTarget = 0.1
 
 	if flag == "collision":
 		slowRadius = 30
-#		maxAcceleration = 100
-#		maxSpeed = 100
-		timeToTarget = 0.1
 		factor = 40
 
 	# Create the structure for output
