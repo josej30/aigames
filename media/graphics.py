@@ -74,11 +74,29 @@ for i in limits:
 ######################
 # 1st Obstacle Stuff #
 ######################
-obstacle1 = Obstacle(0,0,0,20,20,3)
+obstacle1 = Obstacle(-25,0,-25,10,10,3)
 segments1 = obstacle1.segments()
 normals1 = obstacle1.normals()
 for i in range(0,len(segments1)):
     obs.append( { 'seg': segments1[i] , 'normal': normals1[i] } )
+
+######################
+# 2st Obstacle Stuff #
+######################
+obstacle2 = Obstacle(25,0,-25,10,10,3)
+segments2 = obstacle2.segments()
+normals2 = obstacle2.normals()
+for i in range(0,len(segments2)):
+    obs.append( { 'seg': segments2[i] , 'normal': normals2[i] } )
+
+######################
+# 3st Obstacle Stuff #
+######################
+obstacle3 = Obstacle(0,0,25,60,10,3)
+segments3 = obstacle3.segments()
+normals3 = obstacle3.normals()
+for i in range(0,len(segments3)):
+    obs.append( { 'seg': segments3[i] , 'normal': normals3[i] } )
 
 
 ############### FIN DE TODO LO QUE DEBERIA IR EN EL MAIN ###########
@@ -142,8 +160,10 @@ def PaintWorld():
         # Limits of the world
         drawLimits(limits)
 
-        # Obstacle 1
+        # Obstacles
         drawObstacle(obstacle1)
+        drawObstacle(obstacle2)
+        drawObstacle(obstacle3)
         
         # Objective
         glPushMatrix()
