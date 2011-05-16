@@ -33,7 +33,7 @@ rquady = 0.0
 ###############
 agent = Agent()
 agent.position = [0,0,40]
-agent.velocity = [3,0,0]
+agent.velocity = [0,0,0]
 agent.orientation = 100.0
 
 
@@ -163,13 +163,13 @@ def PaintWorld():
         #############
 
 
-        steering = wander(face,agent,target)
-        if steering == None:
-            steering = Pursue(seek,target, agent)
-        else:
-            print "------------ HUBO COLISION ------------"
+       # steering = wander(face,agent,target)
+       # if steering == None:
+       #     steering = Pursue(seek,target, agent)
+       # else:
+        #s    print "------------ HUBO COLISION ------------"
 
-       # steering = getSteering(target,agent,obs)
+        steering = getSteering(target,agent,obs)
 #        steering = collisionDetect(agent,obs)
 #        if steering == None:
 #            steering = wander(face,agent,target)

@@ -33,16 +33,17 @@ def seek(agent, target, flag):
 
 	# Holds the satisfaction radius
 	targetRadius = 1
-	slowRadius = 20
+	slowRadius = 50
 
 	# Holds the time to target constant
 	timeToTarget = 0.1
 
 	if flag == "collision":
-		slowRadius = 50
+		slowRadius = 30
 #		maxAcceleration = 100
 #		maxSpeed = 100
-#		timeToTarget = 0.1
+		timeToTarget = 0.1
+		factor = 40
 
 	# Create the structure for output
 	steering = SteeringOutput()
@@ -63,17 +64,18 @@ def seek(agent, target, flag):
 		targetSpeed = maxSpeed
 	# Otherwise calculate a scaled speed
 	else:
-		targetSpeed = maxSpeed * distance / slowRadius
+		if flag == "collision":
+			targetSpeed = maxSpeed * distance / slowRadius
+		else:
+			targetSpeed = maxSpeed * distance / slowRadius
 
 
 	# The target velocity combines speed and direction
 	targetVelocity = direction
-	if flag == "collision":
-		print "collision"
-		targetVelocity = [maxSpeed,0,maxSpeed]
-	else:
-		targetVelocity = normalize(targetVelocity)
+	targetVelocity = normalize(targetVelocity)
 	targetVelocity = vectorTimes(targetVelocity,targetSpeed)
+#	if flag == "collision":
+#		targetVelocity = [-targetVelocity[0],-targetVelocity[1],-targetVelocity[2]]
 
 	#checks the agent position
 	if agent.position[1] > 0:
@@ -87,6 +89,9 @@ def seek(agent, target, flag):
 		if vectorLength(steering.linear) > maxAcceleration:
 			steering.linear = normalize(steering.linear)
 			steering.linear = vectorTimes(steering.linear,maxAcceleration)
+
+	if flag == "collision":
+		steering.linear = [steering.linear[0]*factor,0,steering.linear[2]*factor]
 
 	# Output the steering
 	steering.angular = 0	
@@ -236,9 +241,9 @@ def Pursue(seek,target, agent):
 	return steering
 
 
-def CollisionPursue(seeknflee,target, agent):
+def CollisionPursue(seek,target, agent):
 
-#	print "Pursue"
+	print "Pinky Pursue"
      	# Holds the maximum prediction time
      	maxPrediction = 1
      	
