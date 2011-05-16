@@ -24,11 +24,15 @@ class Obstacle:
     # the walls of the obstacle.
     # [left,up,right,bottom]
     def segments(self):
+        x = self.x
+        z = self.z
+        widex = self.widex/2
+        widez = self.widez/2
         return [ 
-            Segment(self.x-self.widex,self.z-self.widez,self.x-self.widex,self.z+self.widez) ,
-            Segment(self.x-self.widex,self.z+self.widez,self.x+self.widex,self.z+self.widez) ,
-            Segment(self.x+self.widex,self.z+self.widez,self.x+self.widex,self.z-self.widez) ,
-            Segment(self.x+self.widex,self.z-self.widez,self.x-self.widex,self.z-self.widez)
+            Segment(x-widex,z-widez,x-widex,z+widez) ,
+            Segment(x-widex,z+widez,x+widex,z+widez) ,
+            Segment(x+widex,z+widez,x+widex,z-widez) ,
+            Segment(x+widex,z-widez,x-widex,z-widez)
             ]
 
     # Return an array with the normals of the obstacle.
