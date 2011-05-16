@@ -33,7 +33,7 @@ def seek(agent, target, flag):
 
 	# Holds the satisfaction radius
 	targetRadius = 1
-	slowRadius = 40
+	slowRadius = 70
 
 	# Holds the time to target constant
 	timeToTarget = 0.1

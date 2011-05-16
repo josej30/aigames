@@ -27,14 +27,18 @@ class Segment:
 	xc = p[0]
 	yc = p[1]
 
-        return (self.same_line(xc, yc)
-                and (self.between(xa, xc, xb) if xa != xb else
-                     self.between(ya, yc, yb)))
+        sameline = self.same_line(xc,yc)
+        bet1 = self.between(self.x1, xc, self.x2)
+        bet2 = self.between(self.y1, yc, self.y2)
+
+        if sameline and bet1 and bet2:
+            return True
+        return False
 
     # Returns True if the point C is in the same line that A and B
     def same_line(self, xc, yc):
         f = (self.x2-self.x1)*(yc-self.y1)
-        s = (xc-self.x1)*(self.y2-self.y1)
+        s = (self.y2-self.y1)*(xc-self.x1)
         if f == s:
             return True
         return False

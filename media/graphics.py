@@ -74,7 +74,7 @@ for i in limits:
 ######################
 # 1st Obstacle Stuff #
 ######################
-obstacle1 = Obstacle(0,0,0,5,20,3)
+obstacle1 = Obstacle(0,0,0,20,20,3)
 segments1 = obstacle1.segments()
 normals1 = obstacle1.normals()
 for i in range(0,len(segments1)):
@@ -194,8 +194,8 @@ def drawObstacle(obstacle):
     x = obstacle.x
     y = obstacle.y
     z = obstacle.z
-    widex = obstacle.widex
-    widez = obstacle.widez
+    widex = obstacle.widex/2
+    widez = obstacle.widez/2
     height = obstacle.height
 
     glBegin(GL_QUADS);
