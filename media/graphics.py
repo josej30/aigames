@@ -33,7 +33,7 @@ rquady = 0.0
 ###############
 agent = Agent()
 agent.position = [0,0,40]
-agent.velocity = [3,0,0]
+agent.velocity = [0,0,0]
 agent.orientation = 100.0
 
 

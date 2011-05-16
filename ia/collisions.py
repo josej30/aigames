@@ -50,4 +50,4 @@ def collisionDetect(agent,obs):
     glPopMatrix()
 
     # 2. Delegate to seek
-    return seek(agent, target, "collision")
+    return CollisionPursue(seek, target, agent)

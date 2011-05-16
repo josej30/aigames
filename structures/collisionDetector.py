@@ -3,21 +3,37 @@ from misc.misc import *
 from misc.vector3 import *
 from structures.segments import *
 from structures.Collision import *
+import time
 
 def getCollision(position, moveAmount, obs):
 
     ray = Segment(position[0],position[2],moveAmount[0],moveAmount[2])
+    point = Segment(position[0]+1,position[2]+1,position[0],position[2])
 
     collisions = []
 
     # For each obstacle in the world, we search for intersections
     # between the ray vector and the obstacle
     for ob in obs:
+
+        # Check if we already are in a wall
+#        if ob['seg'].point_in_segment([position[0],position[2]]):
+#            print "*****************************"
+
+#        if len(inter_rects(point,ob['seg'])) > 0:
+#            print "++++++++++++++++++++++++++++++++++++++++"
+
         inter = inter_rects(ray,ob['seg'])
 
         # If there was an intersection
         if len(inter) > 0:
             
+            print ob
+
+#            blah = raw_input()
+
+#            time.sleep(10)
+
             # We determine wheter or not the point 
             # is contained into the segment
             if ray.point_in_segment(inter):
