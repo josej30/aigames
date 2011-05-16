@@ -38,11 +38,17 @@ def seek(agent, target, flag):
 	# Holds the time to target constant
 	timeToTarget = 0.1
 
+	if flag == "collision":
+		slowRadius = 50
+#		maxAcceleration = 100
+#		maxSpeed = 100
+#		timeToTarget = 0.1
+
 	# Create the structure for output
 	steering = SteeringOutput()
 
 	# Get the direction of the target
-	if flag == "seek":
+	if (flag == "seek") | (flag == "collision"):
 		direction = substraction(target.position,agent.position)
 	elif flag == "flee":
 		direction = substraction(agent.position,target.position)
@@ -62,7 +68,11 @@ def seek(agent, target, flag):
 
 	# The target velocity combines speed and direction
 	targetVelocity = direction
-	targetVelocity = normalize(targetVelocity)
+	if flag == "collision":
+		print "collision"
+		targetVelocity = [maxSpeed,0,maxSpeed]
+	else:
+		targetVelocity = normalize(targetVelocity)
 	targetVelocity = vectorTimes(targetVelocity,targetSpeed)
 
 	#checks the agent position
@@ -79,7 +89,7 @@ def seek(agent, target, flag):
 			steering.linear = vectorTimes(steering.linear,maxAcceleration)
 
 	# Output the steering
-	steering.angular = 0
+	steering.angular = 0	
 	return steering
 
 ################### Parte de Lili ####################
@@ -181,7 +191,7 @@ def VelocityM(agent,target):
 
 def Pursue(seek,target, agent):
 
-	print "Pursue"
+#	print "Pursue"
      	# Holds the maximum prediction time
      	maxPrediction = 1
   
@@ -221,7 +231,59 @@ def Pursue(seek,target, agent):
        	
 
        # 2. Delegate to seek
-       	return seek(agent, target, "seek")
+	steering = seek(agent, target, "seek")
+
+	return steering
+
+
+def CollisionPursue(seeknflee,target, agent):
+
+#	print "Pursue"
+     	# Holds the maximum prediction time
+     	maxPrediction = 1
+     	
+  
+
+     	# OVERRIDES the target data in seek (in other words
+     	# this class has two bits of data called target:
+     	# Seek.target is the superclass target which
+     	# will be automatically calculated and shouldnt
+     	# be set, and Pursue.target is the target were
+     	# pursuing).
+
+
+     	# ... Other data is derived from the superclass ...
+
+       # 1. Calculate the target to delegate to seek
+       # Work out the distance to target
+       	direction = substraction(target.position , agent.position)
+       	distance = vectorLength(direction)
+
+       # Work out our current speed
+       	speed = vectorLength(agent.velocity)
+
+       # Check if speed is too small to give a reasonable
+       # prediction time
+       	if speed <= distance / maxPrediction:
+       
+       		prediction = maxPrediction
+
+       # Otherwise calculate the prediction time
+       	else:
+
+      		prediction = distance / speed
+
+       # Put the target together
+       
+       	target.position = addition(target.position,vectorTimes(target.velocity , prediction))
+       	
+
+       # 2. Delegate to seek
+	steering = seek(agent, target, "collision")
+
+	return steering
+
+
 
 def face(aligne, agent, target):
    	# Work out the direction to target

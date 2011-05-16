@@ -8,11 +8,11 @@ def collisionDetect(agent,obs):
     # Holds the minimum distance to a wall (i.e., how far
     # to avoid collision) should be greater than the
     # radius of the character.
-    avoidDistance = 10.0
+    avoidDistance = 4.0
 
     # Holds the distance to look ahead for a collision
     # (i.e., the length of the collision ray)
-    lookahead = 8.0
+    lookahead = 4.0
 
     # 1. Calculate the target to delegate to seek
         

@@ -10,6 +10,7 @@ from structures.walls import *
 from structures.obstacles import *
 from ia.steeringBehaviours import *
 from ia.collisions import *
+from ia.behavior import *
 from ia.jumps import *
 
 import traceback
@@ -161,11 +162,21 @@ def PaintWorld():
         # Behaviour #
         #############
 
-        steering = Pursue(seek,target, agent)
+
+        steering = wander(face,agent,target)
         if steering == None:
             steering = Pursue(seek,target, agent)
         else:
             print "------------ HUBO COLISION ------------"
+
+       # steering = getSteering(target,agent,obs)
+#        steering = collisionDetect(agent,obs)
+#        if steering == None:
+#            steering = wander(face,agent,target)
+#            steering = Pursue(seek,target, agent)
+#        else:
+#            print "------------ HUBO COLISION ------------"
+
         agent.update(steering,maxSpeed,time)
         
         ####################

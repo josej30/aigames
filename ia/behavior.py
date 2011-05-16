@@ -2,25 +2,38 @@ from structures.BehaviorAndWeight import *
 from structures.steeringOutput import *
 from misc.vector3 import *
 from ia.steeringBehaviours import *
-
-pursue = BehaviorAndWeight(Pursue,0.2)
-
-# Holds a list of BehaviorAndWeight instances.
-behaviors = []
-
-# Holds the maximum acceleration and rotation
-maxAcceleration = 5
-maxRotation = 10
+from ia.collisions import *
 
 # Returns the acceleration required.
-def getSteering():
+def getSteering(target,agent,obs):
+
+    steeringPursue = Pursue(seek,target,agent)
+    steeringObstacleAvoidance = collisionDetect(agent,obs)
+    PursueWeight = 0.0
+    ObstacleAvoidanceWeight = 1.0
+
+    if (steeringObstacleAvoidance.linear == [0,0,0]):
+        PursueWeight = 1.0
+        ObstacleAvoidanceWeight = 0.0
+
+    # Holds a list of BehaviorAndWeight instances.
+    behaviors = [
+        [steeringPursue,PursueWeight],
+        [steeringObstacleAvoidance,ObstacleAvoidanceWeight]
+        ]
+
+    # Holds the maximum acceleration and rotation
+    maxAcceleration = 5
+    maxRotation = 10
 
     # Create the steering structure for accumulation
-    steering = new SteeringOutput()
+    steering = SteeringOutput()
 
     # Accumulate all accelerations
     for behavior in behaviors:
-        steering += behavior.weight * behavior.behavior.getSteering()
+        temp = behavior[0].scale_steering(behavior[1])
+        steering = sum_steering(steering, temp)
+
 
     # Crop the result and return
     #steering.linear = max(steering.linear, maxAcceleration)
