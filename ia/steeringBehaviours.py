@@ -10,8 +10,8 @@ from misc.vector3 import *
 from random import random
 
 
-maxSpeed = 45
-maxAcceleration = 5
+maxSpeed = 15
+maxAcceleration = 15
 
 def getNewOrientation(currentOrientation, velocity):
 
@@ -40,9 +40,6 @@ def seek(agent, target, flag):
 
 	if flag == "collision":
 		slowRadius = 30
-#		maxAcceleration = 100
-#		maxSpeed = 100
-		timeToTarget = 0.1
 		factor = 40
 
 	# Create the structure for output
