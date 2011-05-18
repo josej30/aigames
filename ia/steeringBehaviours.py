@@ -249,7 +249,7 @@ def CollisionPursue(seek,target, agent):
      	
   
 
-     	# OVERRIDES the target data in seek (in other words
+     	# OVERRIDES the target data in seek (in other wordsSeek
      	# this class has two bits of data called target:
      	# Seek.target is the superclass target which
      	# will be automatically calculated and shouldnt
