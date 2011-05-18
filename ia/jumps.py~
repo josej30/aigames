@@ -1,6 +1,0 @@
-from structures.agents import *
-
-def scheduleJumpAction(agent):
-	if agent.position[1]==0:
-		agent.velocity[1] = 15.0
-       		
