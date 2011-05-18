@@ -2,8 +2,7 @@ from OpenGL.GL import *
 from OpenGL.GLUT import *
 from OpenGL.GLU import *
 
-from agents import *
-from walls import *
+from datetime import datetime
 
 from structures.agents import *
 from structures.walls import *
@@ -20,13 +19,17 @@ import sys
 ############### TODO ESTO DEBERIA IR EN EL MAIN ###########
 ############### O EN ALGUN LUGAR FUERA DE AQUI  ##########
 
+# Time Stuff
+time = datetime.now()
+time1 = datetime.now()
+time2 = 0
+
 # Size of the world
 size = 100
 
 # Rotation angles for the floor
 rquadx = 0.0
 rquady = 0.0
-
 
 ###############
 # Agent stuff #
@@ -138,11 +141,11 @@ def ReSizeWorld(Width, Height):
 # The main drawing function. 
 def PaintWorld():
     
-    global agent, target, maxSpeed, limits, obs, obstacle1
+    global agent, target, maxSpeed, limits, obs, obstacle1, time2, time1, time
 
     try:
 
-        time = 0.01
+#        time = 0.01
         
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         glLoadIdentity()	        
@@ -195,8 +198,18 @@ def PaintWorld():
     	else:
     		print "Argumento invalido"
     		sys.exit()
+
+        # Get end just before calculating new positions,
+        # velocities and accelerations
+        time2 = datetime.now()
+
+        time = ( (time2 - time1).microseconds ) / 1000000.0
     		
         agent.update(steering,maxSpeed,time)
+
+
+        # Get initial time just after calculating everything
+        time1 = datetime.now()
         
         ####################
         # End of Behaviour #
@@ -408,6 +421,7 @@ def execute():
     glutInitWindowSize(640, 480)
     glutInitWindowPosition(0, 0)
     window = glutCreateWindow("Battle Cars")
+
     glutDisplayFunc(PaintWorld)
     
     #glutFullScreen()
