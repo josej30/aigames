@@ -181,7 +181,15 @@ def PaintWorld():
         #############
         # Behaviour #
         #############
-
+	
+    	#print len(sys.argv)
+    	if len(sys.argv) == 1:
+    		print "No se recibieron argumentos"
+    		sys.exit()
+    	if sys.argv[1] == "Wander":
+    		steering = getSteering(target,agent,obs,"Wander")
+    	elif sys.argv[1] == "Pursue":
+    		steering = getSteering(target,agent,obs,"Pursue")
 
        # steering = wander(face,agent,target)
        # if steering == None:
@@ -189,7 +197,7 @@ def PaintWorld():
        # else:
         #s    print "------------ HUBO COLISION ------------"
 
-        steering = getSteering(target,agent,obs,"Pursue")
+        #steering = getSteering(target,agent,obs,"Wander")
 #        steering = collisionDetect(agent,obs)
 #        if steering == None:
 #            steering = wander(face,agent,target)

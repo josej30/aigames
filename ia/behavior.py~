@@ -7,8 +7,9 @@ from ia.collisions import *
 # Returns the acceleration required.
 def getSteering(target,agent,obs,flag):
 
-    steeringWander = wander(face,agent,target)
+    #steeringWander = wander(face,agent,target)
     steeringPursue = Pursue(seek,target,agent)
+    steeringWander = wander(face,agent,target)
     steeringObstacleAvoidance = collisionDetect(agent,obs)
     PursueWeight = 0.0
     WanderWeight = 0.0
@@ -16,10 +17,7 @@ def getSteering(target,agent,obs,flag):
 
     if (steeringObstacleAvoidance.linear == [0,0,0]):
         PursueWeight = 1.0
-<<<<<<< HEAD
         WanderWeight = 1.0
-=======
->>>>>>> 41b2c988886419e7188b953afbcd8958530464da
         ObstacleAvoidanceWeight = 0.0
 
     # Holds a list of BehaviorAndWeight instances.

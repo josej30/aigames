@@ -126,9 +126,9 @@ def aligne(agent, target):
      	rotation = atan2( agent.orientation,target.orientation)
      	rotationSize = fabs(rotationDirection)
 
-	print rotationDirection
-	print rotation
-     	print rotationSize
+	#print rotationDirection
+	#print rotation
+     	#print rotationSize
      
 
     	# Check if we are there, return no steering
@@ -138,14 +138,14 @@ def aligne(agent, target):
         # If we are outside the slowRadius, then use
         # maximum rotation
 	if rotationSize > slowRadius:
-		print "maxrotation"
+		#print "maxrotation"
                 
        		targetRotation = maxRotation
                 
                 
         # Otherwise calculate a scaled rotation
      	else:
-                print "scaled rotation"
+                #print "scaled rotation"
         	targetRotation = maxRotation * rotationSize / slowRadius
                             
       	# The final target rotation combines
@@ -241,7 +241,7 @@ def Pursue(seek,target, agent):
 
 def CollisionPursue(seek,target, agent):
 
-	print "Pinky Pursue"
+	#print "Pinky Pursue"
      	# Holds the maximum prediction time
      	maxPrediction = 1
      	

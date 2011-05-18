@@ -11,11 +11,8 @@ from random import random
 
 
 maxSpeed = 15
-<<<<<<< HEAD
-maxAcceleration = 5
-=======
 maxAcceleration = 15
->>>>>>> 41b2c988886419e7188b953afbcd8958530464da
+
 
 def getNewOrientation(currentOrientation, velocity):
 
