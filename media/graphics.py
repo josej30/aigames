@@ -166,9 +166,9 @@ def PaintWorld():
         drawObstacle(obstacle3)
         
         # Objective
-        glPushMatrix()
-        drawObjective()
-        glPopMatrix()
+#        glPushMatrix()
+#        drawObjective()
+#        glPopMatrix()
 
         # Agent
         glPushMatrix()
@@ -189,7 +189,7 @@ def PaintWorld():
        # else:
         #s    print "------------ HUBO COLISION ------------"
 
-        steering = getSteering(target,agent,obs,"Pursue")
+        steering = getSteering(target,agent,obs,"Wander")
 #        steering = collisionDetect(agent,obs)
 #        if steering == None:
 #            steering = wander(face,agent,target)

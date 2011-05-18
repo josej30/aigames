@@ -52,8 +52,8 @@ class Agent:
 			self.velocity = normalize(self.velocity)
 			self.velocity = vectorTimes(self.velocity,maxSpeed)
 
-		print "position = " + str(self.position)
-		print "velocity = " + str(self.velocity)
+#		print "position = " + str(self.position)
+#		print "velocity = " + str(self.velocity)
 
 		# glPushMatrix();
 		# glBegin(GL_LINES);
