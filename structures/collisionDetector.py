@@ -15,7 +15,7 @@ def getCollision(position, moveAmount, obs):
     # between the ray vector and the obstacle
     for ob in obs:
 
-        inter = inter_rects(ray,ob['seg'])
+        inter = inter_rects2(ray,ob['seg'])
 
         # If there was an intersection
         if len(inter) > 0:
@@ -55,6 +55,11 @@ def inter_rects(p,q):
         qm = ((q.y1-q.y2)/(q.x1-q.x2))
         qb = q.y2 - (qm*q.x2)
 
+    if p_vert:
+        return [p.x1,(qm*p.x1)+qb]
+
+    if q_vert:
+        return [q.x1,(pm*q.x1)+pb]
         
     if (pm-qm) == 0:
         return []
@@ -77,6 +82,25 @@ def inter_rects(p,q):
 
         return [interx,intery]
 
+def inter_rects2(p,q):
+
+    A1 = p.y2 - p.y1
+    B1 = p.x1 - p.x2
+    C1 = A1*p.x1 + B1*p.y1
+
+    A2 = q.y2 - q.y1
+    B2 = q.x1 - q.x2
+    C2 = A2*q.x1 + B2*q.y1
+
+    det = A1*B2 - A2*B1
+    if det == 0:
+        return []
+    else:
+        x = (B2*C1 - B1*C2)/det
+        y = (A1*C2 - A2*C1)/det
+
+    return [x,y]
+    
 
 def priorCollisions(colis,pos_agent):
 

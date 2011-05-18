@@ -10,7 +10,7 @@ from misc.vector3 import *
 from random import random
 
 
-maxSpeed = 15
+maxSpeed = 10
 maxAcceleration = 15
 
 
@@ -77,6 +77,7 @@ def seek(agent, target, flag):
 
 	#checks the agent position
 	if agent.position[1] > 0:
+		print "restabdo"
 	
 		# Acceleration in y-axes (gravity)
 		steering.linear = airSubstraction(targetVelocity,agent.velocity)
@@ -89,6 +90,7 @@ def seek(agent, target, flag):
 			steering.linear = vectorTimes(steering.linear,maxAcceleration)
 
 	if flag == "collision":
+		"colision"
 		steering.linear = [steering.linear[0]*factor,0,steering.linear[2]*factor]
 
 	# Output the steering
