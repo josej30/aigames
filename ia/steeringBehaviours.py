@@ -34,13 +34,13 @@ def seek(agent, target, flag):
 
 	# Holds the satisfaction radius
 	targetRadius = 1
-	slowRadius = 30
+	slowRadius = 15
 
 	# Holds the time to target constant
 	timeToTarget = 0.1
 
 	if flag == "collision":
-		slowRadius = 30
+		slowRadius = 0.1
 		factor = 40
 
 	# Create the structure for output
@@ -77,7 +77,7 @@ def seek(agent, target, flag):
 
 	#checks the agent position
 	if agent.position[1] > 0:
-		print "restabdo"
+#		print "restabdo"
 	
 		# Acceleration in y-axes (gravity)
 		steering.linear = airSubstraction(targetVelocity,agent.velocity)
