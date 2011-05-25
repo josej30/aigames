@@ -2,8 +2,6 @@ from OpenGL.GL import *
 from OpenGL.GLUT import *
 from OpenGL.GLU import *
 
-from agents import *
-from walls import *
 
 from structures.agents import *
 from structures.walls import *

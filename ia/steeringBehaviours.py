@@ -373,6 +373,45 @@ def wander(face,agent,target):
    	# Return it
    	
    	return steering
+def separation(agent, targets):
+ 
+     	# Holds the threshold to take action
+     	threshold  = 2.0
+
+     	# Holds the constant coefficient of decay for the
+     	# inverse square law force
+     	decayCoefficient = 1.0
+                                                        
+   	# Holds the maximum acceleration of the character
+   	maxAcceleration = 2.0
+
+
+     	# The steering variable holds the output
+     	steering = SteeringOutput()
+
+     	# Loop through each target
+     	for target in targets:
+
+
+       		# Check if the target is close
+       		direction = substraction(target.position , character.position)
+
+       		distance = vectorLength(direction)
+
+       		if distance < threshold:
+
+
+         		# Calculate the strength of repulsion
+         		strength = min(decayCoefficient * distance * distance, maxAcceleration)
+
+
+         		# Add the acceleration
+         		direction = normalize(direction)
+         		steering.linear = vectorTimes (direction,strength)
+
+     # We’ve gone through all targets, return the result	
+     return steering
+
        		
 
 

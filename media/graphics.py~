@@ -181,8 +181,6 @@ def PaintWorld():
         #############
         # Behaviour #
         #############
-	
-    	#print len(sys.argv)
     	if len(sys.argv) == 1:
     		print "No se recibieron argumentos"
     		sys.exit()
@@ -197,20 +195,7 @@ def PaintWorld():
     	else:
     		print "Argumento invalido"
     		sys.exit()
-       # steering = wander(face,agent,target)
-       # if steering == None:
-       #     steering = Pursue(seek,target, agent)
-       # else:
-        #s    print "------------ HUBO COLISION ------------"
-
-
-#        steering = collisionDetect(agent,obs)
-#        if steering == None:
-#            steering = wander(face,agent,target)
-#            steering = Pursue(seek,target, agent)
-#        else:
-#            print "------------ HUBO COLISION ------------"
-
+    		
         agent.update(steering,maxSpeed,time)
         
         ####################
