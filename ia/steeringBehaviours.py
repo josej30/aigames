@@ -34,13 +34,13 @@ def seek(agent, target, flag):
 
 	# Holds the satisfaction radius
 	targetRadius = 1
-	slowRadius = 30
+	slowRadius = 15
 
 	# Holds the time to target constant
 	timeToTarget = 0.1
 
 	if flag == "collision":
-		slowRadius = 30
+		slowRadius = 0.1
 		factor = 40
 
 	# Create the structure for output
@@ -77,7 +77,7 @@ def seek(agent, target, flag):
 
 	#checks the agent position
 	if agent.position[1] > 0:
-		print "restabdo"
+#		print "restabdo"
 	
 		# Acceleration in y-axes (gravity)
 		steering.linear = airSubstraction(targetVelocity,agent.velocity)
@@ -376,14 +376,14 @@ def wander(face,agent,target):
 def separation(agent, targets):
  
      	# Holds the threshold to take action
-     	threshold  = 2.0
+     	threshold  = 5.0
 
      	# Holds the constant coefficient of decay for the
      	# inverse square law force
-     	decayCoefficient = 1.0
+     	decayCoefficient = 5.0
                                                         
    	# Holds the maximum acceleration of the character
-   	maxAcceleration = 2.0
+   	maxAcceleration = 10.0
 
 
      	# The steering variable holds the output
@@ -394,7 +394,7 @@ def separation(agent, targets):
 
 
        		# Check if the target is close
-       		direction = substraction(target.position , character.position)
+       		direction = substraction(agent.position,target.position )
 
        		distance = vectorLength(direction)
 
@@ -409,8 +409,8 @@ def separation(agent, targets):
          		direction = normalize(direction)
          		steering.linear = vectorTimes (direction,strength)
 
-     # We’ve gone through all targets, return the result	
-     return steering
+     # We've gone through all targets, return the result	
+   	return steering
 
        		
 
