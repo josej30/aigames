@@ -393,12 +393,15 @@ def drawAgent(agent, color):
 
 def updatePlayer(player):
     
-    steering = SteeringOutput()
+    # steering = SteeringOutput()
 
-    steering.linear[0] = -player.velocity[0]
-    steering.linear[2] = -player.velocity[2]
+    # steering.linear[0] = -player.velocity[0]
+    # steering.linear[2] = -player.velocity[2]
 
-    player.update(steering,time)
+    # player.update2(steering,time)
+
+    player.velocity[0] = player.velocity[0] - player.velocity[0]/50
+    player.velocity[2] = player.velocity[2] - player.velocity[2]/50
 
     if abs(player.velocity[0]) <= 0.01:
         player.velocity[0] = 0
