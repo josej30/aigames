@@ -226,7 +226,7 @@ def PaintWorld():
     	elif sys.argv[1] == "Pursue":
     		steering = getSteering(targets,target,agent,obs,"Pursue")
 	elif sys.argv[1] == "Seek":
-    		steering =getSteering(targets,target,agent,obs,"Seek")
+    		steering = getSteering(targets,agent,target,obs,"Seek")
     	elif sys.argv[1] == "Flee":
     		steering = seek(agent, target, "flee")
     	else:

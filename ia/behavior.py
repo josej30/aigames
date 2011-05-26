@@ -20,21 +20,22 @@ def getSteering(targets,target,agent,obs,flag):
     elif flag == "Seek":
         steeringPursue = SteeringOutput()
         steeringWander = SteeringOutput()
-        steeringSeek = seek(agent,target, "seek")
+        steeringSeek = seek(target,agent, "flee")
+        print  steeringSeek.linear
 
     steeringObstacleAvoidance = collisionDetect(agent,obs)
     steeringSeparation = separation(agent, targets)
-    PursueWeight = 0.0
-    WanderWeight = 0.0
-    SeekWeight = 0.0
-    ObstacleAvoidanceWeight = 7.0
+    PursueWeight = 3.0
+    WanderWeight = 3.0
+    SeekWeight = 3.0
+    ObstacleAvoidanceWeight = 4.0
     SeparationWeigth = 3.0
 
     if (steeringObstacleAvoidance.linear == [0,0,0]):
-        PursueWeight = 5.0
-        WanderWeight = 5.0
-        SeekWeigth = 5.0
-        SeparationWeigth = 5.0
+        PursueWeight = 3.0
+        WanderWeight = 3.0
+        SeekWeigth = 3.0
+        SeparationWeigth = 7.0
         ObstacleAvoidanceWeight = 0.0
 
     # Holds a list of BehaviorAndWeight instances.
