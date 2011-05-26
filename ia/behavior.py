@@ -28,10 +28,10 @@ def getSteering(targets,target,agent,obs,flag):
     SeparationWeigth = 3.0
 
     if (steeringObstacleAvoidance.linear == [0,0,0]):
-        PursueWeight = 5.0
-        WanderWeight = 5.0
-        SeekWeigth = 5.0
-        SeparationWeigth = 5.0
+        PursueWeight = 3.0
+        WanderWeight = 3.0
+        SeekWeigth = 3.0
+        SeparationWeigth = 7.0
         ObstacleAvoidanceWeight = 0.0
 
     # Holds a list of BehaviorAndWeight instances.

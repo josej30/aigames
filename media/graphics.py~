@@ -163,11 +163,9 @@ def ReSizeWorld(Width, Height):
 # The main drawing function. 
 def PaintWorld():
     
-<<<<<<< HEAD
+
     global agent, target, maxSpeed, limits, obs, obstacle1, time2, time1, time, agents, targets
-=======
-    global agent, target, limits, obs, obstacle1, time, time1, time2, agents
->>>>>>> e23f640aa6b9057a90a25df135cc73b8441a64ba
+
 
     try:
 
@@ -200,17 +198,14 @@ def PaintWorld():
 
 	# Objective
         for target in targets:
-        
-<<<<<<< HEAD
+
+        	   # Objective
         	glPushMatrix()
-        	drawAgent(target)
+        	drawAgent(target,'cyan')
         	glPopMatrix()
-=======
-        # Objective
-        glPushMatrix()
-        drawAgent(target,'cyan')
-        glPopMatrix()
->>>>>>> e23f640aa6b9057a90a25df135cc73b8441a64ba
+
+     
+
 
         # Agent
         glPushMatrix()
@@ -231,7 +226,7 @@ def PaintWorld():
     	elif sys.argv[1] == "Pursue":
     		steering = getSteering(targets,target,agent,obs,"Pursue")
 	elif sys.argv[1] == "Seek":
-    		steering =getSteering(targets,target,agent,obs,"Seek")
+    		steering = getSteering(targets,target,agent,obs,"Seek")
     	elif sys.argv[1] == "Flee":
     		steering = seek(agent, target, "flee")
     	else:
