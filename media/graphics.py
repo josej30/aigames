@@ -61,6 +61,13 @@ target2 = Agent()
 target2.position = [0,0,0] 
 target2.orientation = 0.0
 
+####################
+# 3nd Target Stuff #
+####################
+target3 = Agent()
+target3.position = [0,0,0] 
+target3.orientation = 0.0
+
 # List of Agents
 agents = [agent,target]
 
@@ -156,7 +163,9 @@ def ReSizeWorld(Width, Height):
 # The main drawing function. 
 def PaintWorld():
     
-    global agent, target, limits, obs, obstacle1, time, time1, time2, agents
+
+    global agent, target, maxSpeed, limits, obs, obstacle1, time2, time1, time, agents, targets
+
 
     try:
 
@@ -186,11 +195,17 @@ def PaintWorld():
         drawObstacle(obstacle1)
         drawObstacle(obstacle2)
         drawObstacle(obstacle3)
-        
-        # Objective
-        glPushMatrix()
-        drawAgent(target,'cyan')
-        glPopMatrix()
+
+	# Objective
+        for target in targets:
+
+        	   # Objective
+        	glPushMatrix()
+        	drawAgent(target,'cyan')
+        	glPopMatrix()
+
+     
+
 
         # Agent
         glPushMatrix()
@@ -207,15 +222,13 @@ def PaintWorld():
     		print "No se recibieron argumentos"
     		sys.exit()
     	if sys.argv[1] == "Wander":
-    		steering = getSteering(target,agent,obs,"Wander")
+    		steering = getSteering(targets,target3,agent,obs,"Wander")
     	elif sys.argv[1] == "Pursue":
-    		steering = getSteering(target,agent,obs,"Pursue")
+    		steering = getSteering(targets,target,agent,obs,"Pursue")
 	elif sys.argv[1] == "Seek":
-    		steering = seek(agent,target,"seek")
+    		steering =getSteering(targets,target,agent,obs,"Seek")
     	elif sys.argv[1] == "Flee":
     		steering = seek(agent, target, "flee")
-    	elif sys.argv[1] == "Separation":
-    		steering = separation(agent, targets)
     	else:
     		print "Argumento invalido"
     		sys.exit()
