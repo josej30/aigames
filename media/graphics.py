@@ -164,7 +164,7 @@ def PaintWorld():
         keyOperations()
 
         # Updating player stats
-        updatePlayer(target)
+        # updatePlayer(target)
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         glLoadIdentity()	        
@@ -393,15 +393,12 @@ def drawAgent(agent, color):
 
 def updatePlayer(player):
     
-    # steering = SteeringOutput()
+    steering = SteeringOutput()
 
-    # steering.linear[0] = -player.velocity[0]
-    # steering.linear[2] = -player.velocity[2]
+    steering.linear[0] = -player.velocity[0]
+    steering.linear[2] = -player.velocity[2]
 
-    # player.update2(steering,time)
-
-    player.velocity[0] = player.velocity[0] - player.velocity[0]/50
-    player.velocity[2] = player.velocity[2] - player.velocity[2]/50
+    player.update2(steering,time)
 
     if abs(player.velocity[0]) <= 0.01:
         player.velocity[0] = 0
