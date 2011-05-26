@@ -7,23 +7,20 @@ from ia.collisions import *
 # Returns the acceleration required.
 def getSteering(targets,target,agent,obs,flag):
 
+    steeringPursue = SteeringOutput()
+    steeringSeek = SteeringOutput()
+    steeringWander = SteeringOutput()
 
     if flag == "Wander":
-    	print "wander"
-        steeringPursue = SteeringOutput()
-        steeringSeek = SteeringOutput()
         steeringWander = wander(face,agent,target)
     elif flag == "Pursue":
-        steeringWander = SteeringOutput()
-        steeringSeek = SteeringOutput()
         steeringPursue = Pursue(seek,target,agent)
     elif flag == "Seek":
-        steeringPursue = SteeringOutput()
-        steeringWander = SteeringOutput()
         steeringSeek = seek(agent,target, "seek")
 
     steeringObstacleAvoidance = collisionDetect(agent,obs)
     steeringSeparation = separation(agent, targets)
+
     PursueWeight = 0.0
     WanderWeight = 0.0
     SeekWeight = 0.0
@@ -67,7 +64,7 @@ def getSteering(targets,target,agent,obs,flag):
     	for behavior in behavior_pursue:
         	temp = behavior[0].scale_steering(behavior[1])
         	steering = sum_steering(steering, temp)
-        	print "pursue"
+#        	print "pursue"
         
         	#steering = sum_steering(steering,steeringSeparation) 
     elif flag == "Wander":
@@ -76,7 +73,7 @@ def getSteering(targets,target,agent,obs,flag):
         	steering = sum_steering(steering, temp)
         	
     elif flag == "Seek":
-    	print "seek"
+#    	print "seek"
     	for behavior in behavior_seek:
         	temp = behavior[0].scale_steering(behavior[1])
         	steering = sum_steering(steering, temp)

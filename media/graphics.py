@@ -69,7 +69,7 @@ target3.position = [0,0,0]
 target3.orientation = 0.0
 
 # List of Agents
-agents = [agent,target]
+agents = [agent,target,target2]
 
 ####################
 # Targets Array    #
@@ -226,7 +226,7 @@ def PaintWorld():
     	elif sys.argv[1] == "Pursue":
     		steering = getSteering(targets,target,agent,obs,"Pursue")
 	elif sys.argv[1] == "Seek":
-    		steering =getSteering(targets,target,agent,obs,"Seek")
+    		steering = getSteering(targets,target,agent,obs,"Seek")
     	elif sys.argv[1] == "Flee":
     		steering = seek(agent, target, "flee")
     	else:
@@ -444,24 +444,22 @@ def keyOperations():
     step = 0.5
     acc = 0.7
 
+    steering = SteeringOutput()
+
     # Movements of the player
     if keyBuffer[100]:
-        steering = SteeringOutput()
         steering.linear = [-acc,0,0]
         target.update(steering,time)
         #print "Left"
     if keyBuffer[101]:
-        steering = SteeringOutput()
         steering.linear = [0,0,-acc]
         target.update(steering,time)
         #print "Up"
     if keyBuffer[102]:
-        steering = SteeringOutput()
         steering.linear = [acc,0,0]
         target.update(steering,time)
         #print "Right"
     if keyBuffer[103]:
-        steering = SteeringOutput()
         steering.linear = [0,0,acc]
         target.update(steering,time)
         #print "Down"
