@@ -7,12 +7,16 @@ def normalize(vector):
 		return [vector[0]/factor,vector[1]/factor,vector[2]/factor]
 	else:
 		return vector
+
+def vectorPlus(v,x):
+	return [ v[0]+x[0], v[1]+x[1], v[2] + x[2] ]
 	
 def vectorTimes(v,x):
 	return [ v[0]*x, v[1]*x, v[2]*x ]
 
 def substraction(v1,v2):
 	return [ v1[0]-v2[0], v1[1]-v2[1], v1[2]-v2[2] ]
+
 def airSubstraction(v1,v2):
 	return [ 0, -10, 0 ]
 
@@ -27,6 +31,7 @@ def vectorLength(vector):
 
 def orientationAsVector(v):
 	return [sin(v),0,cos(v)]
+
 def randomBinomial():
 	return random() - random()
 

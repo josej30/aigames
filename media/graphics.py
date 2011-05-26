@@ -2,8 +2,6 @@ from OpenGL.GL import *
 from OpenGL.GLUT import *
 from OpenGL.GLU import *
 
-
-
 from datetime import datetime
 
 from physics.rules import *
@@ -11,6 +9,7 @@ from physics.rules import *
 from structures.agents import *
 from structures.walls import *
 from structures.obstacles import *
+from structures.steeringOutput import *
 from ia.steeringBehaviours import *
 from ia.collisions import *
 from ia.behavior import *
@@ -23,10 +22,13 @@ import sys
 ############### TODO ESTO DEBERIA IR EN EL MAIN ###########
 ############### O EN ALGUN LUGAR FUERA DE AQUI  ##########
 
+# Keyboard keys pressed
+keyBuffer = [False for x in range(256)]
+
 # Time Stuff
-time = datetime.now()
+time = 0
 time1 = datetime.now()
-time2 = 0
+time2 = datetime.now()
 
 # Size of the world
 size = 100
@@ -161,9 +163,17 @@ def ReSizeWorld(Width, Height):
 # The main drawing function. 
 def PaintWorld():
     
+
     global agent, target, maxSpeed, limits, obs, obstacle1, time2, time1, time, agents, targets
 
+
     try:
+
+        # Keys Pressed and saved in buffer
+        keyOperations()
+
+        # Updating player stats
+        updatePlayer(target)
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         glLoadIdentity()	        
@@ -188,14 +198,18 @@ def PaintWorld():
 
 	# Objective
         for target in targets:
-        
+
+        	   # Objective
         	glPushMatrix()
-        	drawAgent(target)
+        	drawAgent(target,'cyan')
         	glPopMatrix()
+
+     
+
 
         # Agent
         glPushMatrix()
-        drawAgent(agent)
+        drawAgent(agent,'blue')
         glPopMatrix()
 
         #######################
@@ -225,16 +239,13 @@ def PaintWorld():
         ###########
         ans = check_physics(agents,obs)
 
-
-
         # Get end just before calculating new positions,
         # velocities and accelerations
         time2 = datetime.now()
-
+    
         time = ( (time2 - time1).microseconds ) / 1000000.0
-    		
-        agent.update(steering,maxSpeed,time)
 
+        agent.update(steering,time)
 
         # Get initial time just after calculating everything
         time1 = datetime.now()
@@ -319,127 +330,161 @@ def drawLimits(limits):
 
 def drawPlane():
 
-	global rquadx, rquady
-
-	glRotatef(rquadx, 0.0, 1.0, 0.0)  
-	glRotatef(rquady, 1.0, 0.0, 0.0)  
-
-	glColor3f(0.5, 0.5, 0.5)           
-	glBegin(GL_QUADS)                  
-	glVertex3f(-50.0, 0.0, 50.0)      
-	glVertex3f(50.0, 0.0, 50.0)       
-	glVertex3f(50.0, 0.0, -50.0)      
-	glVertex3f(-50.0, 0.0, -50.0)     
-	glEnd()                           
-
-def drawAgent(agent):
-
-        glTranslatef(agent.position[0], agent.position[1]+1, agent.position[2]);  
-
-	glBegin(GL_QUADS);              
-
-        glColor3f(0.0,0.0,0.8);         
-        glVertex3f( 1.0, 1.0,-1.0);     
-        glVertex3f(-1.0, 1.0,-1.0);     
-        glVertex3f(-1.0, 1.0, 1.0);     
-        glVertex3f( 1.0, 1.0, 1.0);     
-
-        glColor3f(0.0,0.0,0.8);         
-        glVertex3f( 1.0,-1.0, 1.0);     
-        glVertex3f(-1.0,-1.0, 1.0);     
-        glVertex3f(-1.0,-1.0,-1.0);     
-        glVertex3f( 1.0,-1.0,-1.0);
-
-        glColor3f(0.0,0.0,0.8);         
-        glVertex3f( 1.0, 1.0, 1.0);     
-        glVertex3f(-1.0, 1.0, 1.0);     
-        glVertex3f(-1.0,-1.0, 1.0);     
-        glVertex3f( 1.0,-1.0, 1.0);     
-
-        glColor3f(0.0,0.0,0.5);    
-        glVertex3f( 1.0,-1.0,-1.0);
-        glVertex3f(-1.0,-1.0,-1.0);
-        glVertex3f(-1.0, 1.0,-1.0);
-        glVertex3f( 1.0, 1.0,-1.0);
-
-        glColor3f(0.0,0.0,0.5);    
-        glVertex3f(-1.0, 1.0, 1.0);
-        glVertex3f(-1.0, 1.0,-1.0);
-        glVertex3f(-1.0,-1.0,-1.0);
-        glVertex3f(-1.0,-1.0, 1.0);
-
-        glColor3f(0.0,0.0,0.5);    
-        glVertex3f( 1.0, 1.0,-1.0);
-        glVertex3f( 1.0, 1.0, 1.0);
-        glVertex3f( 1.0,-1.0, 1.0);
-        glVertex3f( 1.0,-1.0,-1.0);
-        glEnd();
-
-def drawObjective():
+    global rquadx, rquady
     
-    global target
+    glRotatef(rquadx, 0.0, 1.0, 0.0)  
+    glRotatef(rquady, 1.0, 0.0, 0.0)  
+    
+    glColor3f(0.5, 0.5, 0.5)           
+    glBegin(GL_QUADS)                  
+    glVertex3f(-50.0, 0.0, 50.0)      
+    glVertex3f(50.0, 0.0, 50.0)       
+    glVertex3f(50.0, 0.0, -50.0)      
+    glVertex3f(-50.0, 0.0, -50.0)     
+    glEnd()                           
+    
+def drawAgent(agent, color):
 
-    glTranslatef(target.position[0], target.position[1]+1, target.position[2]);
+    glTranslatef(agent.position[0], agent.position[1]+1, agent.position[2]);
 
-    glBegin(GL_TRIANGLES);
+    if color == 'blue':
+        glColor3f(0.0,0.0,0.8);
+    elif color == 'red':
+        glColor3f(0.7,0.0,0.0);
+    elif color == 'cyan':
+        glColor3f(0.0,0.7,0.7);
+    elif color == 'yellow':
+        glColor3f(0.8,0.8,0.0);
+    elif color == 'purple':
+        glColor3f(0.8,0.0,0.8);
 
-    glColor3f(0.9,0.0,0.0);
-    glVertex3f( 0.0, 1.0, 0.0);
-    glVertex3f(-1.0,-1.0, 1.0);
-    glVertex3f( 1.0,-1.0, 1.0);
+    glBegin(GL_QUADS);              
 
-    glColor3f(0.6,0.0,0.0);	
-    glVertex3f( 0.0, 1.0, 0.0);
-    glVertex3f( 1.0,-1.0, 1.0);
-    glVertex3f( 1.0,-1.0, -1.0);
-		
-    glColor3f(0.9,0.0,0.0);	
-    glVertex3f( 0.0, 1.0, 0.0);
-    glVertex3f( 1.0,-1.0, -1.0);
-    glVertex3f(-1.0,-1.0, -1.0);
-		
-    glColor3f(0.6,0.0,0.0);
-    glVertex3f( 0.0, 1.0, 0.0);
+    glVertex3f( 1.0, 1.0,-1.0);     
+    glVertex3f(-1.0, 1.0,-1.0);     
+    glVertex3f(-1.0, 1.0, 1.0);     
+    glVertex3f( 1.0, 1.0, 1.0);     
+    
+    glVertex3f( 1.0,-1.0, 1.0);     
+    glVertex3f(-1.0,-1.0, 1.0);     
+    glVertex3f(-1.0,-1.0,-1.0);     
+    glVertex3f( 1.0,-1.0,-1.0);
+    
+    glVertex3f( 1.0, 1.0, 1.0);     
+    glVertex3f(-1.0, 1.0, 1.0);     
+    glVertex3f(-1.0,-1.0, 1.0);     
+    glVertex3f( 1.0,-1.0, 1.0);     
+    
+    if color == 'blue':
+        glColor3f(0.0,0.0,0.5);
+    elif color == 'red':
+        glColor3f(0.5,0.0,0.0);
+    elif color == 'cyan':
+        glColor3f(0.0,0.4,0.4);
+    elif color == 'yellow':
+        glColor3f(0.5,0.5,0.0);
+    elif color == 'purple':
+        glColor3f(0.5,0.0,0.5);
+
+    glVertex3f( 1.0,-1.0,-1.0);
+    glVertex3f(-1.0,-1.0,-1.0);
+    glVertex3f(-1.0, 1.0,-1.0);
+    glVertex3f( 1.0, 1.0,-1.0);
+    
+    glVertex3f(-1.0, 1.0, 1.0);
+    glVertex3f(-1.0, 1.0,-1.0);
     glVertex3f(-1.0,-1.0,-1.0);
     glVertex3f(-1.0,-1.0, 1.0);
-    glEnd();			
+    
+    glVertex3f( 1.0, 1.0,-1.0);
+    glVertex3f( 1.0, 1.0, 1.0);
+    glVertex3f( 1.0,-1.0, 1.0);
+    glVertex3f( 1.0,-1.0,-1.0);
+
+    glEnd();
+
+
+def updatePlayer(player):
+    
+    # steering = SteeringOutput()
+
+    # steering.linear[0] = -player.velocity[0]
+    # steering.linear[2] = -player.velocity[2]
+
+    # player.update2(steering,time)
+
+    player.velocity[0] = player.velocity[0] - player.velocity[0]/50
+    player.velocity[2] = player.velocity[2] - player.velocity[2]/50
+
+    if abs(player.velocity[0]) <= 0.01:
+        player.velocity[0] = 0
+
+    if abs(player.velocity[2]) <= 0.01:
+        player.velocity[2] = 0
 
 
 # The function called whenever a key is pressed. Note the use of Python tuples to pass in: (key, x, y)  
-def keyPressed(*args):
+def keyPressed(key, x , y):
+    global keyBuffer
+    keyBuffer[ord(key)+10] = True
 
-    global target, rquadx, rquady
+def keyUp(key, x, y):
+    global keyBuffer
+    keyBuffer[ord(key)+10] = False
 
-    # Step (rate) to move the target
-    # Increase this and the target will move faster
-    step_t = 0.5
+def keySpecial(key, x, y):
+    global keyBuffer
+    keyBuffer[key] = True
 
-    # Step (rate) to rotate the plane
-    # Increase this and the plane will rotate faster
-    step_p = 3.0
+def keySpecialUp(key, x, y):
+    global keyBuffer
+    keyBuffer[key] = False
+    
+def keyOperations():
 
-    # If escape is pressed, kill everything.
-    if args[0] == ESCAPE:
-	    sys.exit()
-    if args[0] == '\141':
-        rquadx = rquadx - step_p
-    if args[0] == '\167':
-        rquady = rquady - step_p
-    if args[0] == '\163':
-        rquady = rquady + step_p   
-    if args[0] == '\144':
-        rquadx = rquadx + step_p   
-    if args[0] == '\152':
-        target.position[0] = target.position[0] - step_t
-    if args[0] == '\151':
-        target.position[2] = target.position[2] - step_t
-    if args[0] == '\154':
-        target.position[0] = target.position[0] + step_t
-    if args[0] == '\153':
-        target.position[2] = target.position[2] + step_t
-    if args[0] == '\040':
-        scheduleJumpAction(agent)
-    	
+    global target, keyBuffer, rquadx, rquady
+
+    step = 0.5
+    acc = 0.7
+
+    # Movements of the player
+    if keyBuffer[100]:
+        steering = SteeringOutput()
+        steering.linear = [-acc,0,0]
+        target.update(steering,time)
+        #print "Left"
+    if keyBuffer[101]:
+        steering = SteeringOutput()
+        steering.linear = [0,0,-acc]
+        target.update(steering,time)
+        #print "Up"
+    if keyBuffer[102]:
+        steering = SteeringOutput()
+        steering.linear = [acc,0,0]
+        target.update(steering,time)
+        #print "Right"
+    if keyBuffer[103]:
+        steering = SteeringOutput()
+        steering.linear = [0,0,acc]
+        target.update(steering,time)
+        #print "Down"
+    if keyBuffer[42]:
+        scheduleJumpAction(target)
+
+    # Movements of the world
+    if keyBuffer[107]:
+        rquadx = rquadx - step
+    if keyBuffer[129]:
+        rquady = rquady - step
+    if keyBuffer[125]:
+        rquady = rquady + step   
+    if keyBuffer[110]:
+        rquadx = rquadx + step
+
+    # Quitting the game
+    if keyBuffer[37]:
+        sys.exit()
+
 def execute():
 
     glutInit(sys.argv)
@@ -454,6 +499,12 @@ def execute():
     
     glutIdleFunc(PaintWorld)
     glutReshapeFunc(ReSizeWorld)
+
     glutKeyboardFunc(keyPressed)
+    glutKeyboardUpFunc(keyUp)
+    glutSpecialFunc(keySpecial)
+    glutSpecialUpFunc(keySpecialUp)
+
     InitWorld(640, 480)
+
     glutMainLoop()

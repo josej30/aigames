@@ -76,7 +76,7 @@ def getSteering(targets,target,agent,obs,flag):
         	steering = sum_steering(steering, temp)
         	
     elif flag == "Seek":
-    	print "hola"
+    	print "seek"
     	for behavior in behavior_seek:
         	temp = behavior[0].scale_steering(behavior[1])
         	steering = sum_steering(steering, temp)

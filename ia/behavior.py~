@@ -9,6 +9,7 @@ def getSteering(targets,target,agent,obs,flag):
 
 
     if flag == "Wander":
+    	print "wander"
         steeringPursue = SteeringOutput()
         steeringSeek = SteeringOutput()
         steeringWander = wander(face,agent,target)

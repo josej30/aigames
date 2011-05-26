@@ -46,22 +46,22 @@ def collisionDetect(agent,obs):
     glPopMatrix();
 
     # Right RayVector
-    glPushMatrix();
-    glBegin(GL_LINES);
-    glColor3f(1.0,0.0,0.0);
-    glVertex3f(agent.position[0],agent.position[1],agent.position[2]);
-    glVertex3f(rayVectorRight[0],rayVectorRight[1],rayVectorRight[2]);
-    glEnd();
-    glPopMatrix();
+    # glPushMatrix();
+    # glBegin(GL_LINES);
+    # glColor3f(1.0,0.0,0.0);
+    # glVertex3f(agent.position[0],agent.position[1],agent.position[2]);
+    # glVertex3f(rayVectorRight[0],rayVectorRight[1],rayVectorRight[2]);
+    # glEnd();
+    # glPopMatrix();
 
     # Right RayVector
-    glPushMatrix();
-    glBegin(GL_LINES);
-    glColor3f(1.0,0.0,0.0);
-    glVertex3f(agent.position[0],agent.position[1],agent.position[2]);
-    glVertex3f(rayVectorLeft[0],rayVectorLeft[1],rayVectorLeft[2]);
-    glEnd();
-    glPopMatrix();
+    # glPushMatrix();
+    # glBegin(GL_LINES);
+    # glColor3f(1.0,0.0,0.0);
+    # glVertex3f(agent.position[0],agent.position[1],agent.position[2]);
+    # glVertex3f(rayVectorLeft[0],rayVectorLeft[1],rayVectorLeft[2]);
+    # glEnd();
+    # glPopMatrix();
 
     # Find the collision
     collision = getCollision(agent.position, rayVectorFront, obs)
