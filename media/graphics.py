@@ -2,8 +2,6 @@ from OpenGL.GL import *
 from OpenGL.GLUT import *
 from OpenGL.GLU import *
 
-
-
 from datetime import datetime
 
 from physics.rules import *
@@ -455,7 +453,7 @@ def keyOperations():
         target.update(steering,time)
         #print "Down"
     if keyBuffer[42]:
-        scheduleJumpAction(agent)    
+        scheduleJumpAction(target)
 
     # Movements of the world
     if keyBuffer[107]:
