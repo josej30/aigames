@@ -6,6 +6,7 @@ from OpenGL.GLU import *
 
 from datetime import datetime
 
+from physics.rules import *
 
 from structures.agents import *
 from structures.walls import *
@@ -58,6 +59,8 @@ target2 = Agent()
 target2.position = [0,0,0] 
 target2.orientation = 0.0
 
+# List of Agents
+agents = [agent,target]
 
 ####################
 # Targets Array    #
@@ -151,12 +154,10 @@ def ReSizeWorld(Width, Height):
 # The main drawing function. 
 def PaintWorld():
     
-    global agent, target, maxSpeed, limits, obs, obstacle1, time2, time1, time
+    global agent, target, maxSpeed, limits, obs, obstacle1, time2, time1, time, agents
 
     try:
 
-#        time = 0.01
-        
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         glLoadIdentity()	        
         glLoadIdentity()
@@ -180,12 +181,12 @@ def PaintWorld():
         
         # Objective
         glPushMatrix()
-        drawObjective()
+        drawAgent(target)
         glPopMatrix()
 
         # Agent
         glPushMatrix()
-        drawAgent()
+        drawAgent(agent)
         glPopMatrix()
 
         #######################
@@ -210,6 +211,14 @@ def PaintWorld():
     	else:
     		print "Argumento invalido"
     		sys.exit()
+
+
+        ###########
+        # Physics #
+        ###########
+        ans = check_physics(agents,obs)
+
+
 
         # Get end just before calculating new positions,
         # velocities and accelerations
@@ -316,9 +325,7 @@ def drawPlane():
 	glVertex3f(-50.0, 0.0, -50.0)     
 	glEnd()                           
 
-def drawAgent():
-
-	global agent
+def drawAgent(agent):
 
         glTranslatef(agent.position[0], agent.position[1]+1, agent.position[2]);  
 
