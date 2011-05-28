@@ -45,6 +45,30 @@ agent.position = [0,0,40]
 agent.velocity = [0,0,0]
 agent.orientation = 100.0
 
+###############
+# Agent2 stuff #
+###############
+agent2 = Agent()
+agent2.position = [40,0,0]
+agent2.velocity = [0,0,0]
+agent2.orientation = 100.0
+
+###############
+# Agent3 stuff #
+###############
+agent3 = Agent()
+agent3.position = [10,0,10]
+agent3.velocity = [0,0,0]
+agent3.orientation = 10.0
+
+###############
+# Agent3 stuff #
+###############
+agent4 = Agent()
+agent4.position = [10,0,40]
+agent4.velocity = [0,0,0]
+agent4.orientation = 10.0
+
 
 ################
 # Target Stuff #
@@ -69,13 +93,14 @@ target3.position = [0,0,0]
 target3.orientation = 0.0
 
 # List of Agents
-agents = [agent,target,target2]
+agents = [agent,agent2,agent3, agent4]
 
 ####################
 # Targets Array    #
 ####################
 
 targets = [target,target2]
+characters = agents + targets
 
 
 # Array that contains all the proyections of
@@ -164,7 +189,7 @@ def ReSizeWorld(Width, Height):
 def PaintWorld():
     
 
-    global agent, target, maxSpeed, limits, obs, obstacle1, time2, time1, time, agents, targets
+    global agent, agent2,agent3,agent4, target, maxSpeed, limits, obs, obstacle1, time2, time1, time, agents, targets
 
 
     try:
@@ -198,19 +223,15 @@ def PaintWorld():
 
 	# Objective
         for target in targets:
-
-        	   # Objective
+        	# Objective
         	glPushMatrix()
         	drawAgent(target,'cyan')
         	glPopMatrix()
-
-     
-
-
-        # Agent
-        glPushMatrix()
-        drawAgent(agent,'blue')
-        glPopMatrix()
+       	for agen in agents:
+        	# Objective
+        	glPushMatrix()
+        	drawAgent(agen,'blue')
+        	glPopMatrix()
 
         #######################
 
@@ -224,7 +245,10 @@ def PaintWorld():
     	if sys.argv[1] == "Wander":
     		steering = getSteering(targets,target3,agent,obs,"Wander")
     	elif sys.argv[1] == "Pursue":
-    		steering = getSteering(targets,target,agent,obs,"Pursue")
+    		steering = getSteering(characters,target,agent,obs,"Pursue")
+    		steering2 = getSteering(characters,target,agent2,obs,"Pursue")
+    		steering3 = getSteering(characters,target,agent3,obs,"Pursue")
+    		steering4 = getSteering(characters,target,agent4,obs,"Pursue")
 	elif sys.argv[1] == "Seek":
             steering = getSteering(targets,target,agent,obs,"Seek")
     	elif sys.argv[1] == "Flee":
@@ -245,6 +269,9 @@ def PaintWorld():
         time = ( (time2 - time1).microseconds ) / 1000000.0
         
         agent.update(steering,time)
+        agent2.update(steering2,time)
+        agent3.update(steering3,time)
+        agent4.update(steering4,time)
 
         # Get initial time just after calculating everything
         time1 = datetime.now()
