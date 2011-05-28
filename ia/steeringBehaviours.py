@@ -375,14 +375,14 @@ def wander(face,agent,target):
 def separation(agent, targets):
  
      	# Holds the threshold to take action
-     	threshold  = 5.0
+     	threshold  = 8.0
 
      	# Holds the constant coefficient of decay for the
      	# inverse square law force
-     	decayCoefficient = 0.5
+     	decayCoefficient = 0.8
                                                         
    	# Holds the maximum acceleration of the character
-   	maxAcceleration = 10.0
+   	#maxAcceleration = 15.0
 
 
      	# The steering variable holds the output
