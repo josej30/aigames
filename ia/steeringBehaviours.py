@@ -380,7 +380,7 @@ def separation(agent, targets):
 
      	# Holds the constant coefficient of decay for the
      	# inverse square law force
-     	decayCoefficient = 5.0
+     	decayCoefficient = 0.5
                                                         
    	# Holds the maximum acceleration of the character
    	maxAcceleration = 10.0

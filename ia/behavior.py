@@ -20,7 +20,7 @@ def getSteering(targets,target,agent,obs,flag):
     elif flag == "Seek":
         steeringPursue = SteeringOutput()
         steeringWander = SteeringOutput()
-        steeringSeek = seek(target,agent, "flee")
+        steeringSeek = seek(target,agent, "seek")
         print  steeringSeek.linear
 
     steeringObstacleAvoidance = collisionDetect(agent,obs)
