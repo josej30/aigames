@@ -95,6 +95,7 @@ def seek(agent, target, flag):
 
 	# Output the steering
 	steering.angular = 0	
+	
 	return steering
 
 ################### Parte de Lili ####################
@@ -196,7 +197,6 @@ def VelocityM(agent,target):
 
 def Pursue(seek,target, agent):
 
-#	print "Pursue"
      	# Holds the maximum prediction time
      	maxPrediction = 1
   
@@ -233,7 +233,6 @@ def Pursue(seek,target, agent):
        # Put the target together
        
        	target.position = addition(target.position,vectorTimes(target.velocity , prediction))
-       	
 
        # 2. Delegate to seek
 	steering = seek(agent, target, "seek")
@@ -243,7 +242,6 @@ def Pursue(seek,target, agent):
 
 def CollisionPursue(seek,target, agent):
 
-	#print "Pinky Pursue"
      	# Holds the maximum prediction time
      	maxPrediction = 1
      	

@@ -36,4 +36,19 @@ def agent_wall(agent,wall):
                 return True
 
     return False
-            
+
+
+def updatePlayer(player,time):
+    
+    steering = SteeringOutput()
+
+    steering.linear[0] = -player.velocity[0]
+    steering.linear[2] = -player.velocity[2]
+
+    player.update(steering,time)
+
+    if abs(player.velocity[0]) <= 0.01:
+        player.velocity[0] = 0
+
+    if abs(player.velocity[2]) <= 0.01:
+        player.velocity[2] = 0

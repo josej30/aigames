@@ -197,9 +197,6 @@ def PaintWorld():
         # Keys Pressed and saved in buffer
         keyOperations()
 
-        # Updating player stats
-        # updatePlayer(target)
-
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         glLoadIdentity()	        
         glLoadIdentity()
@@ -227,11 +224,29 @@ def PaintWorld():
         	glPushMatrix()
         	drawAgent(target,'cyan')
         	glPopMatrix()
-       	for agen in agents:
-        	# Objective
-        	glPushMatrix()
-        	drawAgent(agen,'blue')
-        	glPopMatrix()
+
+        
+        #for agen in agents:
+        #	# Objective
+        #	glPushMatrix()
+        #	drawAgent(agen,'blue')
+        #	glPopMatrix()
+
+	glPushMatrix()
+	drawAgent(agents[0],'red')
+	glPopMatrix()
+
+	glPushMatrix()
+	drawAgent(agents[1],'blue')
+	glPopMatrix()
+
+	glPushMatrix()
+	drawAgent(agents[2],'blue')
+	glPopMatrix()
+
+	glPushMatrix()
+	drawAgent(agents[3],'blue')
+	glPopMatrix()
 
         #######################
 
@@ -251,8 +266,11 @@ def PaintWorld():
     		steering4 = getSteering(characters,target,agent4,obs,"Pursue")
 	elif sys.argv[1] == "Seek":
             steering = getSteering(targets,target,agent,obs,"Seek")
+            steering2 = getSteering(targets,target,agent2,obs,"Seek")
+            steering3 = getSteering(targets,target,agent3,obs,"Seek")
+            steering4 = getSteering(targets,target,agent4,obs,"Seek")
     	elif sys.argv[1] == "Flee":
-    		steering = seek(agent, target, "flee")
+            steering = seek(agent, target, "flee")
     	else:
     		print "Argumento invalido"
     		sys.exit()
@@ -260,18 +278,22 @@ def PaintWorld():
         ###########
         # Physics #
         ###########
-        ans = check_physics(agents,obs)
+        ans = check_physics(characters,obs)
 
         # Get end just before calculating new positions,
         # velocities and accelerations
         time2 = datetime.now()
     
         time = ( (time2 - time1).microseconds ) / 1000000.0
-        
+
+        # Updating agents stats
         agent.update(steering,time)
         agent2.update(steering2,time)
         agent3.update(steering3,time)
         agent4.update(steering4,time)
+
+        # Updating player stats
+        updatePlayer(target,time)
 
         # Get initial time just after calculating everything
         time1 = datetime.now()
@@ -428,22 +450,6 @@ def drawAgent(agent, color):
     glVertex3f( 1.0,-1.0,-1.0);
 
     glEnd();
-
-
-def updatePlayer(player):
-    
-    steering = SteeringOutput()
-
-    steering.linear[0] = -player.velocity[0]
-    steering.linear[2] = -player.velocity[2]
-
-    player.update2(steering,time)
-
-    if abs(player.velocity[0]) <= 0.01:
-        player.velocity[0] = 0
-
-    if abs(player.velocity[2]) <= 0.01:
-        player.velocity[2] = 0
 
 
 # The function called whenever a key is pressed. Note the use of Python tuples to pass in: (key, x, y)  
