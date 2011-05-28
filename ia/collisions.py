@@ -83,3 +83,55 @@ def collisionDetect(agent,obs):
 
     # 2. Delegate to seek
     return CollisionPursue(seek, target, agent)
+
+
+def collisionDetect2(agent,obs):
+
+    steering = SteeringOutput()
+
+    lookahead = 8.0
+
+    # Calculate the front collision ray vector
+    rayVectorFront = agent.velocity
+    rayVectorFront = normalize(rayVectorFront)
+    rayVectorFront = addition(agent.position,vectorTimes(rayVectorFront,lookahead))
+
+    # Front RayVector
+    glPushMatrix();
+    glBegin(GL_LINES);
+    glColor3f(1.0,0.0,0.0);
+    glVertex3f(agent.position[0],agent.position[1],agent.position[2]);
+    glVertex3f(rayVectorFront[0],rayVectorFront[1],rayVectorFront[2]);
+    glEnd();
+    glPopMatrix();
+
+    # Find the collision
+    collision = getCollision(agent.position, rayVectorFront, obs)
+
+    # If have no collision, do nothing
+    if collision == None:
+        return SteeringOutput()
+
+    # Holds the threshold to take action
+    threshold  = 15.0
+
+    # Holds the constant coefficient of decay for the
+    # inverse square law force
+    decayCoefficient = 15.0
+                                                        
+    # Holds the maximum acceleration of the character
+    maxAcceleration = 10.0
+
+    direction = substraction(agent.position,collision.position)
+    distance = vectorLength(direction)
+
+    if distance < threshold:
+
+        # Calculate the strength of repulsion
+        strength = min(decayCoefficient * distance * distance, maxAcceleration)
+
+        # Add the acceleration
+        direction = normalize(direction)
+        steering.linear = vectorTimes (direction,strength)
+
+    return steering

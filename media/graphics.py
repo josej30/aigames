@@ -226,13 +226,12 @@ def PaintWorld():
     	elif sys.argv[1] == "Pursue":
     		steering = getSteering(targets,target,agent,obs,"Pursue")
 	elif sys.argv[1] == "Seek":
-    		steering = getSteering(targets,target,agent,obs,"Seek")
+            steering = getSteering(targets,target,agent,obs,"Seek")
     	elif sys.argv[1] == "Flee":
     		steering = seek(agent, target, "flee")
     	else:
     		print "Argumento invalido"
     		sys.exit()
-
 
         ###########
         # Physics #
@@ -244,7 +243,7 @@ def PaintWorld():
         time2 = datetime.now()
     
         time = ( (time2 - time1).microseconds ) / 1000000.0
-
+        
         agent.update(steering,time)
 
         # Get initial time just after calculating everything
@@ -252,7 +251,7 @@ def PaintWorld():
         
         ####################
         # End of Behaviour #
-        ####################         
+        ####################
 
         glutSwapBuffers()
 

@@ -373,6 +373,7 @@ def wander(face,agent,target):
    	# Return it
    	
    	return steering
+
 def separation(agent, targets):
  
      	# Holds the threshold to take action
