@@ -7,6 +7,7 @@ from misc.vector3 import *
 class Agent:
 
 	maxSpeed = 12
+	maxAcceleration = 15
 	radius = 0
 	position = [0,1,0]   # a 2 or 3D vector
 	orientation = 0.0    # a single floating point value
@@ -17,6 +18,8 @@ class Agent:
 		self.radius = 1
 	
 	def update (self, steering, time):
+
+		#print steering.linear
 	
 		# Update the position and orientation
 		self.position = vectorPlus(self.position,vectorTimes(self.velocity,time))
