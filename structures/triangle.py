@@ -8,9 +8,9 @@ class Triangle:
     		self.vertex2 = b
     		self.vertex3 = c
     	def centerOfMass(self):
-		g = [0,0]
-    		G[0] = (self.vertex1[0] + self.vertex2[0] + self.vertex3[0])/3
-    		G[1] = (self.vertex1[1] + self.vertex3[1] + self.vertex3[1])/3
+		G = [0,0]
+    		G[0] = (self.vertex1[0] + self.vertex2[0] + self.vertex3[0])/3.0
+    		G[1] = (self.vertex1[1] + self.vertex3[1] + self.vertex3[1])/3.0
     		return G
 
 #p1 = Point()
