@@ -113,25 +113,25 @@ def collisionDetect2(agent,obs):
         return SteeringOutput()
 
     # Holds the threshold to take action
-    threshold  = 15.0
+    threshold  = 8.0
 
     # Holds the constant coefficient of decay for the
     # inverse square law force
-    decayCoefficient = 15.0
+    decayCoefficient = 0.8
                                                         
     # Holds the maximum acceleration of the character
-    maxAcceleration = 10.0
+    maxAcceleration = 15.0
 
     direction = substraction(agent.position,collision.position)
     distance = vectorLength(direction)
 
     if distance < threshold:
-
+        
         # Calculate the strength of repulsion
         strength = min(decayCoefficient * distance * distance, maxAcceleration)
 
         # Add the acceleration
         direction = normalize(direction)
-        steering.linear = vectorTimes (direction,strength)
+        steering.linear = vectorTimes(direction,strength)
 
     return steering

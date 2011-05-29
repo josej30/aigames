@@ -9,7 +9,7 @@ def check_physics(agents,obs):
         for ob in obs:
             if agent_wall(agent,ob['seg']):
                 temp = ob['normal']
-                temp = vectorDivide(temp,5.0)
+                temp = vectorDivide(temp,1.0)
                 agent.velocity = temp
                 return True
     return False

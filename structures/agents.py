@@ -4,12 +4,9 @@ from OpenGL.GLU import *
 from math import pow, sqrt
 from misc.vector3 import *
 
-maxSpeed = 10
-
 class Agent:
 
-	global maxSpeed
-
+	maxSpeed = 12
 	radius = 0
 	position = [0,1,0]   # a 2 or 3D vector
 	orientation = 0.0    # a single floating point value
@@ -43,6 +40,6 @@ class Agent:
 
 		# The velocity is along this direction, at full speed
 		# If this is too fast, clip it to the max speed
-		if vectorLength(self.velocity) > maxSpeed:
+		if vectorLength(self.velocity) > self.maxSpeed:
 			self.velocity = normalize(self.velocity)
-			self.velocity = vectorTimes(self.velocity,maxSpeed)
+			self.velocity = vectorTimes(self.velocity,self.maxSpeed)

@@ -11,7 +11,6 @@ from structures.walls import *
 from structures.obstacles import *
 from structures.steeringOutput import *
 from ia.steeringBehaviours import *
-from ia.collisions import *
 from ia.behavior import *
 from ia.jumps import *
 
@@ -41,66 +40,66 @@ rquady = 0.0
 # Agent stuff #
 ###############
 agent = Agent()
-agent.position = [0,0,40]
+agent.position = [-40,0,-40]
 agent.velocity = [0,0,0]
 agent.orientation = 100.0
 
 ###############
 # Agent2 stuff #
 ###############
-agent2 = Agent()
-agent2.position = [40,0,0]
-agent2.velocity = [0,0,0]
-agent2.orientation = 100.0
+#agent2 = Agent()
+#agent2.position = [40,0,40]
+#agent2.velocity = [0,0,0]
+#agent2.orientation = 100.0
 
 ###############
 # Agent3 stuff #
 ###############
-agent3 = Agent()
-agent3.position = [10,0,10]
-agent3.velocity = [0,0,0]
-agent3.orientation = 10.0
+#agent3 = Agent()
+#agent3.position = [10,0,10]
+#agent3.velocity = [0,0,0]
+#agent3.orientation = 10.0
 
 ###############
 # Agent3 stuff #
 ###############
-agent4 = Agent()
-agent4.position = [10,0,40]
-agent4.velocity = [0,0,0]
-agent4.orientation = 10.0
+#agent4 = Agent()
+#agent4.position = [10,0,40]
+#agent4.velocity = [0,0,0]
+#agent4.orientation = 10.0
 
 
 ################
 # Target Stuff #
 ################
 target = Agent()
-target.position = [-10,0,-10] 
-target.orientation = 300.0
-
+target.position = [40,0,40] 
+target.orientation = 0.0
+target.maxSpeed = 0.175
 
 ####################
 # 2nd Target Stuff #
 ####################
-target2 = Agent()
-target2.position = [0,0,0] 
-target2.orientation = 0.0
-target2.maxSpeed = 0.075
+#target2 = Agent()
+#target2.position = [40,0,40] 
+#target2.orientation = 0.0
+#target2.maxSpeed = 0.075
 
 ####################
 # 3nd Target Stuff #
 ####################
-target3 = Agent()
-target3.position = [0,0,0] 
-target3.orientation = 0.0
+#target3 = Agent()
+#target3.position = [0,0,0] 
+#target3.orientation = 0.0
 
 # List of Agents
-agents = [agent,agent2,agent3, agent4]
+agents = [agent]
 
 ####################
 # Targets Array    #
 ####################
 
-targets = [target,target2]
+targets = [target]
 characters = agents + targets
 
 
@@ -153,9 +152,6 @@ for i in range(0,len(segments3)):
 ############### FIN DE TODO LO QUE DEBERIA IR EN EL MAIN ###########
 ################## O EN ALGUN LUGAR FUERA DE AQUI  #################
 
-# Escape key code
-ESCAPE = '\033'
-
 # Number of the glut window.
 window = 0
 
@@ -190,7 +186,7 @@ def ReSizeWorld(Width, Height):
 def PaintWorld():
     
 
-    global agent, agent2,agent3,agent4, target, maxSpeed, limits, obs, obstacle1, time2, time1, time, agents, targets
+    global agent, target, maxSpeed, limits, obs, obstacle1, time2, time1, time, agents, targets
 
 
     try:
@@ -237,18 +233,6 @@ def PaintWorld():
 	drawAgent(agents[0],'red')
 	glPopMatrix()
 
-	glPushMatrix()
-	drawAgent(agents[1],'blue')
-	glPopMatrix()
-
-	glPushMatrix()
-	drawAgent(agents[2],'blue')
-	glPopMatrix()
-
-	glPushMatrix()
-	drawAgent(agents[3],'blue')
-	glPopMatrix()
-
         #######################
 
 
@@ -260,19 +244,19 @@ def PaintWorld():
     		sys.exit()
     	if sys.argv[1] == "Wander":
     		steering = getSteering(characters,target3,agent,obs,"Wander")
-    		steering2 = getSteering(characters,target,agent2,obs,"Wander")
-    		steering3 = getSteering(characters,target,agent3,obs,"Wander")
-    		steering4 = getSteering(characters,target,agent4,obs,"Wander")
+    		#steering2 = getSteering(characters,target,agent2,obs,"Wander")
+    		#steering3 = getSteering(characters,target,agent3,obs,"Wander")
+    		#steering4 = getSteering(characters,target,agent4,obs,"Wander")
     	elif sys.argv[1] == "Pursue":
     		steering = getSteering(characters,target,agent,obs,"Pursue")
-    		steering2 = getSteering(characters,target,agent2,obs,"Pursue")
-    		steering3 = getSteering(characters,target,agent3,obs,"Pursue")
-    		steering4 = getSteering(characters,target,agent4,obs,"Pursue")
+    		#steering2 = getSteering(characters,target,agent2,obs,"Pursue")
+    		#steering3 = getSteering(characters,target,agent3,obs,"Pursue")
+    		#steering4 = getSteering(characters,target,agent4,obs,"Pursue")
 	elif sys.argv[1] == "Seek":
             	steering = getSteering(characters,target,agent,obs,"Seek")
-            	steering2 = getSteering(characters,target,agent2,obs,"Seek")
-            	steering3 = getSteering(characters,target,agent3,obs,"Seek")
-            	steering4 = getSteering(characters,target,agent4,obs,"Seek")
+            	#steering2 = getSteering(characters,target,agent2,obs,"Seek")
+            	#steering3 = getSteering(characters,target,agent3,obs,"Seek")
+            	#steering4 = getSteering(characters,target,agent4,obs,"Seek")
     	elif sys.argv[1] == "Flee":
             steering = seek(agent, target, "flee")
     	else:
@@ -292,9 +276,9 @@ def PaintWorld():
 
         # Updating agents stats
         agent.update(steering,time)
-        agent2.update(steering2,time)
-        agent3.update(steering3,time)
-        agent4.update(steering4,time)
+        #agent2.update(steering2,time)
+        #agent3.update(steering3,time)
+        #agent4.update(steering4,time)
 
         # Updating player stats
         updatePlayer(target,time)
