@@ -301,38 +301,96 @@ def drawNavMesh():
 
     ts = []
 
-    #ts.append(Triangle((50,50),(30,30),(30,50))) #1
-    #ts.append(Triangle((50,50),(30,30),(50,30))) #2
+    ts.append(Triangle((50,50),(30,30),(30,50))) #1
+    ts.append(Triangle((50,50),(30,30),(50,30))) #2
 
     ts.append(Triangle((30,30),(50,30),(50,20))) #3
-    # ts.append(Triangle((50,20),(50,30),(50,20))) #4
+    ts.append(Triangle((50,20),(50,30),(50,20))) #4
 
-    # ts.append(Triangle((30,20),(30,0),(50,20))) #5
-    # ts.append(Triangle((50,20),(50,0),(30,0))) #6
+    ts.append(Triangle((30,20),(30,0),(50,20))) #5
+    ts.append(Triangle((50,20),(50,0),(30,0))) #6
 
-    # ts.append(Triangle((50,-20),(50,0),(30,0))) #7
-    # ts.append(Triangle((50,-20),(30,-20),(30,0))) #8
+    ts.append(Triangle((50,-20),(50,0),(30,0))) #7
+    ts.append(Triangle((50,-20),(30,-20),(30,0))) #8
 
-    # ts.append(Triangle((50,-20),(30,-20),(30,-30))) #9
-    # ts.append(Triangle((50,-30),(30,-30),(50,-20))) #10
+    ts.append(Triangle((50,-20),(30,-20),(30,-30))) #9
+    ts.append(Triangle((50,-30),(30,-30),(50,-20))) #10
 
-    # ts.append(Triangle((50,-30),(30,-30),(50,-50))) #11
-    # ts.append(Triangle((50,-50),(30,-50),(30,-30))) #12
+    ts.append(Triangle((50,-30),(30,-30),(50,-50))) #11
+    ts.append(Triangle((50,-50),(30,-50),(30,-30))) #12
 
-    # ts.append(Triangle((20,-50),(30,-30),(30,-50))) #13
-    # ts.append(Triangle((20,-30),(20,-50),(30,-30))) #14
+    ts.append(Triangle((20,-50),(30,-30),(30,-50))) #13
+    ts.append(Triangle((20,-30),(20,-50),(30,-30))) #14
 
-    # ts.append(Triangle((30,-20),(30,0),(20,-20))) #15
-    # ts.append(Triangle((20,0),(30,0),(20,-20))) #16
+    ts.append(Triangle((30,-20),(30,0),(20,-20))) #15
+    ts.append(Triangle((20,0),(30,0),(20,-20))) #16
 
-    # ts.append(Triangle((20,0),(30,0),(20,20))) #17
-    # ts.append(Triangle((20,20),(30,20),(30,0))) #18
+    ts.append(Triangle((20,0),(30,0),(20,20))) #17
+    ts.append(Triangle((20,20),(30,20),(30,0))) #18
 
+    ts.append(Triangle((20,30),(30,30),(20,50))) #19
+    ts.append(Triangle((20,50),(30,50),(30,30))) #20
 
-    
+    ts.append(Triangle((20,30),(0,30),(20,50))) #21
+    ts.append(Triangle((0,30),(0,50),(20,50))) #22
 
-    #ts.append(Triangle((20,-30),(20,-50),(0,-30))) #15
-    #ts.append(Triangle((0,-30),(0,-50),(20,-50))) #16
+    ts.append(Triangle((0,0),(0,30),(30,30))) #23
+    ts.append(Triangle((0,0),(30,0),(30,30))) #24
+
+    ts.append(Triangle((0,0),(20,0),(20,-20))) #25
+    ts.append(Triangle((0,0),(0,-20),(20,-20))) #26
+
+    ts.append(Triangle((0,-30),(0,-20),(20,-20))) #27
+    ts.append(Triangle((20,-20),(0,-30),(20,-30))) #28
+
+    ts.append(Triangle((20,-30),(20,-50),(0,-30))) #29
+    ts.append(Triangle((0,-30),(0,-50),(20,-50))) #30
+
+    # Mirror
+    ts.append(Triangle((-50,50),(-30,30),(-30,50))) #-1
+    ts.append(Triangle((-50,50),(-30,30),(-50,30))) #-2
+
+    ts.append(Triangle((-30,30),(-50,30),(-50,20))) #-3
+    ts.append(Triangle((-50,20),(-50,30),(-50,20))) #-4
+
+    ts.append(Triangle((-30,20),(-30,0),(-50,20))) #-5
+    ts.append(Triangle((-50,20),(-50,0),(-30,0))) #-6
+
+    ts.append(Triangle((-50,-20),(-50,0),(-30,0))) #-7
+    ts.append(Triangle((-50,-20),(-30,-20),(-30,0))) #-8
+
+    ts.append(Triangle((-50,-20),(-30,-20),(-30,-30))) #-9
+    ts.append(Triangle((-50,-30),(-30,-30),(-50,-20))) #-10
+
+    ts.append(Triangle((-50,-30),(-30,-30),(-50,-50))) #-11
+    ts.append(Triangle((-50,-50),(-30,-50),(-30,-30))) #-12
+
+    ts.append(Triangle((-20,-50),(-30,-30),(-30,-50))) #-13
+    ts.append(Triangle((-20,-30),(-20,-50),(-30,-30))) #-14
+
+    ts.append(Triangle((-30,-20),(-30,0),(-20,-20))) #-15
+    ts.append(Triangle((-20,0),(-30,0),(-20,-20))) #-16
+
+    ts.append(Triangle((-20,0),(-30,0),(-20,20))) #-17
+    ts.append(Triangle((-20,20),(-30,20),(-30,0))) #-18
+
+    ts.append(Triangle((-20,30),(-30,30),(-20,50))) #-19
+    ts.append(Triangle((-20,50),(-30,50),(-30,30))) #-20
+
+    ts.append(Triangle((-20,30),(0,30),(-20,50))) #-21
+    ts.append(Triangle((0,30),(0,50),(-20,50))) #-22
+
+    ts.append(Triangle((0,0),(0,30),(-30,30))) #-23
+    ts.append(Triangle((0,0),(-30,0),(-30,30))) #-24
+
+    ts.append(Triangle((0,0),(-20,0),(-20,-20))) #-25
+    ts.append(Triangle((0,0),(0,-20),(-20,-20))) #-26
+
+    ts.append(Triangle((0,-30),(0,-20),(-20,-20))) #-27
+    ts.append(Triangle((-20,-20),(0,-30),(-20,-30))) #-28
+
+    ts.append(Triangle((-20,-30),(-20,-50),(0,-30))) #-29
+    ts.append(Triangle((0,-30),(0,-50),(-20,-50))) #-30
 
     for t in ts:
         
