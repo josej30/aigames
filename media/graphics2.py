@@ -305,7 +305,7 @@ def drawNavMesh():
     ts.append(Triangle((50,50),(30,30),(50,30))) #2
 
     ts.append(Triangle((30,30),(50,30),(50,20))) #3
-    ts.append(Triangle((50,20),(50,30),(50,20))) #4
+    ts.append(Triangle((50,20),(30,30),(30,20))) #4
 
     ts.append(Triangle((30,20),(30,0),(50,20))) #5
     ts.append(Triangle((50,20),(50,0),(30,0))) #6
@@ -334,8 +334,8 @@ def drawNavMesh():
     ts.append(Triangle((20,30),(0,30),(20,50))) #21
     ts.append(Triangle((0,30),(0,50),(20,50))) #22
 
-    ts.append(Triangle((0,0),(0,30),(30,30))) #23
-    ts.append(Triangle((0,0),(30,0),(30,30))) #24
+    ts.append(Triangle((0,0),(0,20),(20,20))) #23
+    ts.append(Triangle((0,0),(20,0),(20,20))) #24
 
     ts.append(Triangle((0,0),(20,0),(20,-20))) #25
     ts.append(Triangle((0,0),(0,-20),(20,-20))) #26
@@ -351,7 +351,7 @@ def drawNavMesh():
     ts.append(Triangle((-50,50),(-30,30),(-50,30))) #-2
 
     ts.append(Triangle((-30,30),(-50,30),(-50,20))) #-3
-    ts.append(Triangle((-50,20),(-50,30),(-50,20))) #-4
+    ts.append(Triangle((-50,20),(-30,30),(-30,20))) #-4
 
     ts.append(Triangle((-30,20),(-30,0),(-50,20))) #-5
     ts.append(Triangle((-50,20),(-50,0),(-30,0))) #-6
@@ -380,8 +380,8 @@ def drawNavMesh():
     ts.append(Triangle((-20,30),(0,30),(-20,50))) #-21
     ts.append(Triangle((0,30),(0,50),(-20,50))) #-22
 
-    ts.append(Triangle((0,0),(0,30),(-30,30))) #-23
-    ts.append(Triangle((0,0),(-30,0),(-30,30))) #-24
+    ts.append(Triangle((0,0),(0,20),(-20,20))) #-23
+    ts.append(Triangle((0,0),(-20,0),(-20,20))) #-24
 
     ts.append(Triangle((0,0),(-20,0),(-20,-20))) #-25
     ts.append(Triangle((0,0),(0,-20),(-20,-20))) #-26
@@ -422,7 +422,7 @@ def drawNavMesh():
 
         glPushMatrix()
         glColor3f(1.0,1.0,0.0)
-        glTranslatef(g[0], 2.0, g[1])
+        glTranslatef(g[0], 0.0, g[1])
         glutSolidSphere(0.5,20,20)
         glPopMatrix()
 
