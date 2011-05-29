@@ -25,7 +25,7 @@ def getCollision(position, moveAmount, obs):
             # is contained into the segment
             if ray.point_in_segment(inter) and ob['seg'].point_in_segment(inter):
                 
-                print " Colision en el punto (" + str(inter[0]) + "," + str(inter[1]) + ")"
+#                print " Colision en el punto (" + str(inter[0]) + "," + str(inter[1]) + ")"
 
                 collisions.append(Collision([inter[0],0,inter[1]],ob['normal']))
 

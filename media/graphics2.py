@@ -21,6 +21,9 @@ import sys
 ############### TODO ESTO DEBERIA IR EN EL MAIN ###########
 ############### O EN ALGUN LUGAR FUERA DE AQUI  ##########
 
+# Debug Option activated/desactivated
+debug = True
+
 # Keyboard keys pressed
 keyBuffer = [False for x in range(256)]
 
@@ -186,7 +189,7 @@ def ReSizeWorld(Width, Height):
 def PaintWorld():
     
 
-    global agent, target, maxSpeed, limits, obs, obstacle1, time2, time1, time, agents, targets
+    global agent, target, maxSpeed, limits, obs, obstacle1, time2, time1, time, agents, targets, debug
 
 
     try:
@@ -215,23 +218,21 @@ def PaintWorld():
         drawObstacle(obstacle2)
         drawObstacle(obstacle3)
 
-	# Objective
+	# Player
         for target in targets:
         	# Objective
         	glPushMatrix()
         	drawAgent(target,'cyan')
         	glPopMatrix()
 
-        
-        #for agen in agents:
-        #	# Objective
-        #	glPushMatrix()
-        #	drawAgent(agen,'blue')
-        #	glPopMatrix()
+        # Enemies
+        for agent in agents:
+            glPushMatrix()
+            drawAgent(agent,'red')
+            glPopMatrix()
 
-	glPushMatrix()
-	drawAgent(agents[0],'red')
-	glPopMatrix()
+        if debug:
+            drawNavMesh()
 
         #######################
 
@@ -295,6 +296,19 @@ def PaintWorld():
     except Exception, e:
         traceback.print_exc()
         sys.exit(-1)
+
+def drawNavMesh():
+    
+    glPushMatrix()
+
+    glColor3f(0.0,0.0,0.8)
+
+    glBegin(GL_LINES)
+    glVertex3f(50,0.0,50)
+    glVertex3f(5,0.0,5)
+    glEnd()
+    glPopMatrix()
+    
 
 def drawObstacle(obstacle):
 
@@ -442,8 +456,14 @@ def drawAgent(agent, color):
 
 # The function called whenever a key is pressed. Note the use of Python tuples to pass in: (key, x, y)  
 def keyPressed(key, x , y):
-    global keyBuffer
-    keyBuffer[ord(key)+10] = True
+    global keyBuffer, debug
+    
+    # Print NavMesh (Debug Mode)
+    if ord(key) == 112:
+        debug = not debug
+
+    else:
+        keyBuffer[ord(key)+10] = True
 
 def keyUp(key, x, y):
     global keyBuffer
