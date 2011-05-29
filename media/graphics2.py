@@ -3,9 +3,10 @@ from OpenGL.GLUT import *
 from OpenGL.GLU import *
 
 from datetime import datetime
+import traceback
+import sys
 
 from physics.rules import *
-
 from structures.agents import *
 from structures.walls import *
 from structures.obstacles import *
@@ -14,10 +15,6 @@ from structures.triangle import Triangle
 from ia.steeringBehaviours import *
 from ia.behavior import *
 from ia.jumps import *
-
-import traceback
-
-import sys
 
 ############### TODO ESTO DEBERIA IR EN EL MAIN ###########
 ############### O EN ALGUN LUGAR FUERA DE AQUI  ##########
@@ -299,16 +296,65 @@ def PaintWorld():
         sys.exit(-1)
 
 def drawNavMesh():
+
+    y = 0.1
+
+    ts = []
+
+    ts.append(Triangle((50,50),(30,30),(30,50))) #1
+    ts.append(Triangle((50,50),(30,30),(50,30))) #2
+
+    ts.append(Triangle((30,30),(50,30),(50,20))) #3
+    ts.append(Triangle((50,20),(50,30),(50,20))) #4
+
+    ts.append(Triangle((30,20),(30,0),(50,20))) #5
+    ts.append(Triangle((50,20),(50,0),(30,0))) #6
+
+    ts.append(Triangle((50,-20),(50,0),(30,0))) #7
+    ts.append(Triangle((50,-20),(30,-20),(30,0))) #8
+
+    ts.append(Triangle((50,-20),(30,-20),(30,-30))) #9
+    ts.append(Triangle((50,-30),(30,-30),(50,-20))) #10
+
+    ts.append(Triangle((50,-30),(30,-30),(50,-50))) #11
+    ts.append(Triangle((50,-50),(30,-50),(30,-30))) #12
+
+    ts.append(Triangle((20,-50),(30,-30),(30,-50))) #13
+    ts.append(Triangle((20,-30),(20,-50),(30,-30))) #14
+
+
+
+
     
-    glPushMatrix()
+    
 
-    glColor3f(0.0,0.0,0.8)
+    
 
-    glBegin(GL_LINES)
-    glVertex3f(50,0.0,50)
-    glVertex3f(5,0.0,5)
-    glEnd()
-    glPopMatrix()
+    for t in ts:
+        
+        glPushMatrix()
+        glBegin(GL_LINES)
+        glColor3f(0.0,0.0,0.8)
+        glVertex3f(t.vertex1[0],y,t.vertex1[1])
+        glVertex3f(t.vertex2[0],y,t.vertex2[1])
+        glEnd()
+        glPopMatrix()
+
+        glPushMatrix()
+        glBegin(GL_LINES)
+        glColor3f(0.0,0.0,0.8)
+        glVertex3f(t.vertex2[0],y,t.vertex2[1])
+        glVertex3f(t.vertex3[0],y,t.vertex3[1])
+        glEnd()
+        glPopMatrix()
+
+        glPushMatrix()
+        glBegin(GL_LINES)
+        glColor3f(0.0,0.0,0.8)
+        glVertex3f(t.vertex3[0],y,t.vertex3[1])
+        glVertex3f(t.vertex1[0],y,t.vertex1[1])
+        glEnd()
+        glPopMatrix()
     
 
 def drawObstacle(obstacle):
