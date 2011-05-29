@@ -1,0 +1,5 @@
+class Node:
+	node = 0
+	connection
+       	costSoFar
+       	estimatedTotalCost
