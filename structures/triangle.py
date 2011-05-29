@@ -2,7 +2,7 @@ from __future__ import division
 from point import *
 
 class Triangle:
-	vertice1 = Point() 
+	vertice1 = Point()
 	vertice2 = Point()
 	vertice3 = Point()
 

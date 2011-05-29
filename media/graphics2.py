@@ -10,6 +10,7 @@ from structures.agents import *
 from structures.walls import *
 from structures.obstacles import *
 from structures.steeringOutput import *
+from structures.triangle import Triangle
 from ia.steeringBehaviours import *
 from ia.behavior import *
 from ia.jumps import *
