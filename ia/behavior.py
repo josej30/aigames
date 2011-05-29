@@ -15,8 +15,6 @@ def getSteering(targets,target,agent,obs,flag):
         steeringWander = wander(face,agent,target)
     elif flag == "Pursue":
         steeringPursue = Pursue(seek,target,agent)
-        print "behavior"
-        print steeringPursue.linear
     elif flag == "Seek":
         steeringSeek = seek(agent, target, "seek")
 
@@ -26,7 +24,7 @@ def getSteering(targets,target,agent,obs,flag):
     PursueWeight = 1.0
     WanderWeight = 1.0
     SeekWeight = 1.0
-    ObstacleAvoidanceWeight = 7.0
+    ObstacleAvoidanceWeight = 10.0
     SeparationWeigth = 3.0
 
     if (steeringObstacleAvoidance.linear == [0,0,0]):
@@ -54,10 +52,6 @@ def getSteering(targets,target,agent,obs,flag):
         ]
    
 
-    # Holds the maximum acceleration and rotation
-    maxAcceleration = 5
-    maxRotation = 10
-
     # Create the steering structure for accumulation
     steering = SteeringOutput()
 
@@ -66,24 +60,14 @@ def getSteering(targets,target,agent,obs,flag):
     	for behavior in behavior_pursue:
         	temp = behavior[0].scale_steering(behavior[1])
         	steering = sum_steering(steering, temp)
-#        	print "pursue"
-        
-        	#steering = sum_steering(steering,steeringSeparation) 
     elif flag == "Wander":
     	for behavior in behavior_wander:
         	temp = behavior[0].scale_steering(behavior[1])
         	steering = sum_steering(steering, temp)
         	
     elif flag == "Seek":
-#    	print "seek"
     	for behavior in behavior_seek:
         	temp = behavior[0].scale_steering(behavior[1])
         	steering = sum_steering(steering, temp)
-
-
-
-    # Crop the result and return
-    #steering.linear = max(steering.linear, maxAcceleration)
-    #steering.angular = max(steering.angular, maxRotation)
 
     return steering

@@ -84,6 +84,7 @@ target.orientation = 300.0
 target2 = Agent()
 target2.position = [0,0,0] 
 target2.orientation = 0.0
+target2.maxSpeed = 0.075
 
 ####################
 # 3nd Target Stuff #
