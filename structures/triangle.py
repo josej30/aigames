@@ -2,18 +2,18 @@ from __future__ import division
 from point import *
 
 class Triangle:
-	vertice1 = Point() 
-	vertice2 = Point()
-	vertice3 = Point()
+	vertex1 = Point() 
+	vertex2 = Point()
+	vertex3 = Point()
 
 	def __init__(self,a,b,c):
-		self.vertice1 = a
-    		self.vertice2 = b
-    		self.vertice3 = c
+		self.vertex1 = a
+    		self.vertex2 = b
+    		self.vertex3 = c
     	def centerOfMass(self):
     		G = Point()
-    		G.x = (self.vertice1.x + self.vertice2.x + self.vertice3.x)
-    		G.y = (self.vertice1.y + self.vertice2.y + self.vertice3.y)
+    		G.x = (self.vertex1.x + self.vertex2.x + self.vertex3.x)/3
+    		G.y = (self.vertex1.y + self.vertex3.y + self.vertex3.y)/3
     		return G
 #p1 = Point()
 #p1.x = 2

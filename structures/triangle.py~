@@ -14,7 +14,6 @@ class Triangle:
     		G = Point()
     		G.x = (self.vertice1.x + self.vertice2.x + self.vertice3.x)
     		G.y = (self.vertice1.y + self.vertice2.y + self.vertice3.y)
-    		print G.y/3
     		return G
 #p1 = Point()
 #p1.x = 2
