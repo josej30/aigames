@@ -1,6 +1,6 @@
 from structures.agents import Agent
 from structures.walls import Wall
-from media.graphics import execute
+from media.graphics2 import execute
 import sys
 
 
