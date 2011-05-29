@@ -10,7 +10,6 @@ from misc.vector3 import *
 from random import random
 
 
-maxSpeed = 10
 maxAcceleration = 15
 
 
@@ -30,7 +29,7 @@ def getNewOrientation(currentOrientation, velocity):
 
 def seek(agent, target, flag):
 
-	global maxSpeed, maxAcceleration
+	global maxAcceleration
 
 	# Holds the satisfaction radius
 	targetRadius = 1
@@ -59,13 +58,13 @@ def seek(agent, target, flag):
 
 	# If we are outside the slowRadius, then go max speed
 	if distance > slowRadius:
-		targetSpeed = maxSpeed
+		targetSpeed = target.maxSpeed
 	# Otherwise calculate a scaled speed
 	else:
 		if flag == "collision":
-			targetSpeed = maxSpeed * distance / slowRadius
+			targetSpeed = target.maxSpeed * distance / slowRadius
 		else:
-			targetSpeed = maxSpeed * distance / slowRadius
+			targetSpeed = target.maxSpeed * distance / slowRadius
 
 
 	# The target velocity combines speed and direction

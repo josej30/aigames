@@ -423,7 +423,7 @@ def drawNavMesh():
         glPushMatrix()
         glColor3f(1.0,1.0,0.0)
         glTranslatef(g[0], 0.0, g[1])
-        glutSolidSphere(0.5,20,20)
+        glutSolidSphere(0.2,20,20)
         glPopMatrix()
 
 def drawObstacle(obstacle):
