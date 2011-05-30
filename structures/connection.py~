@@ -1,0 +1,16 @@
+from noderecord import *
+class Connection:
+
+      cost = 0.0
+
+      fromNode = nodeRecord()
+
+      toNode = nodeRecod()
+
+      def getCost(): return cost
+
+      def getFromNode(): return fromNode
+
+      def getToNode(): return toNode
+
+

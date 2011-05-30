@@ -25,7 +25,7 @@ t = True
 
 def scheduleJumpAction(agent):
 	if agent.position[1]==0:
-		agent.velocity[1] = .3
+		agent.velocity[1] = 1.0
 	
 # Retrieve the steering for this jump
 def Jump(agent):

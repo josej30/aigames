@@ -7,7 +7,7 @@ class nodeRecord:
 		self.node = a
 		
 	def minNode( nodeList ):
-	nodeMin = nodeRecord()
+		nodeMin = nodeRecord()
 		for node in nodeList:
 			if node.costSoFar <= nodeMin.costSoFar:
 				nodeMin = node
