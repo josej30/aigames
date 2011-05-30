@@ -1,12 +1,12 @@
 from structures.nodeRecord import *
 from structures.Connection import *
+
 def minNode( nodeList ):
-		nodeMin = nodeRecord(0)
-		nodeMin.costSoFar = 10000000
-		for node in nodeList:
-			if node.costSoFar <= nodeMin.costSoFar:
-				nodeMin = node
-		return node
+	nodeMin = nodeRecord(0)
+	for node in nodeList:
+		if node.costSoFar <= nodeMin.costSoFar:
+			nodeMin = node
+	return nodeMin
 		
 def pathfindAStar():
 	
@@ -23,19 +23,19 @@ def pathfindAStar():
 	
 	nodes = [node0,node1,node2,node3,node4,node5,node6]
 	
-	graph = [ [-1,2,4,-1,-1,-1,-1],
+	graph = [ 
+		[-1,2,4,-1,-1,-1,-1],
 		[-1,-1,-1,3,4,-1,-1],
 		[-1,-1,-1,-1,6,-1,-1],
 		[-1,-1,-1,-1,-1,-1,6],
 		[-1,-1,-1,-1,-1,2,-1],
 		[-1,-1,-1,-1,-1,-1,3],
 		[-1,-1,-1,-1,-1,-1,-1]
-	
 	] 
      	# Initialize the record for the start node
      	startRecord = nodeRecord(0)
      	startRecord.connection = None
-     	startRecord.costSoFar = 0.0
+     	startRecord.costSoFar = 0
 
    	startRecord.estimatedTotalCost = 0.0#node0.estimate(node6)
 
@@ -56,13 +56,9 @@ def pathfindAStar():
      		# Find the smallest element in the openList list
      		# (using the estimatedTotalCost)
 
-		print "\nopenList"
-		for i in openList:
-			print i.node
-
      		current = minNode(openList)
 
-		print "current = " + str(current.node)
+		#print "current = " + str(current.node)
 
      		# If it is the goal node, then terminate
      		if current.node == goal.node: break
@@ -73,8 +69,6 @@ def pathfindAStar():
      		
      			if graph[current.node][index]!=-1:
      			
-				print "vecino = " + str(nodes[index].node)
-
      				new_connection = Connection()
      				new_connection.cost = graph[current.node][index]
      				new_connection.fromNode = current
@@ -103,8 +97,6 @@ def pathfindAStar():
        				j = -1
 
        			if i>=0:
-				print "index closed"
-
 	 			# Here we find the record in the closed list
 	 			# corresponding to the endNode.
 	 			endNodeRecord = closed[i]
@@ -153,7 +145,7 @@ def pathfindAStar():
 			 
 			# We're here if we need to update the node
 			# Update the cost, estimate and connection
-			endNodeRecord.cost = endNodeCost
+			endNodeRecord.costSoFar = endNodeCost
 			endNodeRecord.connection = connection
 			endNodeRecord.estimatedTotalCost = endNodeCost + endNodeHeuristic
 			
@@ -202,12 +194,9 @@ def pathfindAStar():
 			path.append(current.connection)
 			current = current.connection.getFromNode()
 
-
 	# Reverse the path, and return it
-	print "El camino"
-	
-	for i in path:
-		print i.fromNode.node
 
-	return path.reverse()
+	path.reverse()
+
+	return path
 
