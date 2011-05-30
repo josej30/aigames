@@ -5,15 +5,22 @@ from misc.vector3 import *
 
 def check_physics(agents,obs):
 
+    r = []
+    steering = SteeringOutput()
     for agent in agents:
         for ob in obs:
             if agent_wall(agent,ob['seg']):
-                temp = ob['normal']
-                temp = vectorDivide(temp,1.0)
+                #temp = ob['normal']
+                #temp = vectorDivide(temp,1.0)
+                temp = agent.velocity
+                if ob['normal'][0] != 0:
+                    temp[0] = -temp[0]
+                elif ob['normal'][2] != 0:
+                    temp[2] = -temp[2]
+                steering.linear = temp
+                r.append([agent,steering])
                 agent.velocity = temp
-                return True
-    return False
-            
+    return r
 
 
 def agent_wall(agent,wall):
