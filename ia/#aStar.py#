@@ -4,6 +4,7 @@ def minNode( nodeList ):
 		nodeMin = nodeRecord(0)
 		nodeMin.costSoFar = 10000000
 		for node in nodeList:
+			
 			if node.costSoFar <= nodeMin.costSoFar:
 				nodeMin = node
 		return node
