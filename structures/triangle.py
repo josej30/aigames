@@ -2,12 +2,13 @@ class Triangle:
 	vertex1 = ()
 	vertex2 = ()
 	vertex3 = ()
+	node = 0
 
-	def __init__(self,a,b,c):
+	def __init__(self,a,b,c,d):
 		self.vertex1 = a
     		self.vertex2 = b
     		self.vertex3 = c
-
+    		self.node = d
     	def centerOfMass(self):
 		G = [0,0]
     		G[0] = (self.vertex1[0] + self.vertex2[0] + self.vertex3[0])/3.0
@@ -21,9 +22,9 @@ class Triangle:
 
     	def pointInTriangle(self,point):
 		#print point
-		t1 = Triangle(self.vertex1,self.vertex2,point)
-		t2 = Triangle(self.vertex2,self.vertex3,point)
-		t3 = Triangle(self.vertex3,self.vertex1,point)
+		t1 = Triangle(self.vertex1,self.vertex2,point,1)
+		t2 = Triangle(self.vertex2,self.vertex3,point,2)
+		t3 = Triangle(self.vertex3,self.vertex1,point,3)
 
 		orientation_original = self.orientation(point)
 		#print orientation_original
@@ -39,10 +40,10 @@ class Triangle:
     		else:
     			return False
 
-    	def getTriangle(triangles,point):
-    		for triangle in triangles:
-    			if triangle.pointInTriangle(point):
-    				return triangle
+def getTriangle(triangles,point):
+	for triangle in triangles:
+		if triangle.pointInTriangle(point):
+			return triangle
     		
     			 
 

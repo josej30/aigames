@@ -1,6 +1,7 @@
 from structures.nodeRecord import *
 from structures.Connection import *
 from structures.triangle import *
+import sys
 
 def minNode( nodeList ):
 	nodeMin = nodeRecord(0)
@@ -9,7 +10,7 @@ def minNode( nodeList ):
 			nodeMin = node
 	return nodeMin
 		
-def pathfindAStar(enemy, player):
+def pathfindAStar(enemy, player, ts):
 
 	node0 = nodeRecord(0)
 	node1 = nodeRecord(1)
@@ -262,10 +263,20 @@ def pathfindAStar(enemy, player):
 	m[59][40] = 1 
 	m[40][59] = 1
 
-	#goal = getTriangle(ts,player.position)
-	#start = getTriangle(ts,enemy.position)
-	goal = node13
-	start = node15
+	ptri = getTriangle(ts,player.position)
+	etri = getTriangle(ts,enemy.position)
+	if ptri != None:
+		goal = nodes[ptri.node]
+	else:
+		print "The Player have no Triangle"
+		sys.exit(-1)
+	if etri != None:
+		start = nodes[etri.node]
+		sys.exit(-1)
+	else:
+		print "The Enemy have no Triangle"
+	#goal = node13
+	#start = node15
 	
 	graph = [ 
 		[-1,2,4,-1,-1,-1,-1],
