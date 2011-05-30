@@ -189,7 +189,6 @@ def PaintWorld():
 
     global agent, player, limits, obs, obstacle1, time2, time1, time, agents, players, debug
 
-
     try:
 
         # Keys Pressed and saved in buffer
@@ -255,10 +254,12 @@ def PaintWorld():
             #steering2 = getSteering(characters,target,agent2,obs,"Seek")
             #steering3 = getSteering(characters,target,agent3,obs,"Seek")
             #steering4 = getSteering(characters,target,agent4,obs,"Seek")
+	elif sys.argv[1] == "Astar":
+            steering = getSteering(characters,player,agent,obs,"Astar")
     	elif sys.argv[1] == "Flee":
             steering = seek(agent, player, "flee")
     	else:
-            print "Argumento invalido"
+            print "Argumentos validos: [ Wander, Pursue, Seek, Flee, Astar ]"
             sys.exit()
 
         ###########
@@ -272,6 +273,9 @@ def PaintWorld():
     
         time = ( (time2 - time1).microseconds ) / 1000000.0
 
+        # Updating player stats
+        updatePlayer(player,time)
+
         # Updating agents stats
         agent.update(steering,time)
         #agent2.update(steering2,time)
@@ -280,9 +284,6 @@ def PaintWorld():
 
         for col in ans:
             col[0].update(col[1],time)
-
-        # Updating player stats
-        updatePlayer(player,time)
 
         # Get initial time just after calculating everything
         time1 = datetime.now()
@@ -604,23 +605,25 @@ def keyOperations():
     step = 0.5
     acc = player.maxAcceleration
 
-    steering = SteeringOutput()
-
     # Movements of the player
     if keyBuffer[100]:
-        steering.linear = [-acc,-10,0]
+        steering = SteeringOutput()
+        steering.linear = [-acc,0,0]
         player.update(steering,time)
         #print "Left"
     if keyBuffer[101]:
-        steering.linear = [0,-10,-acc]
+        steering = SteeringOutput()
+        steering.linear = [0,0,-acc]
         player.update(steering,time)
         #print "Up"
     if keyBuffer[102]:
-        steering.linear = [acc,-10,0]
+        steering = SteeringOutput()
+        steering.linear = [acc,0,0]
         player.update(steering,time)
         #print "Right"
     if keyBuffer[103]:
-        steering.linear = [0,-10,acc]
+        steering = SteeringOutput()
+        steering.linear = [0,0,acc]
         player.update(steering,time)
         #print "Down"
     if keyBuffer[42]:

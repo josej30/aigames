@@ -4,9 +4,9 @@ class SteeringOutput:
 	linear = [0,-10,0]
 	angular = 0.0
 
-	def __init__(self,l=[0,0,0],a=0.0):
-		self.linear = l
-		self.angular = a
+	def __init__(self):
+		self.linear = [0,0,0]
+		self.angular = 0.0
 
 	def scale_steering(self,factor):
 		self.linear = vectorTimes(self.linear,factor)
