@@ -2,11 +2,13 @@ class Triangle:
 	vertex1 = ()
 	vertex2 = ()
 	vertex3 = ()
+	nodo = 0
 
-	def __init__(self,a,b,c):
+	def __init__(self,a,b,c,d):
 		self.vertex1 = a
     		self.vertex2 = b
     		self.vertex3 = c
+    		self.nodo = d
     	def centerOfMass(self):
 		G = [0,0]
     		G[0] = (self.vertex1[0] + self.vertex2[0] + self.vertex3[0])/3.0

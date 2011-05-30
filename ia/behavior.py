@@ -42,12 +42,11 @@ def getSteering(targets,target,agent,obs,flag):
         PursueWeight = 3.0
         WanderWeight = 3.0
         SeekWeigth = 3.0
-<<<<<<< HEAD
-        SeparationWeigth = 70.0
-=======
+
+   
+
         AstarWeigth = 3.0
         SeparationWeigth = 3.0
->>>>>>> 2e977c00ffffe8776e98edfec22296116299e00b
         ObstacleAvoidanceWeight = 0.0
 
     # Create the steering structure for accumulation

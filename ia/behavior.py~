@@ -1,8 +1,8 @@
 from structures.BehaviorAndWeight import *
-from structures.steeringOutput import *
 from misc.vector3 import *
 from ia.steeringBehaviours import *
 from ia.collisions import *
+from ia.aStar import *
 
 # Returns the acceleration required.
 def getSteering(targets,target,agent,obs,flag):
@@ -10,6 +10,7 @@ def getSteering(targets,target,agent,obs,flag):
     steeringPursue = SteeringOutput()
     steeringSeek = SteeringOutput()
     steeringWander = SteeringOutput()
+    steeringAstar = SteeringOutput()
 
     if flag == "Wander":
         steeringWander = wander(face,agent,target)
@@ -17,6 +18,15 @@ def getSteering(targets,target,agent,obs,flag):
         steeringPursue = Pursue(seek,target,agent)
     elif flag == "Seek":
         steeringSeek = seek(agent, target, "seek")
+    elif flag == "Astar":
+        path = pathfindAStar(agent, target)
+        print "begin"
+        for i in path:
+            print i.toNode.node
+        print "end"
+        #targetAstar = retrieveCoords(path[0])
+        #steeringSeek = seek(agent, targetAstar, "seek")
+        
 
     steeringObstacleAvoidance = collisionDetect2(agent,obs)
     steeringSeparation = separation(agent, targets)
@@ -24,51 +34,64 @@ def getSteering(targets,target,agent,obs,flag):
     PursueWeight = 3.0
     WanderWeight = 3.0
     SeekWeight = 3.0
+    AstarWeigth = 3.0
     ObstacleAvoidanceWeight = 10.0
     SeparationWeigth = 70.0
 
     if (steeringObstacleAvoidance.linear == [0,0,0]):
-        PursueWeight = 1.0
-        WanderWeight = 1.0
-        SeekWeigth = 1.0
-        SeparationWeigth = 100.0
+        PursueWeight = 3.0
+        WanderWeight = 3.0
+        SeekWeigth = 3.0
+<<<<<<< HEAD
+        SeparationWeigth = 70.0
+=======
+        AstarWeigth = 3.0
+        SeparationWeigth = 3.0
+>>>>>>> 2e977c00ffffe8776e98edfec22296116299e00b
         ObstacleAvoidanceWeight = 0.0
-
-    # Holds a list of BehaviorAndWeight instances.
-    behavior_pursue = [
-        [steeringPursue,PursueWeight],
-        [steeringObstacleAvoidance,ObstacleAvoidanceWeight],
-        [steeringSeparation,SeparationWeigth]
-        ]
-    behavior_wander = [
-        [steeringWander,WanderWeight],
-        [steeringObstacleAvoidance,ObstacleAvoidanceWeight],
-        [steeringSeparation,SeparationWeigth]
-        ]
-    behavior_seek = [
-        [steeringSeek,SeekWeight],
-        [steeringObstacleAvoidance,ObstacleAvoidanceWeight],
-        [steeringSeparation,SeparationWeigth]
-        ]
-   
 
     # Create the steering structure for accumulation
     steering = SteeringOutput()
 
     # Accumulate all accelerations
     if flag == "Pursue":
+        behavior_pursue = [
+            [steeringPursue,PursueWeight],
+            [steeringObstacleAvoidance,ObstacleAvoidanceWeight],
+            [steeringSeparation,SeparationWeigth]
+            ]
     	for behavior in behavior_pursue:
         	temp = behavior[0].scale_steering(behavior[1])
         	steering = sum_steering(steering, temp)
 
     elif flag == "Wander":
-    	for behavior in behavior_wander:
+        behavior_wander = [
+            [steeringWander,WanderWeight],
+            [steeringObstacleAvoidance,ObstacleAvoidanceWeight],
+            [steeringSeparation,SeparationWeigth]
+            ]
+        for behavior in behavior_wander:
         	temp = behavior[0].scale_steering(behavior[1])
         	steering = sum_steering(steering, temp)
         	
     elif flag == "Seek":
+        behavior_seek = [
+            [steeringSeek,SeekWeight],
+            [steeringObstacleAvoidance,ObstacleAvoidanceWeight],
+            [steeringSeparation,SeparationWeigth]
+            ]
     	for behavior in behavior_seek:
         	temp = behavior[0].scale_steering(behavior[1])
         	steering = sum_steering(steering, temp)
 
+    elif flag == "Astar":
+        behavior_astar = [
+            [steeringAstar,AstarWeigth],
+            [steeringObstacleAvoidance,ObstacleAvoidanceWeight],
+            [steeringSeparation,SeparationWeigth]
+            ]
+    	for behavior in behavior_astar:
+            temp = behavior[0].scale_steering(behavior[1])
+            steering = sum_steering(steering, temp)
+   
     return steering
