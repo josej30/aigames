@@ -71,12 +71,13 @@ agent.orientation = 100.0
 
 
 ################
-# Target Stuff #
+# Player Stuff #
 ################
-target = Agent()
-target.position = [40,0,40] 
-target.orientation = 0.0
-target.maxSpeed = 0.175
+player = Agent()
+player.position = [40,0,40] 
+player.orientation = 0.0
+player.maxSpeed = 3
+player.maxAcceleration = 1
 
 ####################
 # 2nd Target Stuff #
@@ -97,12 +98,11 @@ target.maxSpeed = 0.175
 agents = [agent]
 
 ####################
-# Targets Array    #
+# Players Array    #
 ####################
 
-targets = [target]
-characters = agents + targets
-
+players = [player]
+characters = agents + players
 
 # Array that contains all the proyections of
 # the walls and obstacles of the world with
@@ -187,7 +187,7 @@ def ReSizeWorld(Width, Height):
 def PaintWorld():
     
 
-    global agent, target, maxSpeed, limits, obs, obstacle1, time2, time1, time, agents, targets, debug
+    global agent, player, limits, obs, obstacle1, time2, time1, time, agents, players, debug
 
 
     try:
@@ -217,10 +217,10 @@ def PaintWorld():
         drawObstacle(obstacle3)
 
 	# Player
-        for target in targets:
+        for player in players:
         	# Objective
         	glPushMatrix()
-        	drawAgent(target,'cyan')
+        	drawAgent(player,'cyan')
         	glPopMatrix()
 
         # Enemies
@@ -229,8 +229,7 @@ def PaintWorld():
             drawAgent(agent,'red')
             glPopMatrix()
 
-        if debug:
-            drawNavMesh()
+        drawNavMesh()
 
         #######################
 
@@ -239,34 +238,34 @@ def PaintWorld():
         # Behaviour #
         #############
     	if len(sys.argv) == 1:
-    		print "No se recibieron argumentos"
-    		sys.exit()
+            print "No se recibieron argumentos"
+            sys.exit()
     	if sys.argv[1] == "Wander":
-    		steering = getSteering(characters,target3,agent,obs,"Wander")
-    		#steering2 = getSteering(characters,target,agent2,obs,"Wander")
-    		#steering3 = getSteering(characters,target,agent3,obs,"Wander")
-    		#steering4 = getSteering(characters,target,agent4,obs,"Wander")
+            steering = getSteering(characters,target3,agent,obs,"Wander")
+            #steering2 = getSteering(characters,target,agent2,obs,"Wander")
+            #steering3 = getSteering(characters,target,agent3,obs,"Wander")
+            #steering4 = getSteering(characters,target,agent4,obs,"Wander")
     	elif sys.argv[1] == "Pursue":
-    		steering = getSteering(characters,target,agent,obs,"Pursue")
-    		#steering2 = getSteering(characters,target,agent2,obs,"Pursue")
-    		#steering3 = getSteering(characters,target,agent3,obs,"Pursue")
-    		#steering4 = getSteering(characters,target,agent4,obs,"Pursue")
+            steering = getSteering(characters,player,agent,obs,"Pursue")
+            #steering2 = getSteering(characters,target,agent2,obs,"Pursue")
+            #steering3 = getSteering(characters,target,agent3,obs,"Pursue")
+            #steering4 = getSteering(characters,target,agent4,obs,"Pursue")
 	elif sys.argv[1] == "Seek":
-            	steering = getSteering(characters,target,agent,obs,"Seek")
-            	#steering2 = getSteering(characters,target,agent2,obs,"Seek")
-            	#steering3 = getSteering(characters,target,agent3,obs,"Seek")
-            	#steering4 = getSteering(characters,target,agent4,obs,"Seek")
+            steering = getSteering(characters,player,agent,obs,"Seek")
+            #steering2 = getSteering(characters,target,agent2,obs,"Seek")
+            #steering3 = getSteering(characters,target,agent3,obs,"Seek")
+            #steering4 = getSteering(characters,target,agent4,obs,"Seek")
     	elif sys.argv[1] == "Flee":
-            steering = seek(agent, target, "flee")
+            steering = seek(agent, player, "flee")
     	else:
-    		print "Argumento invalido"
-    		sys.exit()
+            print "Argumento invalido"
+            sys.exit()
 
         ###########
         # Physics #
         ###########
         ans = check_physics(characters,obs)
-
+        
         # Get end just before calculating new positions,
         # velocities and accelerations
         time2 = datetime.now()
@@ -279,8 +278,11 @@ def PaintWorld():
         #agent3.update(steering3,time)
         #agent4.update(steering4,time)
 
+        for col in ans:
+            col[0].update(col[1],time)
+
         # Updating player stats
-        updatePlayer(target,time)
+        updatePlayer(player,time)
 
         # Get initial time just after calculating everything
         time1 = datetime.now()
@@ -298,41 +300,101 @@ def PaintWorld():
 def drawNavMesh():
 
     y = 0.1
+    if not debug:
+        y = -0.3
 
     ts = []
 
-    ts.append(Triangle((50,50),(30,30),(30,50))) #1
-    ts.append(Triangle((50,50),(30,30),(50,30))) #2
+    #ts.append(Triangle((50,50),(30,30),(30,50))) #1
+    #ts.append(Triangle((50,50),(30,30),(50,30))) #2
 
-    ts.append(Triangle((30,30),(50,30),(50,20))) #3
-     ts.append(Triangle((50,20),(50,30),(50,20))) #4
+    #ts.append(Triangle((30,30),(50,30),(50,20))) #3
+    #ts.append(Triangle((50,20),(30,30),(30,20))) #4
 
-     ts.append(Triangle((30,20),(30,0),(50,20))) #5
-     ts.append(Triangle((50,20),(50,0),(30,0))) #6
+    ##ts.append(Triangle((30,20),(30,0),(50,20))) #5
+    #ts.append(Triangle((50,20),(50,0),(30,0))) #6
 
-     ts.append(Triangle((50,-20),(50,0),(30,0))) #7
-     ts.append(Triangle((50,-20),(30,-20),(30,0))) #8
+    #ts.append(Triangle((50,-20),(50,0),(30,0))) #7
+    #ts.append(Triangle((50,-20),(30,-20),(30,0))) #8
 
-     ts.append(Triangle((50,-20),(30,-20),(30,-30))) #9
-     ts.append(Triangle((50,-30),(30,-30),(50,-20))) #10
+    #ts.append(Triangle((50,-20),(30,-20),(30,-30))) #9
+    #ts.append(Triangle((50,-30),(30,-30),(50,-20))) #10
 
-     ts.append(Triangle((50,-30),(30,-30),(50,-50))) #11
-     ts.append(Triangle((50,-50),(30,-50),(30,-30))) #12
+    #ts.append(Triangle((50,-30),(30,-30),(50,-50))) #11
+    #ts.append(Triangle((50,-50),(30,-50),(30,-30))) #12
 
-    # ts.append(Triangle((20,-50),(30,-30),(30,-50))) #13
-    # ts.append(Triangle((20,-30),(20,-50),(30,-30))) #14
+    #ts.append(Triangle((20,-50),(30,-30),(30,-50))) #13
+    #ts.append(Triangle((20,-30),(20,-50),(30,-30))) #14
 
-    # ts.append(Triangle((30,-20),(30,0),(20,-20))) #15
-    # ts.append(Triangle((20,0),(30,0),(20,-20))) #16
+    #ts.append(Triangle((30,-20),(30,0),(20,-20))) #15
+    #ts.append(Triangle((20,0),(30,0),(20,-20))) #16
 
-    # ts.append(Triangle((20,0),(30,0),(20,20))) #17
-    # ts.append(Triangle((20,20),(30,20),(30,0))) #18
+    #ts.append(Triangle((20,0),(30,0),(20,20))) #17
+    #ts.append(Triangle((20,20),(30,20),(30,0))) #18
 
+    #ts.append(Triangle((20,30),(30,30),(20,50))) #19
+    #ts.append(Triangle((20,50),(30,50),(30,30))) #20
 
-    
+    #ts.append(Triangle((20,30),(0,30),(20,50))) #21
+    #ts.append(Triangle((0,30),(0,50),(20,50))) #22
 
-    #ts.append(Triangle((20,-30),(20,-50),(0,-30))) #15
-    #ts.append(Triangle((0,-30),(0,-50),(20,-50))) #16
+    #ts.append(Triangle((0,0),(0,20),(20,20))) #23
+    #ts.append(Triangle((0,0),(20,0),(20,20))) #24
+
+    #ts.append(Triangle((0,0),(20,0),(20,-20))) #25
+    #ts.append(Triangle((0,0),(0,-20),(20,-20))) #26
+
+    #ts.append(Triangle((0,-30),(0,-20),(20,-20))) #27
+    #ts.append(Triangle((20,-20),(0,-30),(20,-30))) #28
+
+    #ts.append(Triangle((20,-30),(20,-50),(0,-30))) #29
+    #ts.append(Triangle((0,-30),(0,-50),(20,-50))) #30
+
+    # Mirror
+    ts.append(Triangle((-50,50),(-30,30),(-30,50))) #-1 59
+    #ts.append(Triangle((-50,50),(-30,30),(-50,30))) #-2 58
+
+    #ts.append(Triangle((-30,30),(-50,30),(-50,20))) #-3 57
+    #ts.append(Triangle((-50,20),(-30,30),(-30,20))) #-4 56
+
+    #ts.append(Triangle((-30,20),(-30,0),(-50,20))) #-5 55
+    #ts.append(Triangle((-50,20),(-50,0),(-30,0))) #-6 54
+
+    #ts.append(Triangle((-50,-20),(-50,0),(-30,0))) #-7 53
+    #ts.append(Triangle((-50,-20),(-30,-20),(-30,0))) #-8 52
+
+    #ts.append(Triangle((-50,-20),(-30,-20),(-30,-30))) #-9 51
+    #ts.append(Triangle((-50,-30),(-30,-30),(-50,-20))) #-10 50
+
+    #ts.append(Triangle((-50,-30),(-30,-30),(-50,-50))) #-11 49
+    #ts.append(Triangle((-50,-50),(-30,-50),(-30,-30))) #-12 48
+
+    #ts.append(Triangle((-20,-50),(-30,-30),(-30,-50))) #-13 47
+    #ts.append(Triangle((-20,-30),(-20,-50),(-30,-30))) #-14 46
+
+    #ts.append(Triangle((-30,-20),(-30,0),(-20,-20))) #-15 45
+    #ts.append(Triangle((-20,0),(-30,0),(-20,-20))) #-16 44
+
+    #ts.append(Triangle((-20,0),(-30,0),(-20,20))) #-17 43
+    #ts.append(Triangle((-20,20),(-30,20),(-30,0))) #-18 42
+
+    #ts.append(Triangle((-20,30),(-30,30),(-20,50))) #-19 41
+    ts.append(Triangle((-20,50),(-30,50),(-30,30))) #-20 40
+
+    #ts.append(Triangle((-20,30),(0,30),(-20,50))) #-21 39
+    #ts.append(Triangle((0,30),(0,50),(-20,50))) #-22 38
+
+    #ts.append(Triangle((0,0),(0,20),(-20,20))) #-23 37
+    #ts.append(Triangle((0,0),(-20,0),(-20,20))) #-24 36
+
+    #ts.append(Triangle((0,0),(-20,0),(-20,-20))) #-25 35
+    #ts.append(Triangle((0,0),(0,-20),(-20,-20))) #-26 34
+
+    #ts.append(Triangle((0,-30),(0,-20),(-20,-20))) #-27 33
+    #ts.append(Triangle((-20,-20),(0,-30),(-20,-30))) #-28 32
+
+    #ts.append(Triangle((-20,-30),(-20,-50),(0,-30))) #-29 31
+    #ts.append(Triangle((0,-30),(0,-50),(-20,-50))) #-30 30
 
     for t in ts:
         
@@ -364,8 +426,8 @@ def drawNavMesh():
 
         glPushMatrix()
         glColor3f(1.0,1.0,0.0)
-        glTranslatef(g[0], 2.0, g[1])
-        glutSolidSphere(0.5,20,20)
+        glTranslatef(g[0], y, g[1])
+        glutSolidSphere(0.2,20,20)
         glPopMatrix()
 
 def drawObstacle(obstacle):
@@ -537,32 +599,32 @@ def keySpecialUp(key, x, y):
     
 def keyOperations():
 
-    global target, keyBuffer, rquadx, rquady
+    global player, keyBuffer, rquadx, rquady
 
     step = 0.5
-    acc = 0.7
+    acc = player.maxAcceleration
 
     steering = SteeringOutput()
 
     # Movements of the player
     if keyBuffer[100]:
         steering.linear = [-acc,-10,0]
-        target.update(steering,time)
+        player.update(steering,time)
         #print "Left"
     if keyBuffer[101]:
         steering.linear = [0,-10,-acc]
-        target.update(steering,time)
+        player.update(steering,time)
         #print "Up"
     if keyBuffer[102]:
         steering.linear = [acc,-10,0]
-        target.update(steering,time)
+        player.update(steering,time)
         #print "Right"
     if keyBuffer[103]:
         steering.linear = [0,-10,acc]
-        target.update(steering,time)
+        player.update(steering,time)
         #print "Down"
     if keyBuffer[42]:
-        scheduleJumpAction(target)
+        scheduleJumpAction(player)
 
     # Movements of the world
     if keyBuffer[107]:
