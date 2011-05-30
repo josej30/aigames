@@ -229,8 +229,7 @@ def PaintWorld():
             drawAgent(agent,'red')
             glPopMatrix()
 
-        if debug:
-            drawNavMesh()
+        drawNavMesh()
 
         #######################
 
@@ -266,7 +265,7 @@ def PaintWorld():
         # Physics #
         ###########
         ans = check_physics(characters,obs)
-
+        
         # Get end just before calculating new positions,
         # velocities and accelerations
         time2 = datetime.now()
@@ -278,6 +277,9 @@ def PaintWorld():
         #agent2.update(steering2,time)
         #agent3.update(steering3,time)
         #agent4.update(steering4,time)
+
+        for col in ans:
+            col[0].update(col[1],time)
 
         # Updating player stats
         updatePlayer(player,time)
@@ -298,6 +300,8 @@ def PaintWorld():
 def drawNavMesh():
 
     y = 0.1
+    if not debug:
+        y = -0.3
 
     ts = []
 
@@ -422,7 +426,7 @@ def drawNavMesh():
 
         glPushMatrix()
         glColor3f(1.0,1.0,0.0)
-        glTranslatef(g[0], 0.0, g[1])
+        glTranslatef(g[0], y, g[1])
         glutSolidSphere(0.2,20,20)
         glPopMatrix()
 

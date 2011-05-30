@@ -26,7 +26,7 @@ def pathfindAStar():
 		[-1,-1,-1,3,4,-1,-1],
 		[-1,-1,-1,-1,6,-1,-1],
 		[-1,-1,-1,-1,-1,-1,6],
-		[-1,-1,-1,-1,-1,2,3],
+		[-1,-1,-1,-1,-1,2,-1],
 		[-1,-1,-1,-1,-1,-1,3],
 		[-1,-1,-1,-1,-1,-1,-1]
 	
@@ -57,6 +57,8 @@ def pathfindAStar():
 
      		current = minNode(openList)
 
+		print "current = " + str(current.node)
+
      		# If it is the goal node, then terminate
      		if current.node == goal.node: break
 
@@ -66,24 +68,20 @@ def pathfindAStar():
      		
      			if graph[current.node][index]!=-1:
      			
+				print "vecino = " + str(nodes[index].node)
+
      				new_connection = Connection()
      				new_connection.cost = graph[current.node][index]
-     				new_connection.fromNode = current.node
+     				new_connection.fromNode = current
      				new_connection.toNode = nodes[index] 
      				connections.append(new_connection)
 
+
      		# Loop through each connection in turn
      		for connection in connections:
-     			print connection.cost
-
 
        			# Get the cost estimate for the end node
        			endNode = connection.getToNode()
-       			print "Nodo al que voy"
-       			print endNode.node
-       			print "nodo del que vengo"
-       			print connection.getFromNode()
-
        			endNodeCost = current.costSoFar + connection.getCost()
 
 
@@ -99,7 +97,6 @@ def pathfindAStar():
    			except ValueError:
        				j = -1
 
-			print i
        			if i>=0:
 				print "index closed"
 
@@ -108,8 +105,7 @@ def pathfindAStar():
 	 			endNodeRecord = closed[i]
 
 	 			# If we didn't find a shorter route, skip
-	 			if endNodeRecord.costSoFar <= endNodeCost:
-	   				continue;
+	 			if endNodeRecord.costSoFar <= endNodeCost: continue
 
 
 		 		# Otherwise remove it from the closed list
@@ -130,14 +126,13 @@ def pathfindAStar():
      				   # If our route is no better, then skip
 
    				if endNodeRecord.costSoFar <= endNodeCost:
-
-			     		continue;
+			     		continue
 			      	# We can use the node's old cost values
 			      	# to calculate its heuristic without calling
 
 			      	# the possibly expensive heuristic function
 			 
-			      	endNodeHeuristic = 0.0#endNodeRecord. - endNodeRecord.costSoFar
+			      	endNodeHeuristic = 0.0 #endNodeRecord. - endNodeRecord.costSoFar
 			 
 			 
 			# Otherwise we know we've got an unvisited
@@ -154,24 +149,19 @@ def pathfindAStar():
 			# We're here if we need to update the node
 			# Update the cost, estimate and connection
 			endNodeRecord.cost = endNodeCost
-			 
 			endNodeRecord.connection = connection
-			 
 			endNodeRecord.estimatedTotalCost = endNodeCost + endNodeHeuristic
-
-
+			
 			try:
        				j1 = openList.index(endNode)
    			except ValueError:
        				j1 = -1
 			# And add it to the openList list
 		
-			if j1 != -1:
+			if j1 == -1:
 	    			openList.append(endNodeRecord)
-
-		print "bandera"
 		try:
-       			j2 = openList.index(endNode)
+       			j2 = openList.index(current)
    		except ValueError:
        			j2 = -1
 	
@@ -181,39 +171,38 @@ def pathfindAStar():
 		# and remove it from the openList list
 		
 		if j2 != -1:
-			openList.remove(j2)
+			openList.remove(current)
 		closed.append(current)
-		
 
-		# We're here if we've either found the goal, or
-		# if we've no more nodes to search, find which.
-		if current.node != goal.node:
-			print "return"
 
+	####### End While Len Open !=  0
+
+	# We're here if we've either found the goal, or
+	# if we've no more nodes to search, find which.
+	if current.node != goal.node:
+			
 		# We've run out of nodes without finding the
 		# goal, so there's no solution
-
-			
-			return None
+		return None
 
 
-	    	else:
-	    		print "en el path"
+	else:
+		# Compile the list of connections in the path
+		path = []
 
-	      		# Compile the list of connections in the path
-	      		path = []
+		# Work back along the path, accumulating
+		# connections
 
-
-	      		# Work back along the path, accumulating
-	      		# connections
-
-	      		while current.node != start:
-				path.append( current.connection)
-				current = current.connection.getFromNode()
+		while current != star and current.connection != None:
+			path.append(current.connection)
+			current = current.connection.getFromNode()
 
 
-	      	# Reverse the path, and return it
-		print "el camino"
-		print path
-		return path.reverse()
+	# Reverse the path, and return it
+	print "El camino"
+	
+	for i in path:
+		print i.fromNode.node
+
+	return path.reverse()
 
