@@ -7,34 +7,38 @@ class Triangle:
 		self.vertex1 = a
     		self.vertex2 = b
     		self.vertex3 = c
+
     	def centerOfMass(self):
 		G = [0,0]
     		G[0] = (self.vertex1[0] + self.vertex2[0] + self.vertex3[0])/3.0
     		G[1] = (self.vertex1[1] + self.vertex2[1] + self.vertex3[1])/3.0
     		return G
+
     	def orientation(self,point):
     		temp1 = (self.vertex1[0] - self.vertex3[0]) *  (self.vertex2[1] - self.vertex3[1]) 
     		temp2 = (self.vertex1[1] - self.vertex3[1]) * (self.vertex2[0] - self.vertex3[0])
     		return temp1 - temp2
+
     	def pointInTriangle(self,point):
-		print point
+		#print point
 		t1 = Triangle(self.vertex1,self.vertex2,point)
 		t2 = Triangle(self.vertex2,self.vertex3,point)
 		t3 = Triangle(self.vertex3,self.vertex1,point)
 
 		orientation_original = self.orientation(point)
-		print orientation_original
+		#print orientation_original
     		orientation1 = t1.orientation(point)
-    		print orientation1
+    		#print orientation1
     		orientation2 = t2.orientation(point)
-    		print orientation2
+    		#print orientation2
     		orientation3 = t3.orientation(point)
-    		print orientation3
+    		#print orientation3
 
     		if orientation_original>0 and orientation1>0 and orientation2>0 and orientation3>0:
     			return True
     		else:
     			return False
+
     	def getTriangle(triangles,point):
     		for triangle in triangles:
     			if triangle.pointInTriangle(point):

@@ -1,11 +1,12 @@
 from structures.BehaviorAndWeight import *
+from structures.triangle import *
 from misc.vector3 import *
 from ia.steeringBehaviours import *
 from ia.collisions import *
 from ia.aStar import *
 
 # Returns the acceleration required.
-def getSteering(targets,target,agent,obs,flag):
+def getSteering(targets,target,agent,obs,ts,flag):
 
     steeringPursue = SteeringOutput()
     steeringSeek = SteeringOutput()
@@ -19,12 +20,12 @@ def getSteering(targets,target,agent,obs,flag):
     elif flag == "Seek":
         steeringSeek = seek(agent, target, "seek")
     elif flag == "Astar":
-        path = pathfindAStar(agent, target)
+        path = pathfindAStar(agent, target, ts)
         print "begin"
         for i in path:
             print i.toNode.node
         print "end"
-        #targetAstar = retrieveCoords(path[0])
+        #targetAstar = mapTriangle(temp[0]).centerOfMass()
         #steeringSeek = seek(agent, targetAstar, "seek")
         
 
@@ -36,18 +37,14 @@ def getSteering(targets,target,agent,obs,flag):
     SeekWeight = 3.0
     AstarWeigth = 3.0
     ObstacleAvoidanceWeight = 10.0
-    SeparationWeigth = 70.0
+    SeparationWeigth = 3.0
 
     if (steeringObstacleAvoidance.linear == [0,0,0]):
         PursueWeight = 3.0
         WanderWeight = 3.0
         SeekWeigth = 3.0
-<<<<<<< HEAD
-        SeparationWeigth = 70.0
-=======
         AstarWeigth = 3.0
         SeparationWeigth = 3.0
->>>>>>> 2e977c00ffffe8776e98edfec22296116299e00b
         ObstacleAvoidanceWeight = 0.0
 
     # Create the steering structure for accumulation
