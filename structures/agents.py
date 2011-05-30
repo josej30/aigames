@@ -19,8 +19,6 @@ class Agent:
 	
 	def update (self, steering, time):
 
-		#print steering.linear
-	
 		# Update the position and orientation
 		self.position = vectorPlus(self.position,vectorTimes(self.velocity,time))
 		self.orientation += self.rotation*time
@@ -29,8 +27,7 @@ class Agent:
 		if self.position[1] < 0 :
 			self.position[1] = 0
 
-		if self.position[1] > 0 :
-		
+		if self.position[1] > 0 :		
 			steering.linear = [0,-2.0,0]
 		
 		# And the velocity and the rotation
