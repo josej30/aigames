@@ -10,9 +10,6 @@ from misc.vector3 import *
 from random import random
 
 
-#maxAcceleration = 15
-
-
 def getNewOrientation(currentOrientation, velocity):
 
 	# Make sure we have a velocity
@@ -28,8 +25,6 @@ def getNewOrientation(currentOrientation, velocity):
 
 
 def seek(agent, target, flag):
-
-#	global maxAcceleration
 
 	# Holds the satisfaction radius
 	targetRadius = 1
@@ -58,13 +53,13 @@ def seek(agent, target, flag):
 
 	# If we are outside the slowRadius, then go max speed
 	if distance > slowRadius:
-		targetSpeed = target.maxSpeed
+		targetSpeed = agent.maxSpeed
 	# Otherwise calculate a scaled speed
 	else:
 		if flag == "collision":
-			targetSpeed = target.maxSpeed * distance / slowRadius
+			targetSpeed = agent.maxSpeed * distance / slowRadius
 		else:
-			targetSpeed = target.maxSpeed * distance / slowRadius
+			targetSpeed = agent.maxSpeed * distance / slowRadius
 
 
 	# The target velocity combines speed and direction
@@ -93,7 +88,7 @@ def seek(agent, target, flag):
 		steering.linear = [steering.linear[0]*factor,0,steering.linear[2]*factor]
 
 	# Output the steering
-	steering.angular = 0	
+	steering.angular = 0
 	
 	return steering
 
@@ -330,10 +325,6 @@ def wander(face,agent,target):
      	# Holds the current orientation of the wander target
      	wanderOrientation = 0
 
-
-     	# Holds the maximum acceleration of the character
-#     	maxAcceleration = 2
-
      	# Again we dont need a new target
      	# ... Other data is derived from the superclass ...
       	# 1. Calculate the target to delegate to face
@@ -380,10 +371,6 @@ def separation(agent, targets):
      	# inverse square law force
      	decayCoefficient = 0.8
                                                         
-   	# Holds the maximum acceleration of the character
-   	#maxAcceleration = 15.0
-
-
      	# The steering variable holds the output
      	steering = SteeringOutput()
 

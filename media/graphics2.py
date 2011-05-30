@@ -71,11 +71,13 @@ agent.orientation = 100.0
 
 
 ################
-# Target Stuff #
+# Player Stuff #
 ################
-target = Agent()
-target.position = [40,0,40] 
-target.orientation = 0.0
+player = Agent()
+player.position = [40,0,40] 
+player.orientation = 0.0
+player.maxSpeed = 3
+player.maxAcceleration = 1
 
 ####################
 # 2nd Target Stuff #
@@ -96,12 +98,11 @@ target.orientation = 0.0
 agents = [agent]
 
 ####################
-# Targets Array    #
+# Players Array    #
 ####################
 
-targets = [target]
-characters = agents + targets
-
+players = [player]
+characters = agents + players
 
 # Array that contains all the proyections of
 # the walls and obstacles of the world with
@@ -186,7 +187,7 @@ def ReSizeWorld(Width, Height):
 def PaintWorld():
     
 
-    global agent, target, maxSpeed, limits, obs, obstacle1, time2, time1, time, agents, targets, debug
+    global agent, player, limits, obs, obstacle1, time2, time1, time, agents, players, debug
 
 
     try:
@@ -216,10 +217,10 @@ def PaintWorld():
         drawObstacle(obstacle3)
 
 	# Player
-        for target in targets:
+        for player in players:
         	# Objective
         	glPushMatrix()
-        	drawAgent(target,'cyan')
+        	drawAgent(player,'cyan')
         	glPopMatrix()
 
         # Enemies
@@ -238,28 +239,28 @@ def PaintWorld():
         # Behaviour #
         #############
     	if len(sys.argv) == 1:
-    		print "No se recibieron argumentos"
-    		sys.exit()
+            print "No se recibieron argumentos"
+            sys.exit()
     	if sys.argv[1] == "Wander":
-    		steering = getSteering(characters,target3,agent,obs,"Wander")
-    		#steering2 = getSteering(characters,target,agent2,obs,"Wander")
-    		#steering3 = getSteering(characters,target,agent3,obs,"Wander")
-    		#steering4 = getSteering(characters,target,agent4,obs,"Wander")
+            steering = getSteering(characters,target3,agent,obs,"Wander")
+            #steering2 = getSteering(characters,target,agent2,obs,"Wander")
+            #steering3 = getSteering(characters,target,agent3,obs,"Wander")
+            #steering4 = getSteering(characters,target,agent4,obs,"Wander")
     	elif sys.argv[1] == "Pursue":
-    		steering = getSteering(characters,target,agent,obs,"Pursue")
-    		#steering2 = getSteering(characters,target,agent2,obs,"Pursue")
-    		#steering3 = getSteering(characters,target,agent3,obs,"Pursue")
-    		#steering4 = getSteering(characters,target,agent4,obs,"Pursue")
+            steering = getSteering(characters,player,agent,obs,"Pursue")
+            #steering2 = getSteering(characters,target,agent2,obs,"Pursue")
+            #steering3 = getSteering(characters,target,agent3,obs,"Pursue")
+            #steering4 = getSteering(characters,target,agent4,obs,"Pursue")
 	elif sys.argv[1] == "Seek":
-            	steering = getSteering(characters,target,agent,obs,"Seek")
-            	#steering2 = getSteering(characters,target,agent2,obs,"Seek")
-            	#steering3 = getSteering(characters,target,agent3,obs,"Seek")
-            	#steering4 = getSteering(characters,target,agent4,obs,"Seek")
+            steering = getSteering(characters,player,agent,obs,"Seek")
+            #steering2 = getSteering(characters,target,agent2,obs,"Seek")
+            #steering3 = getSteering(characters,target,agent3,obs,"Seek")
+            #steering4 = getSteering(characters,target,agent4,obs,"Seek")
     	elif sys.argv[1] == "Flee":
-            steering = seek(agent, target, "flee")
+            steering = seek(agent, player, "flee")
     	else:
-    		print "Argumento invalido"
-    		sys.exit()
+            print "Argumento invalido"
+            sys.exit()
 
         ###########
         # Physics #
@@ -279,7 +280,7 @@ def PaintWorld():
         #agent4.update(steering4,time)
 
         # Updating player stats
-        updatePlayer(target,time)
+        updatePlayer(player,time)
 
         # Get initial time just after calculating everything
         time1 = datetime.now()
@@ -594,32 +595,32 @@ def keySpecialUp(key, x, y):
     
 def keyOperations():
 
-    global target, keyBuffer, rquadx, rquady
+    global player, keyBuffer, rquadx, rquady
 
     step = 0.5
-    acc = 0.7
+    acc = player.maxAcceleration
 
     steering = SteeringOutput()
 
     # Movements of the player
     if keyBuffer[100]:
         steering.linear = [-acc,-10,0]
-        target.update(steering,time)
+        player.update(steering,time)
         #print "Left"
     if keyBuffer[101]:
         steering.linear = [0,-10,-acc]
-        target.update(steering,time)
+        player.update(steering,time)
         #print "Up"
     if keyBuffer[102]:
         steering.linear = [acc,-10,0]
-        target.update(steering,time)
+        player.update(steering,time)
         #print "Right"
     if keyBuffer[103]:
         steering.linear = [0,-10,acc]
-        target.update(steering,time)
+        player.update(steering,time)
         #print "Down"
     if keyBuffer[42]:
-        scheduleJumpAction(target)
+        scheduleJumpAction(player)
 
     # Movements of the world
     if keyBuffer[107]:

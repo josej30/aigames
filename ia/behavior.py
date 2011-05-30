@@ -21,9 +21,9 @@ def getSteering(targets,target,agent,obs,flag):
     steeringObstacleAvoidance = collisionDetect2(agent,obs)
     steeringSeparation = separation(agent, targets)
 
-    PursueWeight = 1.0
-    WanderWeight = 1.0
-    SeekWeight = 1.0
+    PursueWeight = 3.0
+    WanderWeight = 3.0
+    SeekWeight = 3.0
     ObstacleAvoidanceWeight = 10.0
     SeparationWeigth = 3.0
 
@@ -31,7 +31,7 @@ def getSteering(targets,target,agent,obs,flag):
         PursueWeight = 3.0
         WanderWeight = 3.0
         SeekWeigth = 3.0
-        SeparationWeigth = 7.0
+        SeparationWeigth = 3.0
         ObstacleAvoidanceWeight = 0.0
 
     # Holds a list of BehaviorAndWeight instances.
@@ -60,6 +60,7 @@ def getSteering(targets,target,agent,obs,flag):
     	for behavior in behavior_pursue:
         	temp = behavior[0].scale_steering(behavior[1])
         	steering = sum_steering(steering, temp)
+
     elif flag == "Wander":
     	for behavior in behavior_wander:
         	temp = behavior[0].scale_steering(behavior[1])
