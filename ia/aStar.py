@@ -48,8 +48,11 @@ def pathfindAStar():
 
 	
    	# Iterate through processing each node
-
+	current = []
    	while len(openList) > 0:
+   		
+   		print  len(openList)
+   		
 		connections = []
 		
      		# Find the smallest element in the openList list
@@ -169,9 +172,8 @@ def pathfindAStar():
 			if j1 != -1:
 	    			openList.append(endNodeRecord)
 
-		print "bandera"
 		try:
-       			j2 = openList.index(endNode)
+       			j2 = openList.index(current)
    		except ValueError:
        			j2 = -1
 	
@@ -179,41 +181,42 @@ def pathfindAStar():
 		# We've finished looking at the connections for
 		# the current node, so add it to the closed list
 		# and remove it from the openList list
-		
-		if j2 != -1:
-			openList.remove(j2)
+		print "j2"
+		if j2 >= 0:
+			openList.remove(current)
 		closed.append(current)
 		
 
 		# We're here if we've either found the goal, or
 		# if we've no more nodes to search, find which.
-		if current.node != goal.node:
-			print "return"
+	
+	if current.node != goal.node:
+		print "return"
 
-		# We've run out of nodes without finding the
-		# goal, so there's no solution
+	# We've run out of nodes without finding the
+	# goal, so there's no solution
 
-			
-			return None
-
-
-	    	else:
-	    		print "en el path"
-
-	      		# Compile the list of connections in the path
-	      		path = []
+	
+		return None
 
 
-	      		# Work back along the path, accumulating
-	      		# connections
+    	else:
+    		print "en el path"
 
-	      		while current.node != start:
-				path.append( current.connection)
-				current = current.connection.getFromNode()
+      		# Compile the list of connections in the path
+      		path = []
 
 
-	      	# Reverse the path, and return it
-		print "el camino"
-		print path
-		return path.reverse()
+      		# Work back along the path, accumulating
+      		# connections
+
+      		while current.node != star:
+			path.append( current.connection)
+			current = current.connection.getFromNode()
+
+
+      	# Reverse the path, and return it
+	print "el camino"
+	print path
+	return path.reverse()
 
