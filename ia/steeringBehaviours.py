@@ -365,7 +365,7 @@ def wander(face,agent,target):
 def separation(agent, targets):
  
      	# Holds the threshold to take action
-     	threshold  = 8.0
+     	threshold  = 5.0
 
      	# Holds the constant coefficient of decay for the
      	# inverse square law force

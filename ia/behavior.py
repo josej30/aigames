@@ -21,14 +21,15 @@ def getSteering(targets,target,agent,obs,ts,flag):
         steeringSeek = seek(agent, target, "seek")
     elif flag == "Astar":
         path = pathfindAStar(agent, target, ts)
-        print "begin"
-        for i in path:
-            print i.toNode.node
-        print "end"
+        #print "begin"
+        #for i in path:
+        #    print i.toNode.node
+        #print "end"
         triag = ts[0]
         for i in ts:
         	if i.node==path[0].toNode.node:
         		triag = i
+    
         targetAstar = triag.centerOfMass()	
         nodeTarget = Agent()
         nodeTarget.position[0] = targetAstar[0]
@@ -51,7 +52,7 @@ def getSteering(targets,target,agent,obs,ts,flag):
         WanderWeight = 3.0
         SeekWeigth = 3.0
         AstarWeigth = 3.0
-        SeparationWeigth = 50.0
+        SeparationWeigth = 10.0
         ObstacleAvoidanceWeight = 0.0
 
     # Create the steering structure for accumulation

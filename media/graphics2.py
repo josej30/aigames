@@ -19,6 +19,9 @@ from ia.jumps import *
 ############### TODO ESTO DEBERIA IR EN EL MAIN ###########
 ############### O EN ALGUN LUGAR FUERA DE AQUI  ##########
 
+sys_enemies = sys.argv[1]
+sys_behavior = sys.argv[2]
+
 # Debug Option activated/desactivated
 debug = True
 
@@ -37,72 +40,51 @@ size = 100
 rquadx = 0.0
 rquady = 0.0
 
-###############
-# Agent stuff #
-###############
-agent = Agent()
-agent.position = [-40,0,-40]
-agent.velocity = [0,0,0]
-agent.orientation = 100.0
-
-###############
-# Agent2 stuff #
-###############
-#agent2 = Agent()
-#agent2.position = [40,0,40]
-#agent2.velocity = [0,0,0]
-#agent2.orientation = 100.0
-
-###############
-# Agent3 stuff #
-###############
-#agent3 = Agent()
-#agent3.position = [10,0,10]
-#agent3.velocity = [0,0,0]
-#agent3.orientation = 10.0
-
-###############
-# Agent3 stuff #
-###############
-#agent4 = Agent()
-#agent4.position = [10,0,40]
-#agent4.velocity = [0,0,0]
-#agent4.orientation = 10.0
-
-
 ################
-# Player Stuff #
+# Agents stuff #
 ################
+
+enemy1 = Agent()
+enemy1.position = [40,0,-40]
+enemy1.velocity = [0,0,0]
+enemy1.orientation = 100.0
+
+enemy2 = Agent()
+enemy2.position = [40,0,40]
+enemy2.velocity = [0,0,0]
+enemy2.orientation = 100.0
+
+enemy3 = Agent()
+enemy3.position = [-40,0,40]
+enemy3.velocity = [0,0,0]
+enemy3.orientation = 10.0
+
+enemy4 = Agent()
+enemy4.position = [-40,0,-40]
+enemy4.velocity = [0,0,0]
+enemy4.orientation = 10.0
+
 player = Agent()
-player.position = [40,0,40] 
+player.position = [0,0,0] 
 player.orientation = 0.0
-player.maxSpeed = 3
-player.maxAcceleration = 1
+player.maxSpeed = 0.5
+player.maxAcceleration = 0.5
 
-####################
-# 2nd Target Stuff #
-####################
-#target2 = Agent()
-#target2.position = [40,0,40] 
-#target2.orientation = 0.0
-#target2.maxSpeed = 0.075
-
-####################
-# 3nd Target Stuff #
-####################
-#target3 = Agent()
-#target3.position = [0,0,0] 
-#target3.orientation = 0.0
-
-# List of Agents
-agents = [agent]
-
-####################
-# Players Array    #
-####################
+# How many enemies the user wants?
+if sys_enemies == '1':
+    enemies = [enemy1]
+elif sys_enemies == '2':
+    enemies = [enemy1,enemy2]
+elif sys_enemies == '3':
+    enemies = [enemy1,enemy2,enemy3]
+elif sys_enemies == '4':
+    enemies = [enemy1,enemy2,enemy3,enemy4]
+else:
+    print "The number of enemies are 1, 2, 3 or 4"
+    sys.exit(-1)
 
 players = [player]
-characters = agents + players
+characters = enemies + players
 
 # Array that contains all the proyections of
 # the walls and obstacles of the world with
@@ -190,7 +172,7 @@ def ReSizeWorld(Width, Height):
 def PaintWorld():
     
 
-    global agent, player, limits, obs, obstacle1, time2, time1, time, agents, players, debug
+    global player, limits, obs, obstacle1, time2, time1, time, enemies, players, debug
 
     try:
 
@@ -202,7 +184,6 @@ def PaintWorld():
         glLoadIdentity()
     
         glTranslatef(0.0, -20.0, -140.0)
-
 
         #######################
         # Draw the Objects
@@ -226,9 +207,9 @@ def PaintWorld():
         	glPopMatrix()
 
         # Enemies
-        for agent in agents:
+        for enemy in enemies:
             glPushMatrix()
-            drawAgent(agent,'red')
+            drawAgent(enemy,'red')
             glPopMatrix()
 
         drawNavMesh()
@@ -239,30 +220,25 @@ def PaintWorld():
         #############
         # Behaviour #
         #############
-    	if len(sys.argv) == 1:
-            print "No se recibieron argumentos"
-            sys.exit()
-    	if sys.argv[1] == "Wander":
-            steering = getSteering(characters,target3,agent,obs,ts,"Wander")
-            #steering2 = getSteering(characters,target,agent2,obs,"Wander")
-            #steering3 = getSteering(characters,target,agent3,obs,"Wander")
-            #steering4 = getSteering(characters,target,agent4,obs,"Wander")
-    	elif sys.argv[1] == "Pursue":
-            steering = getSteering(characters,player,agent,obs,ts,"Pursue")
-            #steering2 = getSteering(characters,target,agent2,obs,"Pursue")
-            #steering3 = getSteering(characters,target,agent3,obs,"Pursue")
-            #steering4 = getSteering(characters,target,agent4,obs,"Pursue")
-	elif sys.argv[1] == "Seek":
-            steering = getSteering(characters,player,agent,obs,ts,"Seek")
-            #steering2 = getSteering(characters,target,agent2,obs,"Seek")
-            #steering3 = getSteering(characters,target,agent3,obs,"Seek")
-            #steering4 = getSteering(characters,target,agent4,obs,"Seek")
-	elif sys.argv[1] == "Astar":
-            steering = getSteering(characters,player,agent,obs,ts,"Astar")
-    	elif sys.argv[1] == "Flee":
-            steering = seek(agent, player, "flee")
+    	if sys_behavior == "Wander":
+            steering1 = getSteering(characters,player,enemy1,obs,ts,"Wander")
+            steering2 = getSteering(characters,player,enemy2,obs,ts,"Wander")
+            steering3 = getSteering(characters,player,enemy3,obs,ts,"Wander")
+            steering4 = getSteering(characters,player,enemy4,obs,ts,"Wander")
+    	elif sys_behavior == "Pursue":
+            steering1 = getSteering(characters,player,enemy1,obs,ts,"Pursue")
+            steering2 = getSteering(characters,player,enemy2,obs,ts,"Pursue")
+            steering3 = getSteering(characters,player,enemy3,obs,ts,"Pursue")
+            steering4 = getSteering(characters,player,enemy4,obs,ts,"Pursue")
+	elif sys_behavior == "Seek":
+            steering1 = getSteering(characters,player,enemy1,obs,ts,"Seek")
+            steering2 = getSteering(characters,player,enemy2,obs,ts,"Seek")
+            steering3 = getSteering(characters,player,enemy3,obs,ts,"Seek")
+            steering4 = getSteering(characters,player,enemy4,obs,ts,"Seek")
+	elif sys_behavior == "Astar":
+            steering = getSteering(characters,player,enemy,obs,ts,"Astar")
     	else:
-            print "Argumentos validos: [ Wander, Pursue, Seek, Flee, Astar ]"
+            print "USE: python battlecars.py num_enemies [ Wander | Pursue | Seek | Astar ]"
             sys.exit()
 
         ###########
@@ -279,11 +255,11 @@ def PaintWorld():
         # Updating player stats
         updatePlayer(player,time)
 
-        # Updating agents stats
-        agent.update(steering,time)
-        #agent2.update(steering2,time)
-        #agent3.update(steering3,time)
-        #agent4.update(steering4,time)
+        # Updating enemies stats
+        enemy1.update(steering1,time)
+        enemy2.update(steering2,time)
+        enemy3.update(steering3,time)
+        enemy4.update(steering4,time)
 
         for col in ans:
             col[0].update(col[1],time)
@@ -658,7 +634,7 @@ def execute():
 
     glutDisplayFunc(PaintWorld)
     
-    glutFullScreen()
+    #glutFullScreen()
     
     glutIdleFunc(PaintWorld)
     glutReshapeFunc(ReSizeWorld)
