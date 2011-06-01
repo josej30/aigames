@@ -109,6 +109,9 @@ characters = agents + players
 # their respectives normal vectors
 obs = []
 
+# Triangles
+ts = []
+
 # Walls representing the limits of the world
 c = size/2
 limits = [
@@ -240,22 +243,22 @@ def PaintWorld():
             print "No se recibieron argumentos"
             sys.exit()
     	if sys.argv[1] == "Wander":
-            steering = getSteering(characters,target3,agent,obs,"Wander")
+            steering = getSteering(characters,target3,agent,obs,ts,"Wander")
             #steering2 = getSteering(characters,target,agent2,obs,"Wander")
             #steering3 = getSteering(characters,target,agent3,obs,"Wander")
             #steering4 = getSteering(characters,target,agent4,obs,"Wander")
     	elif sys.argv[1] == "Pursue":
-            steering = getSteering(characters,player,agent,obs,"Pursue")
+            steering = getSteering(characters,player,agent,obs,ts,"Pursue")
             #steering2 = getSteering(characters,target,agent2,obs,"Pursue")
             #steering3 = getSteering(characters,target,agent3,obs,"Pursue")
             #steering4 = getSteering(characters,target,agent4,obs,"Pursue")
 	elif sys.argv[1] == "Seek":
-            steering = getSteering(characters,player,agent,obs,"Seek")
+            steering = getSteering(characters,player,agent,obs,ts,"Seek")
             #steering2 = getSteering(characters,target,agent2,obs,"Seek")
             #steering3 = getSteering(characters,target,agent3,obs,"Seek")
             #steering4 = getSteering(characters,target,agent4,obs,"Seek")
 	elif sys.argv[1] == "Astar":
-            steering = getSteering(characters,player,agent,obs,"Astar")
+            steering = getSteering(characters,player,agent,obs,ts,"Astar")
     	elif sys.argv[1] == "Flee":
             steering = seek(agent, player, "flee")
     	else:
@@ -299,6 +302,8 @@ def PaintWorld():
         sys.exit(-1)
 
 def drawNavMesh():
+
+    global ts
 
     y = 0.1
     if not debug:
@@ -385,7 +390,7 @@ def drawNavMesh():
     ts.append(Triangle((-20,30),(0,30),(-20,50),39)) #-21 39
     ts.append(Triangle((0,30),(0,50),(-20,50),38)) #-22 38
 
-    ts.append(Triangle((0,0),(0,20),(-20,20)),37) #-23 37
+    ts.append(Triangle((0,0),(0,20),(-20,20),37)) #-23 37
     ts.append(Triangle((0,0),(-20,0),(-20,20),36)) #-24 36
 
     ts.append(Triangle((0,0),(-20,0),(-20,-20),35)) #-25 35

@@ -269,24 +269,24 @@ def pathfindAStar(enemy, player, ts):
 		goal = nodes[ptri.node]
 	else:
 		print "The Player have no Triangle"
-		sys.exit(-1)
+		#sys.exit(-1)
 	if etri != None:
 		start = nodes[etri.node]
-		sys.exit(-1)
+		#sys.exit(-1)
 	else:
 		print "The Enemy have no Triangle"
 	#goal = node13
 	#start = node15
 	
-	graph = [ 
-		[-1,2,4,-1,-1,-1,-1],
-		[-1,-1,-1,3,4,-1,-1],
-		[-1,-1,-1,-1,6,-1,-1],
-		[-1,-1,-1,-1,-1,-1,6],
-		[-1,-1,-1,-1,-1,2,-1],
-		[-1,-1,-1,-1,-1,-1,3],
-		[-1,-1,-1,-1,-1,-1,-1]
-	] 
+	#graph = [ 
+	#	[-1,2,4,-1,-1,-1,-1],
+	#	[-1,-1,-1,3,4,-1,-1],
+	#	[-1,-1,-1,-1,6,-1,-1],
+	#	[-1,-1,-1,-1,-1,-1,6],
+	#	[-1,-1,-1,-1,-1,2,-1],
+	#	[-1,-1,-1,-1,-1,-1,3],
+	#	[-1,-1,-1,-1,-1,-1,-1]
+	#] 
      	# Initialize the record for the start node
      	startRecord = nodeRecord(0)
      	startRecord.connection = None

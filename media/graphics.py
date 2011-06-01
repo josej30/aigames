@@ -259,20 +259,20 @@ def PaintWorld():
     		print "No se recibieron argumentos"
     		sys.exit()
     	if sys.argv[1] == "Wander":
-    		steering = getSteering(characters,target3,agent,obs,"Wander")
-    		steering2 = getSteering(characters,target,agent2,obs,"Wander")
-    		steering3 = getSteering(characters,target,agent3,obs,"Wander")
-    		steering4 = getSteering(characters,target,agent4,obs,"Wander")
+    		steering = getSteering(characters,target3,agent,obs,[],"Wander")
+    		steering2 = getSteering(characters,target,agent2,obs,[],"Wander")
+    		steering3 = getSteering(characters,target,agent3,obs,[],"Wander")
+    		steering4 = getSteering(characters,target,agent4,obs,[],"Wander")
     	elif sys.argv[1] == "Pursue":
-    		steering = getSteering(characters,target,agent,obs,"Pursue")
-    		steering2 = getSteering(characters,target,agent2,obs,"Pursue")
-    		steering3 = getSteering(characters,target,agent3,obs,"Pursue")
-    		steering4 = getSteering(characters,target,agent4,obs,"Pursue")
+    		steering = getSteering(characters,target,agent,obs,[],"Pursue")
+    		steering2 = getSteering(characters,target,agent2,obs,[],"Pursue")
+    		steering3 = getSteering(characters,target,agent3,obs,[],"Pursue")
+    		steering4 = getSteering(characters,target,agent4,obs,[],"Pursue")
 	elif sys.argv[1] == "Seek":
-            	steering = getSteering(characters,target,agent,obs,"Seek")
-            	steering2 = getSteering(characters,target,agent2,obs,"Seek")
-            	steering3 = getSteering(characters,target,agent3,obs,"Seek")
-            	steering4 = getSteering(characters,target,agent4,obs,"Seek")
+            	steering = getSteering(characters,target,agent,obs,[],"Seek")
+            	steering2 = getSteering(characters,target,agent2,obs,[],"Seek")
+            	steering3 = getSteering(characters,target,agent3,obs,[],"Seek")
+            	steering4 = getSteering(characters,target,agent4,obs,[],"Seek")
     	elif sys.argv[1] == "Flee":
             steering = seek(agent, target, "flee")
     	else:
@@ -526,7 +526,7 @@ def execute():
 
     glutDisplayFunc(PaintWorld)
     
-    #glutFullScreen()
+    glutFullScreen()
     
     glutIdleFunc(PaintWorld)
     glutReshapeFunc(ReSizeWorld)

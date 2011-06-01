@@ -27,15 +27,17 @@ class Triangle:
 		t3 = Triangle(self.vertex3,self.vertex1,point,3)
 
 		orientation_original = self.orientation(point)
-		#print orientation_original
+		#print "original " + str(orientation_original)
     		orientation1 = t1.orientation(point)
-    		#print orientation1
+    		#print "t1 " + str(orientation1)
     		orientation2 = t2.orientation(point)
-    		#print orientation2
+    		#print "t2 " + str(orientation2)
     		orientation3 = t3.orientation(point)
-    		#print orientation3
+    		#print "t3 " + str(orientation3)
 
-    		if orientation_original>0 and orientation1>0 and orientation2>0 and orientation3>0:
+    		if orientation_original>=0 and orientation1>=0 and orientation2>=0 and orientation3>=0:
+    			return True
+    		elif orientation_original<0 and orientation1<0 and orientation2<0 and orientation3<0:
     			return True
     		else:
     			return False
@@ -52,9 +54,9 @@ def getTriangle(triangles,point):
 #p2 = [0,1]
 
 #p3 = [-3,-2]
-#t = Triangle(p1,p2,p3)
+#t = Triangle(p1,p2,p3,1)
 
-#p = [100,100]
+#p = [1/3.0,1/3.0]
 #print t.pointInTriangle(p)
 
 #print t.centerOfMass()

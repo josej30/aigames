@@ -658,7 +658,7 @@ def execute():
 
     glutDisplayFunc(PaintWorld)
     
-    #glutFullScreen()
+    glutFullScreen()
     
     glutIdleFunc(PaintWorld)
     glutReshapeFunc(ReSizeWorld)
