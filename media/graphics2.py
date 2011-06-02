@@ -11,7 +11,7 @@ from structures.agents import *
 from structures.walls import *
 from structures.obstacles import *
 from structures.steeringOutput import *
-from structures.triangle import Triangle
+from structures.triangle import *
 from ia.steeringBehaviours import *
 from ia.behavior import *
 from ia.jumps import *
@@ -45,7 +45,7 @@ rquady = 0.0
 ################
 
 enemy1 = Agent()
-enemy1.position = [40,0,-40]
+enemy1.position = [-40,0,-40]
 enemy1.velocity = [0,0,0]
 enemy1.orientation = 100.0
 
@@ -65,7 +65,7 @@ enemy4.velocity = [0,0,0]
 enemy4.orientation = 10.0
 
 player = Agent()
-player.position = [0,0,0] 
+player.position = [28,0,10] 
 player.orientation = 0.0
 player.maxSpeed = 0.5
 player.maxAcceleration = 0.5
@@ -96,6 +96,97 @@ obstacle_ob = []
 
 # Triangles
 ts = []
+
+ts.append(Triangle((50,50),(30,30),(30,50),0)) #0
+ts.append(Triangle((50,50),(30,30),(50,30),1)) #1
+
+ts.append(Triangle((30,30),(50,30),(50,20),2)) #2
+ts.append(Triangle((50,20),(30,30),(30,20),3)) #3
+
+ts.append(Triangle((30,20),(30,0),(50,20),4)) #4
+ts.append(Triangle((50,20),(50,0),(30,0),5)) #5
+
+ts.append(Triangle((50,-20),(50,0),(30,0),6)) #6
+ts.append(Triangle((50,-20),(30,-20),(30,0),7)) #7
+
+ts.append(Triangle((50,-20),(30,-20),(30,-30),8)) #8
+ts.append(Triangle((50,-30),(30,-30),(50,-20),9)) #9
+
+ts.append(Triangle((50,-30),(30,-30),(50,-50),10)) #10
+ts.append(Triangle((50,-50),(30,-50),(30,-30),11)) #11
+    
+ts.append(Triangle((20,-50),(30,-30),(30,-50),12)) #12
+ts.append(Triangle((20,-30),(20,-50),(30,-30),13)) #13
+
+ts.append(Triangle((30,-20),(30,0),(20,-20),14)) #14
+ts.append(Triangle((20,0),(30,0),(20,-20),15)) #15
+
+ts.append(Triangle((20,0),(30,0),(20,20),16)) #16
+ts.append(Triangle((20,20),(30,20),(30,0),17)) #17
+
+ts.append(Triangle((20,30),(30,30),(20,50),18)) #18
+ts.append(Triangle((20,50),(30,50),(30,30),19)) #19
+
+ts.append(Triangle((20,30),(0,30),(20,50),20)) #20
+ts.append(Triangle((0,30),(0,50),(20,50),21)) #21
+
+ts.append(Triangle((0,0),(0,20),(20,20),22)) #22
+ts.append(Triangle((0,0),(20,0),(20,20),23)) #23
+
+ts.append(Triangle((0,0),(20,0),(20,-20),24)) #24
+ts.append(Triangle((0,0),(0,-20),(20,-20),25)) #25
+
+ts.append(Triangle((0,-30),(0,-20),(20,-20),26)) #26
+ts.append(Triangle((20,-20),(0,-30),(20,-30),27)) #27
+
+ts.append(Triangle((20,-30),(20,-50),(0,-30),28)) #28
+ts.append(Triangle((0,-30),(0,-50),(20,-50),29)) #29
+
+ts.append(Triangle((-50,50),(-30,30),(-30,50),59)) #-1 59
+ts.append(Triangle((-50,50),(-30,30),(-50,30),58)) #-2 58
+
+ts.append(Triangle((-30,30),(-50,30),(-50,20),57)) #-3 57
+ts.append(Triangle((-50,20),(-30,30),(-30,20),56)) #-4 56
+
+ts.append(Triangle((-30,20),(-30,0),(-50,20),55)) #-5 55
+ts.append(Triangle((-50,20),(-50,0),(-30,0),54)) #-6 54
+
+ts.append(Triangle((-50,-20),(-50,0),(-30,0),53)) #-7 53
+ts.append(Triangle((-50,-20),(-30,-20),(-30,0),52)) #-8 52
+
+ts.append(Triangle((-50,-20),(-30,-20),(-30,-30),51)) #-9 51
+ts.append(Triangle((-50,-30),(-30,-30),(-50,-20),50)) #-10 50
+
+ts.append(Triangle((-50,-30),(-30,-30),(-50,-50),49)) #-11 49
+ts.append(Triangle((-50,-50),(-30,-50),(-30,-30),48)) #-12 48
+
+ts.append(Triangle((-20,-50),(-30,-30),(-30,-50),47)) #-13 47
+ts.append(Triangle((-20,-30),(-20,-50),(-30,-30),46)) #-14 46
+
+ts.append(Triangle((-30,-20),(-30,0),(-20,-20),45)) #-15 45
+ts.append(Triangle((-20,0),(-30,0),(-20,-20),44)) #-16 44
+
+ts.append(Triangle((-20,0),(-30,0),(-20,20),43)) #-17 43
+ts.append(Triangle((-20,20),(-30,20),(-30,0),42)) #-18 42
+
+ts.append(Triangle((-20,30),(-30,30),(-20,50),41)) #-19 41
+ts.append(Triangle((-20,50),(-30,50),(-30,30),40)) #-20 40
+
+ts.append(Triangle((-20,30),(0,30),(-20,50),39)) #-21 39
+ts.append(Triangle((0,30),(0,50),(-20,50),38)) #-22 38
+
+ts.append(Triangle((0,0),(0,20),(-20,20),37)) #-23 37
+ts.append(Triangle((0,0),(-20,0),(-20,20),36)) #-24 36
+
+ts.append(Triangle((0,0),(-20,0),(-20,-20),35)) #-25 35
+ts.append(Triangle((0,0),(0,-20),(-20,-20),34)) #-26 34
+
+ts.append(Triangle((0,-30),(0,-20),(-20,-20),33)) #-27 33
+ts.append(Triangle((-20,-20),(0,-30),(-20,-30),32)) #-28 32
+
+ts.append(Triangle((-20,-30),(-20,-50),(0,-30),31)) #-29 31
+ts.append(Triangle((0,-30),(0,-50),(-20,-50),30)) #-30 30
+
 
 # Walls representing the limits of the world
 c = size/2
@@ -177,7 +268,7 @@ def ReSizeWorld(Width, Height):
 # The main drawing function
 def PaintWorld():
     
-    global players, limits, obs, enemies, time2, time1, time, debug
+    global players, limits, obs, enemies, time2, time1, time, debug, ts
 
     try:
 
@@ -221,6 +312,7 @@ def PaintWorld():
 
         #######################
 
+        #getTriangle2(ts,player.position)
 
         #############
         # Behaviour #
@@ -241,7 +333,10 @@ def PaintWorld():
             steering3 = getSteering(characters,player,enemy3,obs,ts,"Seek")
             steering4 = getSteering(characters,player,enemy4,obs,ts,"Seek")
 	elif sys_behavior == "Astar":
-            steering = getSteering(characters,player,enemy,obs,ts,"Astar")
+            steering1 = getSteering(characters,player,enemy1,obs,ts,"Astar")
+#            steering2 = getSteering(characters,player,enemy2,obs,ts,"Astar")
+#            steering3 = getSteering(characters,player,enemy3,obs,ts,"Astar")
+#            steering4 = getSteering(characters,player,enemy4,obs,ts,"Astar")
     	else:
             print "USE: python battlecars.py num_enemies [ Wander | Pursue | Seek | Astar ]"
             sys.exit()
@@ -261,11 +356,20 @@ def PaintWorld():
         updatePlayer(player,time)
 
         # Updating enemies stats
-        enemy1.update(steering1,time)
-        enemy2.update(steering2,time)
-        enemy3.update(steering3,time)
-        enemy4.update(steering4,time)
-
+        if sys_enemies == '1':
+            enemy1.update(steering1,time)
+        elif sys_enemies == '2':
+            enemy1.update(steering1,time)
+            enemy2.update(steering2,time)
+        elif sys_enemies == '3':
+            enemy1.update(steering1,time)
+            enemy2.update(steering2,time)
+            enemy3.update(steering3,time)
+        elif sys_enemies == '4':
+            enemy1.update(steering1,time)
+            enemy2.update(steering2,time)
+            enemy3.update(steering3,time)
+            enemy4.update(steering4,time)
         for col in ans:
             col[0].update(col[1],time)
 
@@ -287,99 +391,6 @@ def drawNavMesh(ts):
     y = 0.1
     if not debug:
         y = -0.3
-
-    ts = []
-
-    ts.append(Triangle((50,50),(30,30),(30,50),0)) #1
-    ts.append(Triangle((50,50),(30,30),(50,30),1)) #2
-
-    ts.append(Triangle((30,30),(50,30),(50,20),2)) #3
-    ts.append(Triangle((50,20),(30,30),(30,20),3)) #4
-
-    ts.append(Triangle((30,20),(30,0),(50,20),4)) #5
-    ts.append(Triangle((50,20),(50,0),(30,0),5)) #6
-
-    ts.append(Triangle((50,-20),(50,0),(30,0),6)) #7
-    ts.append(Triangle((50,-20),(30,-20),(30,0),7)) #8
-
-    ts.append(Triangle((50,-20),(30,-20),(30,-30),8)) #9
-    ts.append(Triangle((50,-30),(30,-30),(50,-20),9)) #10
-
-    ts.append(Triangle((50,-30),(30,-30),(50,-50),10)) #11
-    ts.append(Triangle((50,-50),(30,-50),(30,-30),11)) #12
-
-    ts.append(Triangle((20,-50),(30,-30),(30,-50),12)) #13
-    ts.append(Triangle((20,-30),(20,-50),(30,-30),13)) #14
-
-    ts.append(Triangle((30,-20),(30,0),(20,-20),14)) #15
-    ts.append(Triangle((20,0),(30,0),(20,-20),15)) #16
-
-    ts.append(Triangle((20,0),(30,0),(20,20),16)) #17
-    ts.append(Triangle((20,20),(30,20),(30,0),17)) #18
-
-    ts.append(Triangle((20,30),(30,30),(20,50),18)) #19
-    ts.append(Triangle((20,50),(30,50),(30,30),19)) #20
-
-    ts.append(Triangle((20,30),(0,30),(20,50),20)) #21
-    ts.append(Triangle((0,30),(0,50),(20,50),21)) #22
-
-    ts.append(Triangle((0,0),(0,20),(20,20),22)) #23
-    ts.append(Triangle((0,0),(20,0),(20,20),23)) #24
-
-    ts.append(Triangle((0,0),(20,0),(20,-20),24)) #25
-    ts.append(Triangle((0,0),(0,-20),(20,-20),25)) #26
-
-    ts.append(Triangle((0,-30),(0,-20),(20,-20),26)) #27
-    ts.append(Triangle((20,-20),(0,-30),(20,-30),27)) #28
-
-    ts.append(Triangle((20,-30),(20,-50),(0,-30),28)) #29
-    ts.append(Triangle((0,-30),(0,-50),(20,-50),29)) #30
-
-    # Mirror
-    ts.append(Triangle((-50,50),(-30,30),(-30,50),59)) #-1 59
-    ts.append(Triangle((-50,50),(-30,30),(-50,30),58)) #-2 58
-
-    ts.append(Triangle((-30,30),(-50,30),(-50,20),57)) #-3 57
-    ts.append(Triangle((-50,20),(-30,30),(-30,20),56)) #-4 56
-
-    ts.append(Triangle((-30,20),(-30,0),(-50,20),55)) #-5 55
-    ts.append(Triangle((-50,20),(-50,0),(-30,0),54)) #-6 54
-
-    ts.append(Triangle((-50,-20),(-50,0),(-30,0),53)) #-7 53
-    ts.append(Triangle((-50,-20),(-30,-20),(-30,0),52)) #-8 52
-
-    ts.append(Triangle((-50,-20),(-30,-20),(-30,-30),51)) #-9 51
-    ts.append(Triangle((-50,-30),(-30,-30),(-50,-20),50)) #-10 50
-
-    ts.append(Triangle((-50,-30),(-30,-30),(-50,-50),49)) #-11 49
-    ts.append(Triangle((-50,-50),(-30,-50),(-30,-30),48)) #-12 48
-
-    ts.append(Triangle((-20,-50),(-30,-30),(-30,-50),47)) #-13 47
-    ts.append(Triangle((-20,-30),(-20,-50),(-30,-30),46)) #-14 46
-
-    ts.append(Triangle((-30,-20),(-30,0),(-20,-20),45)) #-15 45
-    ts.append(Triangle((-20,0),(-30,0),(-20,-20),44)) #-16 44
-
-    ts.append(Triangle((-20,0),(-30,0),(-20,20),43)) #-17 43
-    ts.append(Triangle((-20,20),(-30,20),(-30,0),42)) #-18 42
-
-    ts.append(Triangle((-20,30),(-30,30),(-20,50),41)) #-19 41
-    ts.append(Triangle((-20,50),(-30,50),(-30,30),40)) #-20 40
-
-    ts.append(Triangle((-20,30),(0,30),(-20,50),39)) #-21 39
-    ts.append(Triangle((0,30),(0,50),(-20,50),38)) #-22 38
-
-    ts.append(Triangle((0,0),(0,20),(-20,20),37)) #-23 37
-    ts.append(Triangle((0,0),(-20,0),(-20,20),36)) #-24 36
-
-    ts.append(Triangle((0,0),(-20,0),(-20,-20),35)) #-25 35
-    ts.append(Triangle((0,0),(0,-20),(-20,-20),34)) #-26 34
-
-    ts.append(Triangle((0,-30),(0,-20),(-20,-20),33)) #-27 33
-    ts.append(Triangle((-20,-20),(0,-30),(-20,-30),32)) #-28 32
-
-    ts.append(Triangle((-20,-30),(-20,-50),(0,-30),31)) #-29 31
-    ts.append(Triangle((0,-30),(0,-50),(-20,-50),30)) #-30 30
 
     for t in ts:
         

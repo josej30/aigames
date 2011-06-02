@@ -21,10 +21,10 @@ def getSteering(targets,target,agent,obs,ts,flag):
         steeringSeek = seek(agent, target, "seek")
     elif flag == "Astar":
         path = pathfindAStar(agent, target, ts)
-        #print "begin"
-        #for i in path:
-        #    print i.toNode.node
-        #print "end"
+        print "begin"
+        for i in path:
+            print i.toNode.node
+        print "end"
         triag = ts[0]
         for i in ts:
         	if i.node==path[0].toNode.node:

@@ -117,7 +117,7 @@ class Triangle:
 			
 
 	def pointInTriangle2(self,point):
-		print "a"
+
 
 def getTriangle(triangles,point):
 	for triangle in triangles:
