@@ -285,12 +285,14 @@ def pathfindAStar(enemy, player, ts):
 		goal = nodes[ptri.node]
 	else:
 		print "The Player have no Triangle"
+		return -1
 		#sys.exit(-1)
 	if etri != None:
 		start = nodes[etri.node]
 		#sys.exit(-1)
 	else:
 		print "The Enemy have no Triangle"
+		return -1
 	#goal = node13
 	#start = node15
 	
