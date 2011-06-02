@@ -32,7 +32,7 @@ class Triangle:
 		t2 = Triangle(t.vertex2,t.vertex3,point,2)
 		t3 = Triangle(t.vertex3,t.vertex1,point,3)
 
-		orientation_original = self.orientation(point)
+		orientation_original = t.orientation(point)
 		print "original " + str(orientation_original)
     		orientation1 = t1.orientation(point)
     		print "t1 " + str(orientation1)

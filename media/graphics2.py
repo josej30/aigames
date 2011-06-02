@@ -74,7 +74,7 @@ agent.orientation = 100.0
 # Player Stuff #
 ################
 player = Agent()
-player.position = [40,0,40] 
+player.position = [-10,0,-20] 
 player.orientation = 0.0
 player.maxSpeed = 3
 player.maxAcceleration = 1
@@ -320,6 +320,7 @@ def drawNavMesh():
     ts.append(Triangle((30,20),(30,0),(50,20),4)) #5
     ts.append(Triangle((50,20),(50,0),(30,0),5)) #6
 
+    
     ts.append(Triangle((50,-20),(50,0),(30,0),6)) #7
     ts.append(Triangle((50,-20),(30,-20),(30,0),7)) #8
 
@@ -401,6 +402,7 @@ def drawNavMesh():
 
     ts.append(Triangle((-20,-30),(-20,-50),(0,-30),31)) #-29 31
     ts.append(Triangle((0,-30),(0,-50),(-20,-50),30)) #-30 30
+    
 
     for t in ts:
         

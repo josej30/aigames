@@ -43,7 +43,7 @@ class Triangle:
 
     		if orientation_original>=0 and orientation1>=0 and orientation2>=0 and orientation3>=0:
     			return True
-    		elif orientation_original<0 and orientation1<0 and orientation2<0 and orientation3<0:
+    		elif orientation_original<=0 and orientation1<=0 and orientation2<=0 and orientation3<=0:
     			return True
     		else:
     			return False
