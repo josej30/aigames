@@ -9,7 +9,7 @@ class Agent:
 	maxSpeed = 12
 	maxAcceleration = 15
 	radius = 0
-	position = [0,1,0]   # a 2 or 3D vector
+	position = [0,0,0]   # a 2 or 3D vector
 	orientation = 0.0    # a single floating point value
 	velocity = [0,0,0]   # another 2 or 3D vector
 	rotation = 0.0       # a single floating point value
@@ -24,8 +24,8 @@ class Agent:
 		self.orientation += self.rotation*time
 
 		# Negative position check
-		if self.position[1] < 0 :
-			self.position[1] = 0
+		if self.position[1] < 0.0 :
+			self.position[1] = 0.0
 
 		if self.position[1] > 0 :		
 			steering.linear = [0,-2.0,0]
@@ -35,7 +35,7 @@ class Agent:
 		self.orientation += steering.angular*time
 
 		# Negative position check
-		if self.position[1] == 0 and self.velocity[1] < 0 :
+		if self.position[1] <= 0 and self.velocity[1] < 0 :
 			self.velocity[1] = 0
 
 		# The velocity is along this direction, at full speed
