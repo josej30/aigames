@@ -1,3 +1,5 @@
+from misc.vector3 import *
+
 class Triangle:
 	vertex1 = ()
 	vertex2 = ()
@@ -21,19 +23,23 @@ class Triangle:
     		return temp1 - temp2
 
     	def pointInTriangle(self,point):
+    		t = self.organize()
+    		v1 = t.vertex1
+    		v2 = t.vertex2
+    		v3 = t.vertex3
 		#print point
-		t1 = Triangle(self.vertex1,self.vertex2,point,1)
-		t2 = Triangle(self.vertex2,self.vertex3,point,2)
-		t3 = Triangle(self.vertex3,self.vertex1,point,3)
+		t1 = Triangle(t.vertex1,t.vertex2,point,1)
+		t2 = Triangle(t.vertex2,t.vertex3,point,2)
+		t3 = Triangle(t.vertex3,t.vertex1,point,3)
 
-		orientation_original = self.orientation(point)
-		#print "original " + str(orientation_original)
+		orientation_original = t.orientation(point)
+		print "original " + str(orientation_original)
     		orientation1 = t1.orientation(point)
-    		#print "t1 " + str(orientation1)
+    		print "t1 " + str(orientation1)
     		orientation2 = t2.orientation(point)
-    		#print "t2 " + str(orientation2)
+    		print "t2 " + str(orientation2)
     		orientation3 = t3.orientation(point)
-    		#print "t3 " + str(orientation3)
+    		print "t3 " + str(orientation3)
 
     		if orientation_original>=0 and orientation1>=0 and orientation2>=0 and orientation3>=0:
     			return True
@@ -41,6 +47,74 @@ class Triangle:
     			return True
     		else:
     			return False
+    	'''def pointInTriangle(self,point):
+    		t = self.organize()
+    		v1 = t.vertex1
+    		v2 = t.vertex2
+    		v3 = t.vertex3
+
+    		angle1 = angle(point, v1, v2)
+    		
+    		angle2 = angle(point, v2, v3)
+    		
+    		angle3 = angle(point, v3, v1)
+    	
+
+    		if angle1 <= 180.0 and angle2 <=180.0 and angle3 <= 180.0:
+    			return True
+    		else:
+    			return False '''
+    	
+    	def organize(self):
+    		v1 = self.vertex1
+    		v2 = self.vertex2
+    		v3 = self.vertex3
+		
+		if v1[0] < v2[0]:
+			if v2[0]< v3[0]:	
+				temp = max_y(v2,v1)	
+				return Triangle(v3,temp[0],temp[1],self.node) 
+			elif v2[0] > v3[0]:
+				temp = max_y(v3,v1)
+				return Triangle(v2,temp[0],temp[1],self.node) 
+				#return v2.append(max_y(v3,v1))
+			elif v2[0]==v3[0]:
+				if v3[1]<= v2[1]:
+					temp = max_y(v2,v1)	
+					return Triangle(v3,temp[0],temp[1],self.node) 
+					#return v3.append(max_y(v2,v1))
+				else:
+					temp = max_y(v3,v1)
+					return Triangle(v2,temp[0],temp[1],self.node) 
+					#return v2.append(max_y(v3,v1))
+		elif v1[0] > v2[0]:
+			if v1[0]< v3[0]:
+				temp = max_y(v2,v1)	
+				return Triangle(v3,temp[0],temp[1],self.node)
+				#return v3.append(max_y(v2,v1))
+			elif v1[0] > v3[0]:
+				temp = max_y(v2,v3)	
+				return Triangle(v1,temp[0],temp[1],self.node)
+				#return v1.append(max_y(v3,v2))
+			elif v1[0]==v3[0]:
+				if v3[1]<= v1[1]:
+					temp = max_y(v2,v1)	
+					return Triangle(v3,temp[0],temp[1],self.node) 
+					#return v3.append(max_y(v2,v1))
+				else:
+					temp = max_y(v2,v3)	
+					return Triangle(v1,temp[0],temp[1],self.node)
+					#return v1.append(max_y(v3,v2))
+		elif v1[0]==v2[0]:
+			if v1[0]>= v3[0]:
+				temp = max_y(v2,v3)	
+				return Triangle(v1,temp[0],temp[1],self.node)
+				#return v1.append(max_y(v3,v2))
+			else:
+				temp = max_y(v2,v1)	
+				return Triangle(v3,temp[0],temp[1],self.node)
+				#return v3.append(max_y(v2,v1))
+			
 
 def getTriangle(triangles,point):
 	for triangle in triangles:
@@ -49,14 +123,7 @@ def getTriangle(triangles,point):
     		
     			 
 
-#p1 = [2,0]
 
-#p2 = [0,1]
-
-#p3 = [-3,-2]
-#t = Triangle(p1,p2,p3,1)
-
-#p = [1/3.0,1/3.0]
 #print t.pointInTriangle(p)
 
 #print t.centerOfMass()
