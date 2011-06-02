@@ -45,7 +45,7 @@ rquady = 0.0
 ################
 
 enemy1 = Agent()
-enemy1.position = [-40,0,-40]
+enemy1.position = [40,0,-40]
 enemy1.velocity = [0,0,0]
 enemy1.orientation = 100.0
 
@@ -71,6 +71,10 @@ player.position = [28,0,10]
 player.orientation = 0.0
 player.maxSpeed = 0.5
 player.maxAcceleration = 0.5
+
+if sys_behavior == "Seek" or sys_behavior == "Astar":
+    player.maxSpeed = 25.0
+    player.maxAcceleration = 25.0
 
 # How many enemies the user wants?
 if sys_enemies == '1':
@@ -336,6 +340,7 @@ def PaintWorld():
             steering4 = getSteering(characters,player,enemy4,obs,ts,"Seek")
 	elif sys_behavior == "Astar":
             steering1 = getSteering(characters,player,enemy1,obs,ts,"Astar")
+            print getTriangle(ts,player.position).node
 #            steering2 = getSteering(characters,player,enemy2,obs,ts,"Astar")
 #            steering3 = getSteering(characters,player,enemy3,obs,ts,"Astar")
 #            steering4 = getSteering(characters,player,enemy4,obs,ts,"Astar")
