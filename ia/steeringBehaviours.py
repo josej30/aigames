@@ -189,7 +189,7 @@ def VelocityM(agent,target):
 
      	return steering
 
-def Pursue(seek,target, agent):
+def Pursue(target, agent):
 
      	# Holds the maximum prediction time
      	maxPrediction = 1

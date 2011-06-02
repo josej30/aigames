@@ -41,51 +41,7 @@ class Triangle:
     			#print "determinante" + str(determinat((x1,y1),(x11,y11)))
     			return False
     		else:
-    			return True	 
-    			
-
-	'''def pointInTriangle(self,point):
-    		t = self.organize()
-    		v1 = t.vertex1
-    		v2 = t.vertex2
-    		v3 = t.vertex3
-		#print point
-		t1 = Triangle(t.vertex1,t.vertex2,point,1)
-		t2 = Triangle(t.vertex2,t.vertex3,point,2)
-		t3 = Triangle(t.vertex3,t.vertex1,point,3)
-
-		orientation_original = t.orientation(point)
-		#print "original " + str(orientation_original)
-    		orientation1 = t1.orientation(point)
-    		#print "t1 " + str(orientation1)
-    		orientation2 = t2.orientation(point)
-    		#print "t2 " + str(orientation2)
-    		orientation3 = t3.orientation(point)
-    		#print "t3 " + str(orientation3)
-
-    		if orientation_original>=0 and orientation1>=0 and orientation2>=0 and orientation3>=0:
     			return True
-    		elif orientation_original<=0 and orientation1<=0 and orientation2<=0 and orientation3<=0:
-    			return True
-    		else:
-    			return False'''
-    	'''def pointInTriangle(self,point):
-    		t = self.organize()
-    		v1 = t.vertex1
-    		v2 = t.vertex2
-    		v3 = t.vertex3
-
-    		angle1 = angle(point, v1, v2)
-    		
-    		angle2 = angle(point, v2, v3)
-    		
-    		angle3 = angle(point, v3, v1)
-    	
-
-    		if angle1 <= 180.0 and angle2 <=180.0 and angle3 <= 180.0:
-    			return True
-    		else:
-    			return False '''
     	
     	def organize(self):
     		v1 = self.vertex1
@@ -138,19 +94,11 @@ class Triangle:
 				#return v3.append(max_y(v2,v1))
 			
 
-	def pointInTriangle2(self,point):
-		print "a"
-
+	
 def getTriangle(triangles,point):
 	for triangle in triangles:
 		if triangle.pointInTriangle(point):
 			return triangle
-
-def getTriangle2(triangles,point):
-	for triangle in triangles:
-		if triangle.pointInTriangle2(point):
-			return triangle
-    		
 
 
 

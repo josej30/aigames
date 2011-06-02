@@ -16,25 +16,25 @@ def getSteering(targets,target,agent,obs,ts,flag):
     if flag == "Wander":
         steeringWander = wander(face,agent,target)
     elif flag == "Pursue":
-        steeringPursue = Pursue(seek,target,agent)
+        steeringPursue = Pursue(target,agent)
     elif flag == "Seek":
         steeringSeek = seek(agent, target, "seek")
     elif flag == "Astar":
         path = pathfindAStar(agent, target, ts)
-        print "begin"
-        for i in path:
-            print i.toNode.node
-        print "end"
+        #print "begin"
+        #for i in path:
+        #    print i.toNode.node
+        #print "end"
         triag = ts[0]
         for i in ts:
         	if i.node==path[0].toNode.node:
         		triag = i
     
-        targetAstar = triag.centerOfMass()	
+        targetAstar = triag.centerOfMass() 
         nodeTarget = Agent()
         nodeTarget.position[0] = targetAstar[0]
         nodeTarget.position[2] = targetAstar[1]	
-        steeringSeek = seek(agent, nodeTarget, "seek")
+        steeringAstar = Pursue(nodeTarget, agent)
         
 
     steeringObstacleAvoidance = collisionDetect2(agent,obs)
