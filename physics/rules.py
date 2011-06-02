@@ -3,23 +3,30 @@ from structures.segments import *
 from structures.steeringOutput import *
 from misc.vector3 import *
 
-def check_physics(agents,obs):
+def check_physics(agents,obs,obstacle_ob):
 
+    # Checking if the position of the agent 
+    # is inside an obstacle    
+    for ob in obstacle_ob:
+        for agent in agents:
+            if agent.position[1] > 0.0:
+                inside_ob(agent,ob)
+    
     r = []
     steering = SteeringOutput()
     for agent in agents:
         for ob in obs:
+            # Checking for hits with an obstacle
             if agent_wall(agent,ob['seg']):
-                #temp = ob['normal']
-                #temp = vectorDivide(temp,1.0)
-                temp = agent.velocity
-                if ob['normal'][0] != 0:
-                    temp[0] = -temp[0]
-                elif ob['normal'][2] != 0:
-                    temp[2] = -temp[2]
-                steering.linear = temp
-                r.append([agent,steering])
-                agent.velocity = temp
+                if agent.position[1] < ob['height']:
+                    temp = agent.velocity
+                    if ob['normal'][0] != 0:
+                        temp[0] = -temp[0]
+                    elif ob['normal'][2] != 0:
+                        temp[2] = -temp[2]
+                    steering.linear = temp
+                    r.append([agent,steering])
+                    agent.velocity = temp
     return r
 
 
@@ -59,3 +66,12 @@ def updatePlayer(player,time):
 
     if abs(player.velocity[2]) <= 0.01:
         player.velocity[2] = 0
+
+def inside_ob(agent,ob):
+    
+    if agent.position[0] > (ob.x-(ob.widex)/2.0) and agent.position[0] < (ob.x+(ob.widex)/2.0) and agent.position[2] > (ob.z-(ob.widez)/2.0) and agent.position[2] < (ob.z+(ob.widez)/2.0):
+        if agent.position[1] < ob.height:
+            agent.position[1] = ob.height
+            
+        
+

@@ -28,9 +28,7 @@ def scheduleJumpAction(agent):
 	
 # Retrieve the steering for this jump
 def Jump(agent):
-	
-    
-	
+		
      	# Check if we have a trajectory, and create
      	# one if not.
      	if t:

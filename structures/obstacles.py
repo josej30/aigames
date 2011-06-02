@@ -3,7 +3,8 @@ from structures.segments import *
 # Definition of an obstacle
 
 class Obstacle:
-    
+
+    name = ""
     x = 0
     y = 0
     z = 0
@@ -12,13 +13,14 @@ class Obstacle:
     height = 0
 
     # Constructor
-    def __init__(self,x,y,z,widex,widez,height):
+    def __init__(self,x,y,z,widex,widez,height,name):
         self.x = x
         self.y = y
         self.z = z
         self.widex = widex
         self.widez = widez
         self.height = height
+        self.name = name
 
     # Return an array with the segments that represents
     # the walls of the obstacle.

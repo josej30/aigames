@@ -91,6 +91,9 @@ characters = enemies + players
 # their respectives normal vectors
 obs = []
 
+# Array with the obstacle objects
+obstacle_ob = []
+
 # Triangles
 ts = []
 
@@ -105,34 +108,37 @@ limits = [
 
 # Inserting every wall into the world
 for i in limits:
-    obs.append( { 'seg': i.get_proyection() , 'normal': i.normal } )
+    obs.append( { 'height': 9999999999, 'seg': i.get_proyection() , 'normal': i.normal } )
 
 ######################
 # 1st Obstacle Stuff #
 ######################
-obstacle1 = Obstacle(-25,0,-25,10,10,3)
+obstacle1 = Obstacle(-25,0,-25,10,10,3,"obstacle1")
 segments1 = obstacle1.segments()
 normals1 = obstacle1.normals()
 for i in range(0,len(segments1)):
-    obs.append( { 'seg': segments1[i] , 'normal': normals1[i] } )
+    obs.append( { 'height': obstacle1.height , 'seg': segments1[i] , 'normal': normals1[i] } )
+    obstacle_ob.append(obstacle1)
 
 ######################
 # 2st Obstacle Stuff #
 ######################
-obstacle2 = Obstacle(25,0,-25,10,10,3)
+obstacle2 = Obstacle(25,0,-25,10,10,3,"obstacle2")
 segments2 = obstacle2.segments()
 normals2 = obstacle2.normals()
 for i in range(0,len(segments2)):
-    obs.append( { 'seg': segments2[i] , 'normal': normals2[i] } )
+    obs.append( { 'height': obstacle2.height, 'seg': segments2[i] , 'normal': normals2[i] } )
+    obstacle_ob.append(obstacle2)
 
 ######################
 # 3st Obstacle Stuff #
 ######################
-obstacle3 = Obstacle(0,0,25,60,10,3)
+obstacle3 = Obstacle(0,0,25,60,10,3,"obstacle_big")
 segments3 = obstacle3.segments()
 normals3 = obstacle3.normals()
 for i in range(0,len(segments3)):
-    obs.append( { 'seg': segments3[i] , 'normal': normals3[i] } )
+    obs.append( { 'height': obstacle3.height, 'seg': segments3[i] , 'normal': normals3[i] } )
+    obstacle_ob.append(obstacle3)
 
 
 ############### FIN DE TODO LO QUE DEBERIA IR EN EL MAIN ###########
@@ -168,11 +174,10 @@ def ReSizeWorld(Width, Height):
     glMatrixMode(GL_MODELVIEW)
 
 
-# The main drawing function. 
+# The main drawing function
 def PaintWorld():
     
-
-    global player, limits, obs, obstacle1, time2, time1, time, enemies, players, debug
+    global players, limits, obs, enemies, time2, time1, time, debug
 
     try:
 
@@ -212,7 +217,7 @@ def PaintWorld():
             drawAgent(enemy,'red')
             glPopMatrix()
 
-        drawNavMesh()
+        drawNavMesh(ts)
 
         #######################
 
@@ -244,7 +249,7 @@ def PaintWorld():
         ###########
         # Physics #
         ###########
-        ans = check_physics(characters,obs)
+        ans = check_physics(characters,obs,obstacle_ob)
         
         # Get end just before calculating new positions,
         # velocities and accelerations
@@ -277,9 +282,7 @@ def PaintWorld():
         traceback.print_exc()
         sys.exit(-1)
 
-def drawNavMesh():
-
-    global ts
+def drawNavMesh(ts):
 
     y = 0.1
     if not debug:
