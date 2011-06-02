@@ -21,8 +21,30 @@ class Triangle:
     		temp1 = (self.vertex1[0] - self.vertex3[0]) *  (self.vertex2[1] - self.vertex3[1]) 
     		temp2 = (self.vertex1[1] - self.vertex3[1]) * (self.vertex2[0] - self.vertex3[0])
     		return temp1 - temp2
+    		
+    	def pointInTriangle(self,p):
+    		t = self.organize()
+    		v1 = t.vertex1
+    		v2 = t.vertex2
+    		v3 = t.vertex3
 
-    	def pointInTriangle(self,point):
+		v = [v1,v2,v3]
+    		for i in range(2):
+    			(x1,y1) = substraction1(v[i],v[i+1])
+    			(x11,y11) = substraction1(p,v[i])
+    			if determinat((x1,y1),(x11,y11))>0:
+    				print "determinante" + str(determinat((x1,y1),(x11,y11)))
+    				return False
+    		(x1,y1) = substraction1(v[2],v[0])
+    		(x11,y11) = substraction1(p,v[2])
+    		if determinat((x1,y1),(x11,y11))>0:
+    			print "determinante" + str(determinat((x1,y1),(x11,y11)))
+    			return False
+    		else:
+    			return True	 
+    			
+
+	'''def pointInTriangle(self,point):
     		t = self.organize()
     		v1 = t.vertex1
     		v2 = t.vertex2
@@ -33,20 +55,20 @@ class Triangle:
 		t3 = Triangle(t.vertex3,t.vertex1,point,3)
 
 		orientation_original = t.orientation(point)
-		print "original " + str(orientation_original)
+		#print "original " + str(orientation_original)
     		orientation1 = t1.orientation(point)
-    		print "t1 " + str(orientation1)
+    		#print "t1 " + str(orientation1)
     		orientation2 = t2.orientation(point)
-    		print "t2 " + str(orientation2)
+    		#print "t2 " + str(orientation2)
     		orientation3 = t3.orientation(point)
-    		print "t3 " + str(orientation3)
+    		#print "t3 " + str(orientation3)
 
     		if orientation_original>=0 and orientation1>=0 and orientation2>=0 and orientation3>=0:
     			return True
-    		elif orientation_original<0 and orientation1<0 and orientation2<0 and orientation3<0:
+    		elif orientation_original<=0 and orientation1<=0 and orientation2<=0 and orientation3<=0:
     			return True
     		else:
-    			return False
+    			return False'''
     	'''def pointInTriangle(self,point):
     		t = self.organize()
     		v1 = t.vertex1
@@ -116,15 +138,19 @@ class Triangle:
 				#return v3.append(max_y(v2,v1))
 			
 
+	def pointInTriangle2(self,point):
+		print "a"
+
 def getTriangle(triangles,point):
 	for triangle in triangles:
 		if triangle.pointInTriangle(point):
 			return triangle
+
+def getTriangle2(triangles,point):
+	for triangle in triangles:
+		if triangle.pointInTriangle2(point):
+			return triangle
     		
-    			 
 
 
-#print t.pointInTriangle(p)
-
-#print t.centerOfMass()
 

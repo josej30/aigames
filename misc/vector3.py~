@@ -16,6 +16,8 @@ def vectorTimes(v,x):
 
 def substraction(v1,v2):
 	return [ v1[0]-v2[0], v1[1]-v2[1], v1[2]-v2[2] ]
+def substraction1(v1,v2):
+	return [ v1[0]-v2[0], v1[1]-v2[1], v1[2]-v2[2] ]
 
 def airSubstraction(v1,v2):
 	return [ 0, -10, 0 ]
@@ -55,10 +57,10 @@ def angle(p, p1, p2):
 	print "p" + str(p)
 	print "p1" + str(p1)
 	print "p2" + str(p2)
-	v2 = [p1[0] - p[0],0, p1[1] - p[1]]
+	v1 = [p1[0] - p[0],0, p1[1] - p[1]]
 	print "v1" + str(v1)
 
-	v1 = [p2[0] - p[0], 0, p2[1] - p[1]]
+	v2 = [p2[0] - p[0], 0, p2[1] - p[1]]
 	print "v2" + str(v2)
 	
 	print degrees(acos(dotProduct(v1, v2) / (vectorLength(v1) * vectorLength(v2))))
@@ -73,6 +75,9 @@ def max_y(v1,v2):
 			return [v1,v2]
 		else:
 			return [v2,v1]
+def determinat(v1,v2):
+	return (v1[0]*v2[1]) - (v1[1]*v2[0])
+	
 
 		
 	

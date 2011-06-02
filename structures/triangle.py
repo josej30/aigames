@@ -21,8 +21,30 @@ class Triangle:
     		temp1 = (self.vertex1[0] - self.vertex3[0]) *  (self.vertex2[1] - self.vertex3[1]) 
     		temp2 = (self.vertex1[1] - self.vertex3[1]) * (self.vertex2[0] - self.vertex3[0])
     		return temp1 - temp2
+    		
+    	def pointInTriangle(self,p):
+    		t = self.organize()
+    		v1 = t.vertex1
+    		v2 = t.vertex2
+    		v3 = t.vertex3
 
-	def pointInTriangle(self,point):
+		v = [v1,v2,v3]
+    		for i in range(2):
+    			(x1,y1) = substraction1(v[i],v[i+1])
+    			(x11,y11) = substraction1(p,v[i])
+    			if determinat((x1,y1),(x11,y11))>0:
+    				#print "determinante" + str(determinat((x1,y1),(x11,y11)))
+    				return False
+    		(x1,y1) = substraction1(v[2],v[0])
+    		(x11,y11) = substraction1(p,v[2])
+    		if determinat((x1,y1),(x11,y11))>0:
+    			#print "determinante" + str(determinat((x1,y1),(x11,y11)))
+    			return False
+    		else:
+    			return True	 
+    			
+
+	'''def pointInTriangle(self,point):
     		t = self.organize()
     		v1 = t.vertex1
     		v2 = t.vertex2
@@ -46,7 +68,7 @@ class Triangle:
     		elif orientation_original<=0 and orientation1<=0 and orientation2<=0 and orientation3<=0:
     			return True
     		else:
-    			return False
+    			return False'''
     	'''def pointInTriangle(self,point):
     		t = self.organize()
     		v1 = t.vertex1

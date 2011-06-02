@@ -5,7 +5,7 @@ p1 = [-2,0]
 p2 = [0,2]
 
 p3 = [2,0]
-point = [2,2]
+point = [.5,.5]
 t = Triangle(p1,p2,p3,1)
 
 p = t.organize()

@@ -16,6 +16,8 @@ def vectorTimes(v,x):
 
 def substraction(v1,v2):
 	return [ v1[0]-v2[0], v1[1]-v2[1], v1[2]-v2[2] ]
+def substraction1(v1,v2):
+	return [ v1[0]-v2[0], v1[1]-v2[1]]
 
 def airSubstraction(v1,v2):
 	return [ 0, -10, 0 ]
@@ -73,6 +75,9 @@ def max_y(v1,v2):
 			return [v1,v2]
 		else:
 			return [v2,v1]
+def determinat(v1,v2):
+	return (v1[0]*v2[1]) - (v1[1]*v2[0])
+	
 
 		
 	
