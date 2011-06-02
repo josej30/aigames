@@ -302,7 +302,7 @@ def pathfindAStar(enemy, player, ts):
 	#	[-1,-1,-1,-1,-1,-1,-1]
 	#] 
      	# Initialize the record for the start node
-     	startRecord = nodeRecord(0)
+     	startRecord = start
      	startRecord.connection = None
      	startRecord.costSoFar = 0
 
