@@ -37,7 +37,7 @@ def getSteering(targets,target,agent,obs,ts,flag):
             nodeTarget = Agent()
             nodeTarget.position[0] = targetAstar[0]
             nodeTarget.position[2] = targetAstar[1]	
-            steeringAstar = Pursue(nodeTarget, agent)
+            steeringAstar = onlyseek(nodeTarget, agent)
         
 
     steeringObstacleAvoidance = collisionDetect2(agent,obs)

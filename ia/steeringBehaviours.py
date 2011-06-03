@@ -24,6 +24,24 @@ def getNewOrientation(currentOrientation, velocity):
    		return currentOrientation
 
 
+
+def onlyseek(agent, target):
+	
+	# Create the structure for output
+	steering = SteeringOutput()
+
+	# Get the direction of the target
+	steering.linear = substraction(agent.position,target.position)
+
+	# Give full acceleration is along this direction
+	steering.linear = normalize(steering.linear)
+	steering.linear = vectorTimes(steering.linear,agent.maxAcceleration)
+
+	# Output the steering
+	steering.angular = 0
+	return steering
+
+
 def seek(agent, target, flag):
 
 	# Holds the satisfaction radius
