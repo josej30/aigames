@@ -27,16 +27,18 @@ class Triangle:
     		v1 = t.vertex1
     		v2 = t.vertex2
     		v3 = t.vertex3
-
+		print "points"
 		v = [v1,v2,v3]
     		for i in range(2):
     			(x1,y1) = substraction1(v[i],v[i+1])
-    			(x11,y11) = substraction1(p,v[i])
+    			(x11,y11) = substraction1([p[0],p[2]],v[i])
+    			print "determinante" + str(determinat((x1,y1),(x11,y11)))
     			if determinat((x1,y1),(x11,y11))>0:
     				#print "determinante" + str(determinat((x1,y1),(x11,y11)))
     				return False
     		(x1,y1) = substraction1(v[2],v[0])
-    		(x11,y11) = substraction1(p,v[2])
+    		(x11,y11) = substraction1([p[0],p[2]],v[2])
+    		print "determinante" + str(determinat((x1,y1),(x11,y11)))
     		if determinat((x1,y1),(x11,y11))>0:
     			#print "determinante" + str(determinat((x1,y1),(x11,y11)))
     			return False
