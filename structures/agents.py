@@ -28,7 +28,8 @@ class Agent:
 			self.position[1] = 0.0
 
 		if self.position[1] > 0 :		
-			steering.linear = [0,-2.0,0]
+			steering.linear[1] = -2.0
+			#steering.linear = [0,-2.0,0]
 		
 		# And the velocity and the rotation
 		self.velocity = vectorPlus(self.velocity,vectorTimes(steering.linear,time))

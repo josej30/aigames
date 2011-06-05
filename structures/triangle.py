@@ -32,13 +32,17 @@ class Triangle:
     		for i in range(2):
     			(x1,y1) = substraction1(v[i],v[i+1])
     			(x11,y11) = substraction1([p[0],p[2]],v[i])
+
     			print "determinante" + str(determinat((x1,y1),(x11,y11)))
+
     			if determinat((x1,y1),(x11,y11))>0:
     				#print "determinante" + str(determinat((x1,y1),(x11,y11)))
     				return False
     		(x1,y1) = substraction1(v[2],v[0])
     		(x11,y11) = substraction1([p[0],p[2]],v[2])
+
     		print "determinante" + str(determinat((x1,y1),(x11,y11)))
+
     		if determinat((x1,y1),(x11,y11))>0:
     			#print "determinante" + str(determinat((x1,y1),(x11,y11)))
     			return False

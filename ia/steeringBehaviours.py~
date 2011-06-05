@@ -10,10 +10,6 @@ from misc.vector3 import *
 from random import random
 
 
-maxSpeed = 10
-maxAcceleration = 15
-
-
 def getNewOrientation(currentOrientation, velocity):
 
 	# Make sure we have a velocity
@@ -28,9 +24,25 @@ def getNewOrientation(currentOrientation, velocity):
    		return currentOrientation
 
 
-def seek(agent, target, flag):
 
-	global maxSpeed, maxAcceleration
+def onlyseek(agent, target):
+	
+	# Create the structure for output
+	steering = SteeringOutput()
+
+	# Get the direction of the target
+	steering.linear = substraction(agent.position,target.position)
+
+	# Give full acceleration is along this direction
+	steering.linear = normalize(steering.linear)
+	steering.linear = vectorTimes(steering.linear,agent.maxAcceleration)
+
+	# Output the steering
+	steering.angular = 0
+	return steering
+
+
+def seek(agent, target, flag):
 
 	# Holds the satisfaction radius
 	targetRadius = 1
@@ -59,13 +71,13 @@ def seek(agent, target, flag):
 
 	# If we are outside the slowRadius, then go max speed
 	if distance > slowRadius:
-		targetSpeed = maxSpeed
+		targetSpeed = agent.maxSpeed
 	# Otherwise calculate a scaled speed
 	else:
 		if flag == "collision":
-			targetSpeed = maxSpeed * distance / slowRadius
+			targetSpeed = agent.maxSpeed * distance / slowRadius
 		else:
-			targetSpeed = maxSpeed * distance / slowRadius
+			targetSpeed = agent.maxSpeed * distance / slowRadius
 
 
 	# The target velocity combines speed and direction
@@ -76,25 +88,28 @@ def seek(agent, target, flag):
 #		targetVelocity = [-targetVelocity[0],-targetVelocity[1],-targetVelocity[2]]
 
 	#checks the agent position
-	if agent.position[1] > 0:
-#		print "restabdo"
 	
+	print target.velocity
+	if agent.position[1] > 0:
+		print "restabdo"
+		print steering.linear
 		# Acceleration in y-axes (gravity)
 		steering.linear = airSubstraction(targetVelocity,agent.velocity)
+		
 	else:
 		steering.linear = substraction(targetVelocity,agent.velocity)
 		steering.linear = vectorDivide(steering.linear,timeToTarget)
 		# Check if the acceleration is too fast
-		if vectorLength(steering.linear) > maxAcceleration:
+		if vectorLength(steering.linear) > agent.maxAcceleration:
 			steering.linear = normalize(steering.linear)
-			steering.linear = vectorTimes(steering.linear,maxAcceleration)
+			steering.linear = vectorTimes(steering.linear,agent.maxAcceleration)
 
 	if flag == "collision":
 		"colision"
 		steering.linear = [steering.linear[0]*factor,0,steering.linear[2]*factor]
 
 	# Output the steering
-	steering.angular = 0	
+	steering.angular = 0
 	
 	return steering
 
@@ -185,9 +200,9 @@ def VelocityM(agent,target):
 	steering.linear = vectorDivide(steering.linear,timeToTarget)
 
 	# Check if the acceleration is too fast
-	if vectorLength(steering.linear) > maxAcceleration:
+	if vectorLength(steering.linear) > agent.maxAcceleration:
 		steering.linear = normalize(steering.linear)
-		steering.linear = vectorTimes(steering.linear,maxAcceleration)
+		steering.linear = vectorTimes(steering.linear,agent.maxAcceleration)
 		
 
      	# Output the steering
@@ -195,7 +210,7 @@ def VelocityM(agent,target):
 
      	return steering
 
-def Pursue(seek,target, agent):
+def Pursue(target, agent):
 
      	# Holds the maximum prediction time
      	maxPrediction = 1
@@ -218,6 +233,7 @@ def Pursue(seek,target, agent):
 
        # Work out our current speed
        	speed = vectorLength(agent.velocity)
+       	print speed
 
        # Check if speed is too small to give a reasonable
        # prediction time
@@ -231,7 +247,7 @@ def Pursue(seek,target, agent):
       		prediction = distance / speed
 
        # Put the target together
-       
+       	print "pursue " + str(target.velocity)
        	target.position = addition(target.position,vectorTimes(target.velocity , prediction))
 
        # 2. Delegate to seek
@@ -331,10 +347,6 @@ def wander(face,agent,target):
      	# Holds the current orientation of the wander target
      	wanderOrientation = 0
 
-
-     	# Holds the maximum acceleration of the character
-     	maxAcceleration = 2
-
      	# Again we dont need a new target
      	# ... Other data is derived from the superclass ...
       	# 1. Calculate the target to delegate to face
@@ -366,7 +378,7 @@ def wander(face,agent,target):
    	# 3. Now set the linear acceleration to be at full
    	# acceleration in the direction of the orientation
 
-   		steering.linear =vectorTimes(orientationAsVector(agent.orientation), maxAcceleration)
+   		steering.linear =vectorTimes(orientationAsVector(agent.orientation), agent.maxAcceleration)
 
    	# Return it
    	
@@ -381,10 +393,6 @@ def separation(agent, targets):
      	# inverse square law force
      	decayCoefficient = 0.8
                                                         
-   	# Holds the maximum acceleration of the character
-   	maxAcceleration = 15.0
-
-
      	# The steering variable holds the output
      	steering = SteeringOutput()
 
@@ -401,12 +409,12 @@ def separation(agent, targets):
 
 
          		# Calculate the strength of repulsion
-         		strength = min(decayCoefficient * distance * distance, maxAcceleration)
+         		strength = min(decayCoefficient * distance * distance, target.maxAcceleration)
 
 
          		# Add the acceleration
          		direction = normalize(direction)
-         		steering.linear = vectorTimes (direction,strength)
+         		steering.linear = vectorTimes(direction,strength)
 
      # We've gone through all targets, return the result	
    	return steering

@@ -26,15 +26,18 @@ def getSteering(targets,target,agent,obs,ts,flag):
         #    print i.toNode.node
         #print "end"
         triag = ts[0]
-        for i in ts:
+        if path == []:
+            print "En el mismo Triangulo..."
+        if path != [] and path != -1:
+            for i in ts:
         	if i.node==path[0].toNode.node:
-        		triag = i
+                    triag = i
     
-        targetAstar = triag.centerOfMass() 
-        nodeTarget = Agent()
-        nodeTarget.position[0] = targetAstar[0]
-        nodeTarget.position[2] = targetAstar[1]	
-        steeringAstar = Pursue(nodeTarget, agent)
+            targetAstar = triag.centerOfMass() 
+            nodeTarget = Agent()
+            nodeTarget.position[0] = targetAstar[0]
+            nodeTarget.position[2] = targetAstar[1]	
+            steeringAstar = onlyseek(nodeTarget, agent)
         
 
     steeringObstacleAvoidance = collisionDetect2(agent,obs)
