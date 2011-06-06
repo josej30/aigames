@@ -24,7 +24,6 @@ def getNewOrientation(currentOrientation, velocity):
    		return currentOrientation
 
 
-
 def onlyseek(agent, target):
 	
 	# Create the structure for output

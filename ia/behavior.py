@@ -26,8 +26,8 @@ def getSteering(targets,target,agent,obs,ts,flag):
         #    print i.toNode.node
         #print "end"
         triag = ts[0]
-        if path == []:
-            print "En el mismo Triangulo..."
+        #if path == []:
+        #    print "En el mismo Triangulo..."
         if path != [] and path != -1:
             for i in ts:
         	if i.node==path[0].toNode.node:

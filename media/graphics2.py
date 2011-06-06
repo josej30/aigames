@@ -57,24 +57,22 @@ enemy2.orientation = 100.0
 enemy3 = Agent()
 enemy3.position = [-40,0,40]
 enemy3.velocity = [0,0,0]
-enemy3.orientation = 10.0
+enemy3.orientation = 100.0
 
 enemy4 = Agent()
 enemy4.position = [-40,0,-40]
 enemy4.velocity = [0,0,0]
-enemy4.orientation = 10.0
+enemy4.orientation = 100.0
 
 player = Agent()
-
 player.position = [28,0,10] 
-
-player.orientation = 0.0
+player.orientation = 777.0
 player.maxSpeed = 0.5
 player.maxAcceleration = 0.5
 
-if sys_behavior == "Seek" or sys_behavior == "Astar":
-    player.maxSpeed = 25.0
-    player.maxAcceleration = 25.0
+#if sys_behavior == "Seek" or sys_behavior == "Astar":
+#    player.maxSpeed = 25.0
+#    player.maxAcceleration = 25.0
 
 # How many enemies the user wants?
 if sys_enemies == '1':
@@ -303,22 +301,16 @@ def PaintWorld():
 
 	# Player
         for player in players:
-        	# Objective
-        	glPushMatrix()
-        	drawAgent(player,'cyan')
-        	glPopMatrix()
+            # Objective
+            drawAgent(player,'cyan')
 
         # Enemies
         for enemy in enemies:
-            glPushMatrix()
             drawAgent(enemy,'red')
-            glPopMatrix()
 
         drawNavMesh(ts)
 
         #######################
-
-        #getTriangle2(ts,player.position)
 
         #############
         # Behaviour #
@@ -340,9 +332,6 @@ def PaintWorld():
             steering4 = getSteering(characters,player,enemy4,obs,ts,"Seek")
 	elif sys_behavior == "Astar":
             steering1 = getSteering(characters,player,enemy1,obs,ts,"Astar")
-            tri = getTriangle(ts,player.position)
-            if tri != None:
-                print tri.node
 #            steering2 = getSteering(characters,player,enemy2,obs,ts,"Astar")
 #            steering3 = getSteering(characters,player,enemy3,obs,ts,"Astar")
 #            steering4 = getSteering(characters,player,enemy4,obs,ts,"Astar")
@@ -363,6 +352,8 @@ def PaintWorld():
 
         # Updating player stats
         updatePlayer(player,time)
+
+        # print player.position
 
         # Updating enemies stats
         if sys_enemies == '1':
@@ -520,6 +511,8 @@ def drawPlane():
     
 def drawAgent(agent, color):
 
+    glPushMatrix()
+
     glTranslatef(agent.position[0], agent.position[1]+1, agent.position[2]);
 
     if color == 'blue':
@@ -577,6 +570,36 @@ def drawAgent(agent, color):
     glVertex3f( 1.0,-1.0,-1.0);
 
     glEnd();
+
+    glPopMatrix()            
+
+def drawEnemy(enemy, color):
+
+    glPushMatrix()
+
+    glTranslatef(enemy.position[0], enemy.position[1]+1, enemy.position[2]);
+
+    if color == 'blue':
+        glColor3f(0.0,0.0,0.8);
+    elif color == 'red':
+        glColor3f(0.7,0.0,0.0);
+    elif color == 'cyan':
+        glColor3f(0.0,0.7,0.7);
+    elif color == 'yellow':
+        glColor3f(0.8,0.8,0.0);
+    elif color == 'purple':
+        glColor3f(0.8,0.0,0.8);
+
+    print enemy.orientation
+
+    glBegin(GL_QUADS);
+    glVertex3f(-3.0, 0.0, 1.0);
+    glVertex3f( -3.0, 0.0, -1.0);
+    glVertex3f( 1.0, 0.0, -1.0);
+    glVertex3f( 1.0, 0.0, 1.0);
+    glEnd();
+
+    glPopMatrix()
 
 
 # The function called whenever a key is pressed. Note the use of Python tuples to pass in: (key, x, y)  
@@ -652,10 +675,10 @@ def execute():
     glutInit(sys.argv)
     glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH)
     glutInitWindowSize(640, 480)
-    glutInitWindowPosition(0, 0)
+    glutInitWindowPosition(400, 100)
     window = glutCreateWindow("Battle Cars")
 
-    glutDisplayFunc(PaintWorld)
+    #glutDisplayFunc(PaintWorld)
     
     #glutFullScreen()
     

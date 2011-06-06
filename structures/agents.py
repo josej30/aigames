@@ -20,6 +20,7 @@ class Agent:
 	def update (self, steering, time):
 
 		# Update the position and orientation
+		
 		self.position = vectorPlus(self.position,vectorTimes(self.velocity,time))
 		self.orientation += self.rotation*time
 
@@ -32,7 +33,7 @@ class Agent:
 		
 		# And the velocity and the rotation
 		self.velocity = vectorPlus(self.velocity,vectorTimes(steering.linear,time))
-		self.orientation += steering.angular*time
+		#self.orientation += steering.angular*time
 
 		# Negative position check
 		if self.position[1] <= 0 and self.velocity[1] < 0 :
