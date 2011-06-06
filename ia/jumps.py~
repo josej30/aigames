@@ -6,26 +6,25 @@ from misc.misc import *
 from misc.vector3 import *
 from ia.steeringBehaviours import *
 
-	# Holds the jump point to use
+# Holds the jump point to use
 jumpPoint = JumpPoint()
 
-    	# Keeps track of whether the jump is achievable
+# Keeps track of whether the jump is achievable
 canAchieve = True
 
-    	# Holds the maximum speed of the character                                  
+# Holds the maximum speed of the character                                  
 maxSpeed = 15
 
-   	# Holds the maximum vertical jump velocity
+# Holds the maximum vertical jump velocity
 maxYVelocity = 10
-
 maxVelocity = 5
 
-   	# Retrieve the steering for this jump
+# Retrieve the steering for this jump
 t = True
 
 def scheduleJumpAction(agent):
 	if agent.position[1]==0:
-		agent.velocity[1] = 1
+		agent.velocity[1] = 5.0
 	
 # Retrieve the steering for this jump
 def Jump(agent):
