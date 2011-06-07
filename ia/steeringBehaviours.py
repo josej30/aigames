@@ -88,7 +88,7 @@ def seek(agent, target, flag):
 
 	#checks the agent position
 	
-	print target.velocity
+	#print target.velocity
 	if agent.position[1] > 0:
 		print "restabdo"
 		print steering.linear
@@ -232,7 +232,7 @@ def Pursue(target, agent):
 
        # Work out our current speed
        	speed = vectorLength(agent.velocity)
-       	print "speed " +str(speed)
+       	#print "speed " +str(speed)
 
        # Check if speed is too small to give a reasonable
        # prediction time
@@ -246,10 +246,10 @@ def Pursue(target, agent):
       		prediction = distance / speed
 
        # Put the target together
-       	print "pursue " + str(target.velocity)
+	#print "pursue " + str(target.velocity)
        	target.position = addition(target.position,vectorTimes(target.velocity , prediction))
 
-       # 2. Delegate to seek
+	# 2. Delegate to seek
 	steering = seek(agent, target, "seek")
 
 	return steering

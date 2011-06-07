@@ -351,27 +351,27 @@ def PaintWorld():
         time = ( (time2 - time1).microseconds ) / 1000000.0
 
         # Updating player stats
-        updatePlayer(player,time)
+        updatePlayer(player,time,obstacle_ob)
 
-        # print player.position
+        #print player.velocity
 
         # Updating enemies stats
         if sys_enemies == '1':
-            enemy1.update(steering1,time)
+            enemy1.update(steering1,time,obstacle_ob)
         elif sys_enemies == '2':
-            enemy1.update(steering1,time)
-            enemy2.update(steering2,time)
+            enemy1.update(steering1,time,obstacle_ob)
+            enemy2.update(steering2,time,obstacle_ob)
         elif sys_enemies == '3':
-            enemy1.update(steering1,time)
-            enemy2.update(steering2,time)
-            enemy3.update(steering3,time)
+            enemy1.update(steering1,time,obstacle_ob)
+            enemy2.update(steering2,time,obstacle_ob)
+            enemy3.update(steering3,time,obstacle_ob)
         elif sys_enemies == '4':
-            enemy1.update(steering1,time)
-            enemy2.update(steering2,time)
-            enemy3.update(steering3,time)
-            enemy4.update(steering4,time)
+            enemy1.update(steering1,time,obstacle_ob)
+            enemy2.update(steering2,time,obstacle_ob)
+            enemy3.update(steering3,time,obstacle_ob)
+            enemy4.update(steering4,time,obstacle_ob)
         for col in ans:
-            col[0].update(col[1],time)
+            col[0].update(col[1],time,obstacle_ob)
 
         # Get initial time just after calculating everything
         time1 = datetime.now()
@@ -590,8 +590,6 @@ def drawEnemy(enemy, color):
     elif color == 'purple':
         glColor3f(0.8,0.0,0.8);
 
-    print enemy.orientation
-
     glBegin(GL_QUADS);
     glVertex3f(-3.0, 0.0, 1.0);
     glVertex3f( -3.0, 0.0, -1.0);
@@ -636,22 +634,22 @@ def keyOperations():
     if keyBuffer[100]:
         steering = SteeringOutput()
         steering.linear = [-acc,0,0]
-        player.update(steering,time)
+        player.update(steering,time,obstacle_ob)
         #print "Left"
     if keyBuffer[101]:
         steering = SteeringOutput()
         steering.linear = [0,0,-acc]
-        player.update(steering,time)
+        player.update(steering,time,obstacle_ob)
         #print "Up"
     if keyBuffer[102]:
         steering = SteeringOutput()
         steering.linear = [acc,0,0]
-        player.update(steering,time)
+        player.update(steering,time,obstacle_ob)
         #print "Right"
     if keyBuffer[103]:
         steering = SteeringOutput()
         steering.linear = [0,0,acc]
-        player.update(steering,time)
+        player.update(steering,time,obstacle_ob)
         #print "Down"
     if keyBuffer[42]:
         scheduleJumpAction(player)

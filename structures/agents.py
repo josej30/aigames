@@ -3,6 +3,7 @@ from OpenGL.GLUT import *
 from OpenGL.GLU import *
 from math import pow, sqrt
 from misc.vector3 import *
+from physics.rules import inside_ob
 
 class Agent:
 
@@ -17,7 +18,7 @@ class Agent:
 	def __init__(self):
 		self.radius = 1
 	
-	def update (self, steering, time):
+	def update (self, steering, time, obs):
 
 		# Update the position and orientation
 		
@@ -28,16 +29,27 @@ class Agent:
 		if self.position[1] < 0.0 :
 			self.position[1] = 0.0
 
-		if self.position[1] > 0 :		
+		# We have to check wether or not
+		# the agent is inside (over) and obstacle. If so (or the
+		# agent is on the floor) we do not use the gravity
+		grav = True
+		for ob in obs:
+			if inside_ob(self,ob):
+				self.position[1] = ob.height
+				grav = False
+
+		if self.position[1] > 0:		
 			steering.linear[1] = -2.0
-			#steering.linear = [0,-2.0,0]
+			
+		if not grav:
+			steering.linear[1] = 0
+			self.velocity[1] = 0
 		
 		# And the velocity and the rotation
 		self.velocity = vectorPlus(self.velocity,vectorTimes(steering.linear,time))
 		#self.orientation += steering.angular*time
 
-		# Negative position check
-		if self.position[1] <= 0 and self.velocity[1] < 0 :
+		if self.position[1] <= 0 and self.velocity[1] <= 0:
 			self.velocity[1] = 0
 
 		# The velocity is along this direction, at full speed

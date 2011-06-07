@@ -10,7 +10,8 @@ def check_physics(agents,obs,obstacle_ob):
     for ob in obstacle_ob:
         for agent in agents:
             if agent.position[1] > 0.0:
-                inside_ob(agent,ob)
+                if inside_ob(agent,ob):
+                    agent.position[1] = ob.height
     
     r = []
     steering = SteeringOutput()
@@ -52,14 +53,14 @@ def agent_wall(agent,wall):
     return False
 
 
-def updatePlayer(player,time):
+def updatePlayer(player,time,obs):
     
     steering = SteeringOutput()
-
+    
     steering.linear[0] = -player.velocity[0]
     steering.linear[2] = -player.velocity[2]
 
-    player.update(steering,time)
+    player.update(steering,time,obs)
 
     if abs(player.velocity[0]) <= 0.01:
         player.velocity[0] = 0
@@ -71,7 +72,7 @@ def inside_ob(agent,ob):
     
     if agent.position[0] > (ob.x-(ob.widex)/2.0) and agent.position[0] < (ob.x+(ob.widex)/2.0) and agent.position[2] > (ob.z-(ob.widez)/2.0) and agent.position[2] < (ob.z+(ob.widez)/2.0):
         if agent.position[1] < ob.height:
-            agent.position[1] = ob.height
+            return True
             
         
 
