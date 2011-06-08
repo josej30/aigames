@@ -109,6 +109,9 @@ def seek(agent, target, flag):
 
 	# Output the steering
 	steering.angular = 0
+
+	#target.position = addition(target.position,vectorTimes(target.velocity , 1))
+
 	
 	return steering
 
@@ -213,7 +216,7 @@ def Pursue(target, agent):
 
      	# Holds the maximum prediction time
      	maxPrediction = 1
-  
+  	
 
      	# OVERRIDES the target data in seek (in other words
      	# this class has two bits of data called target:
@@ -247,11 +250,12 @@ def Pursue(target, agent):
 
        # Put the target together
 	#print "pursue " + str(target.velocity)
-       	target.position = addition(target.position,vectorTimes(target.velocity , prediction))
+       	#target.position = addition(target.position,vectorTimes(target.velocity , prediction))
 
 	# 2. Delegate to seek
 	steering = seek(agent, target, "seek")
 
+	
 	return steering
 
 
@@ -293,7 +297,7 @@ def CollisionPursue(seek,target, agent):
 
        # Put the target together
        
-       	target.position = addition(target.position,vectorTimes(target.velocity , prediction))
+       	#target.position = addition(target.position,vectorTimes(target.velocity , prediction))
        	
 
        # 2. Delegate to seek

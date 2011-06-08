@@ -39,7 +39,7 @@ def getSteering(targets,target,agent,obs,ts,flag):
             nodeTarget.position[2] = targetAstar[1]	
             steeringAstar = onlyseek(nodeTarget, agent)
         
-
+    #print target.velocity
     steeringObstacleAvoidance = collisionDetect2(agent,obs)
     steeringSeparation = separation(agent, targets)
 
@@ -96,5 +96,5 @@ def getSteering(targets,target,agent,obs,ts,flag):
     	for behavior in behavior_astar:
             temp = behavior[0].scale_steering(behavior[1])
             steering = sum_steering(steering, temp)
-   
+    #target.position = addition(target.position,vectorTimes(target.velocity , 1))
     return steering

@@ -1,0 +1,40 @@
+from structures.BehaviorAndWeight import *
+from structures.triangle import *
+from misc.vector3 import *
+from ia.steeringBehaviours import *
+from ia.collisions import *
+from ia.aStar import *
+
+# Returns the acceleration required.
+def getSteering(targets,target,agent,obs,ts,flag):
+
+    
+    steeringSeek = SteeringOutput()
+    
+    if flag == "Seek":
+        steeringSeek = seek(target,agent, "seek")
+   
+    	
+        
+
+   
+    SeekWeight = 3.0
+    
+    steering = SteeringOutput()
+
+   
+        	
+    if flag == "Seek":
+        behavior_seek = [
+            [steeringSeek,SeekWeight]
+            #[steeringObstacleAvoidance,ObstacleAvoidanceWeight],
+            #[steeringSeparation,SeparationWeigth]
+            ]
+    	for behavior in behavior_seek:
+    		
+        	temp = behavior[0].scale_steering(behavior[1])
+        	steering = sum_steering(steering, temp)
+
+    
+   
+    return steering

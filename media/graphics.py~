@@ -3,21 +3,18 @@ from OpenGL.GLUT import *
 from OpenGL.GLU import *
 
 from datetime import datetime
+import traceback
+import sys
 
 from physics.rules import *
-
 from structures.agents import *
 from structures.walls import *
 from structures.obstacles import *
 from structures.steeringOutput import *
+from structures.triangle import Triangle
 from ia.steeringBehaviours import *
-from ia.collisions import *
 from ia.behavior import *
 from ia.jumps import *
-
-import traceback
-
-import sys
 
 ############### TODO ESTO DEBERIA IR EN EL MAIN ###########
 ############### O EN ALGUN LUGAR FUERA DE AQUI  ##########
@@ -76,7 +73,8 @@ agent4.orientation = 10.0
 target = Agent()
 target.position = [-10,0,-10] 
 target.orientation = 300.0
-
+target.maxSpeed = 3
+target.maxAcceleration = 1
 
 ####################
 # 2nd Target Stuff #
@@ -84,7 +82,8 @@ target.orientation = 300.0
 target2 = Agent()
 target2.position = [0,0,0] 
 target2.orientation = 0.0
-target2.maxSpeed = 0.075
+target2.maxSpeed = 3
+target2.maxAcceleration = 1
 
 ####################
 # 3nd Target Stuff #
@@ -478,7 +477,7 @@ def keyOperations():
     global target, keyBuffer, rquadx, rquady
 
     step = 0.5
-    acc = 0.7
+    acc = target.maxAcceleration
 
     steering = SteeringOutput()
 
@@ -526,7 +525,7 @@ def execute():
 
     glutDisplayFunc(PaintWorld)
     
-    #glutFullScreen()
+    glutFullScreen()
     
     glutIdleFunc(PaintWorld)
     glutReshapeFunc(ReSizeWorld)

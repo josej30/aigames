@@ -39,7 +39,7 @@ class Agent:
 				grav = False
 
 		if self.position[1] > 0:		
-			steering.linear[1] = -2.0
+			steering.linear[1] = -40.0
 			
 		if not grav:
 			steering.linear[1] = 0

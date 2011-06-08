@@ -45,7 +45,7 @@ rquady = 0.0
 ################
 
 enemy1 = Agent()
-enemy1.position = [-40,0,-40]
+enemy1.position = [40,0,-40]
 enemy1.velocity = [0,0,0]
 enemy1.orientation = 100.0
 
@@ -57,22 +57,22 @@ enemy2.orientation = 100.0
 enemy3 = Agent()
 enemy3.position = [-40,0,40]
 enemy3.velocity = [0,0,0]
-enemy3.orientation = 10.0
+enemy3.orientation = 100.0
 
 enemy4 = Agent()
 enemy4.position = [-40,0,-40]
 enemy4.velocity = [0,0,0]
-enemy4.orientation = 10.0
+enemy4.orientation = 100.0
 
 player = Agent()
-<<<<<<< HEAD
-player.position = [-10,0,-20] 
-=======
 player.position = [28,0,10] 
->>>>>>> 5e58ed72610a877eb97cfce6e8e97cbe7596efa5
-player.orientation = 0.0
+player.orientation = 777.0
 player.maxSpeed = 0.5
 player.maxAcceleration = 0.5
+
+#if sys_behavior == "Seek" or sys_behavior == "Astar":
+player.maxSpeed = 25.0
+player.maxAcceleration = 10.0
 
 # How many enemies the user wants?
 if sys_enemies == '1':
@@ -301,22 +301,16 @@ def PaintWorld():
 
 	# Player
         for player in players:
-        	# Objective
-        	glPushMatrix()
-        	drawAgent(player,'cyan')
-        	glPopMatrix()
+            # Objective
+            drawAgent(player,'cyan')
 
         # Enemies
         for enemy in enemies:
-            glPushMatrix()
             drawAgent(enemy,'red')
-            glPopMatrix()
 
         drawNavMesh(ts)
 
         #######################
-
-        #getTriangle2(ts,player.position)
 
         #############
         # Behaviour #
@@ -332,7 +326,7 @@ def PaintWorld():
             steering3 = getSteering(characters,player,enemy3,obs,ts,"Pursue")
             steering4 = getSteering(characters,player,enemy4,obs,ts,"Pursue")
 	elif sys_behavior == "Seek":
-            steering1 = getSteering(characters,player,enemy1,obs,ts,"Seek")
+            steering1 =  seek(enemy1,player, "seek") #sgetSteering(characters,player,enemy1,obs,ts,"Seek")
             steering2 = getSteering(characters,player,enemy2,obs,ts,"Seek")
             steering3 = getSteering(characters,player,enemy3,obs,ts,"Seek")
             steering4 = getSteering(characters,player,enemy4,obs,ts,"Seek")
@@ -353,29 +347,31 @@ def PaintWorld():
         # Get end just before calculating new positions,
         # velocities and accelerations
         time2 = datetime.now()
-    
+    	
         time = ( (time2 - time1).microseconds ) / 1000000.0
-
+	#print time
         # Updating player stats
-        updatePlayer(player,time)
+        updatePlayer(player,time,obstacle_ob)
+
+        #print player.velocity
 
         # Updating enemies stats
         if sys_enemies == '1':
-            enemy1.update(steering1,time)
+            enemy1.update(steering1,time,obstacle_ob)
         elif sys_enemies == '2':
-            enemy1.update(steering1,time)
-            enemy2.update(steering2,time)
+            enemy1.update(steering1,time,obstacle_ob)
+            enemy2.update(steering2,time,obstacle_ob)
         elif sys_enemies == '3':
-            enemy1.update(steering1,time)
-            enemy2.update(steering2,time)
-            enemy3.update(steering3,time)
+            enemy1.update(steering1,time,obstacle_ob)
+            enemy2.update(steering2,time,obstacle_ob)
+            enemy3.update(steering3,time,obstacle_ob)
         elif sys_enemies == '4':
-            enemy1.update(steering1,time)
-            enemy2.update(steering2,time)
-            enemy3.update(steering3,time)
-            enemy4.update(steering4,time)
+            enemy1.update(steering1,time,obstacle_ob)
+            enemy2.update(steering2,time,obstacle_ob)
+            enemy3.update(steering3,time,obstacle_ob)
+            enemy4.update(steering4,time,obstacle_ob)
         for col in ans:
-            col[0].update(col[1],time)
+            col[0].update(col[1],time,obstacle_ob)
 
         # Get initial time just after calculating everything
         time1 = datetime.now()
@@ -395,103 +391,6 @@ def drawNavMesh(ts):
     y = 0.1
     if not debug:
         y = -0.3
-
-
-    ts = []
-
-    ts.append(Triangle((50,50),(30,30),(30,50),0)) #1
-    ts.append(Triangle((50,50),(30,30),(50,30),1)) #2
-
-    ts.append(Triangle((30,30),(50,30),(50,20),2)) #3
-    ts.append(Triangle((50,20),(30,30),(30,20),3)) #4
-
-    ts.append(Triangle((30,20),(30,0),(50,20),4)) #5
-    ts.append(Triangle((50,20),(50,0),(30,0),5)) #6
-
-    
-    ts.append(Triangle((50,-20),(50,0),(30,0),6)) #7
-    ts.append(Triangle((50,-20),(30,-20),(30,0),7)) #8
-
-    ts.append(Triangle((50,-20),(30,-20),(30,-30),8)) #9
-    ts.append(Triangle((50,-30),(30,-30),(50,-20),9)) #10
-
-    ts.append(Triangle((50,-30),(30,-30),(50,-50),10)) #11
-    ts.append(Triangle((50,-50),(30,-50),(30,-30),11)) #12
-
-    ts.append(Triangle((20,-50),(30,-30),(30,-50),12)) #13
-    ts.append(Triangle((20,-30),(20,-50),(30,-30),13)) #14
-
-    ts.append(Triangle((30,-20),(30,0),(20,-20),14)) #15
-    ts.append(Triangle((20,0),(30,0),(20,-20),15)) #16
-
-    ts.append(Triangle((20,0),(30,0),(20,20),16)) #17
-    ts.append(Triangle((20,20),(30,20),(30,0),17)) #18
-
-    ts.append(Triangle((20,30),(30,30),(20,50),18)) #19
-    ts.append(Triangle((20,50),(30,50),(30,30),19)) #20
-
-    ts.append(Triangle((20,30),(0,30),(20,50),20)) #21
-    ts.append(Triangle((0,30),(0,50),(20,50),21)) #22
-
-    ts.append(Triangle((0,0),(0,20),(20,20),22)) #23
-    ts.append(Triangle((0,0),(20,0),(20,20),23)) #24
-
-    ts.append(Triangle((0,0),(20,0),(20,-20),24)) #25
-    ts.append(Triangle((0,0),(0,-20),(20,-20),25)) #26
-
-    ts.append(Triangle((0,-30),(0,-20),(20,-20),26)) #27
-    ts.append(Triangle((20,-20),(0,-30),(20,-30),27)) #28
-
-    ts.append(Triangle((20,-30),(20,-50),(0,-30),28)) #29
-    ts.append(Triangle((0,-30),(0,-50),(20,-50),29)) #30
-
-    # Mirror
-    ts.append(Triangle((-50,50),(-30,30),(-30,50),59)) #-1 59
-    ts.append(Triangle((-50,50),(-30,30),(-50,30),58)) #-2 58
-
-    ts.append(Triangle((-30,30),(-50,30),(-50,20),57)) #-3 57
-    ts.append(Triangle((-50,20),(-30,30),(-30,20),56)) #-4 56
-
-    ts.append(Triangle((-30,20),(-30,0),(-50,20),55)) #-5 55
-    ts.append(Triangle((-50,20),(-50,0),(-30,0),54)) #-6 54
-
-    ts.append(Triangle((-50,-20),(-50,0),(-30,0),53)) #-7 53
-    ts.append(Triangle((-50,-20),(-30,-20),(-30,0),52)) #-8 52
-
-    ts.append(Triangle((-50,-20),(-30,-20),(-30,-30),51)) #-9 51
-    ts.append(Triangle((-50,-30),(-30,-30),(-50,-20),50)) #-10 50
-
-    ts.append(Triangle((-50,-30),(-30,-30),(-50,-50),49)) #-11 49
-    ts.append(Triangle((-50,-50),(-30,-50),(-30,-30),48)) #-12 48
-
-    ts.append(Triangle((-20,-50),(-30,-30),(-30,-50),47)) #-13 47
-    ts.append(Triangle((-20,-30),(-20,-50),(-30,-30),46)) #-14 46
-
-    ts.append(Triangle((-30,-20),(-30,0),(-20,-20),45)) #-15 45
-    ts.append(Triangle((-20,0),(-30,0),(-20,-20),44)) #-16 44
-
-    ts.append(Triangle((-20,0),(-30,0),(-20,20),43)) #-17 43
-    ts.append(Triangle((-20,20),(-30,20),(-30,0),42)) #-18 42
-
-    ts.append(Triangle((-20,30),(-30,30),(-20,50),41)) #-19 41
-    ts.append(Triangle((-20,50),(-30,50),(-30,30),40)) #-20 40
-
-    ts.append(Triangle((-20,30),(0,30),(-20,50),39)) #-21 39
-    ts.append(Triangle((0,30),(0,50),(-20,50),38)) #-22 38
-
-    ts.append(Triangle((0,0),(0,20),(-20,20),37)) #-23 37
-    ts.append(Triangle((0,0),(-20,0),(-20,20),36)) #-24 36
-
-    ts.append(Triangle((0,0),(-20,0),(-20,-20),35)) #-25 35
-    ts.append(Triangle((0,0),(0,-20),(-20,-20),34)) #-26 34
-
-    ts.append(Triangle((0,-30),(0,-20),(-20,-20),33)) #-27 33
-    ts.append(Triangle((-20,-20),(0,-30),(-20,-30),32)) #-28 32
-
-    ts.append(Triangle((-20,-30),(-20,-50),(0,-30),31)) #-29 31
-    ts.append(Triangle((0,-30),(0,-50),(-20,-50),30)) #-30 30
-    
-
 
     for t in ts:
         
@@ -612,6 +511,8 @@ def drawPlane():
     
 def drawAgent(agent, color):
 
+    glPushMatrix()
+
     glTranslatef(agent.position[0], agent.position[1]+1, agent.position[2]);
 
     if color == 'blue':
@@ -670,6 +571,34 @@ def drawAgent(agent, color):
 
     glEnd();
 
+    glPopMatrix()            
+
+def drawEnemy(enemy, color):
+
+    glPushMatrix()
+
+    glTranslatef(enemy.position[0], enemy.position[1]+1, enemy.position[2]);
+
+    if color == 'blue':
+        glColor3f(0.0,0.0,0.8);
+    elif color == 'red':
+        glColor3f(0.7,0.0,0.0);
+    elif color == 'cyan':
+        glColor3f(0.0,0.7,0.7);
+    elif color == 'yellow':
+        glColor3f(0.8,0.8,0.0);
+    elif color == 'purple':
+        glColor3f(0.8,0.0,0.8);
+
+    glBegin(GL_QUADS);
+    glVertex3f(-3.0, 0.0, 1.0);
+    glVertex3f( -3.0, 0.0, -1.0);
+    glVertex3f( 1.0, 0.0, -1.0);
+    glVertex3f( 1.0, 0.0, 1.0);
+    glEnd();
+
+    glPopMatrix()
+
 
 # The function called whenever a key is pressed. Note the use of Python tuples to pass in: (key, x, y)  
 def keyPressed(key, x , y):
@@ -705,22 +634,22 @@ def keyOperations():
     if keyBuffer[100]:
         steering = SteeringOutput()
         steering.linear = [-acc,0,0]
-        player.update(steering,time)
+        player.update(steering,time,obstacle_ob)
         #print "Left"
     if keyBuffer[101]:
         steering = SteeringOutput()
         steering.linear = [0,0,-acc]
-        player.update(steering,time)
+        player.update(steering,time,obstacle_ob)
         #print "Up"
     if keyBuffer[102]:
         steering = SteeringOutput()
         steering.linear = [acc,0,0]
-        player.update(steering,time)
+        player.update(steering,time,obstacle_ob)
         #print "Right"
     if keyBuffer[103]:
         steering = SteeringOutput()
         steering.linear = [0,0,acc]
-        player.update(steering,time)
+        player.update(steering,time,obstacle_ob)
         #print "Down"
     if keyBuffer[42]:
         scheduleJumpAction(player)
@@ -744,10 +673,10 @@ def execute():
     glutInit(sys.argv)
     glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH)
     glutInitWindowSize(640, 480)
-    glutInitWindowPosition(0, 0)
+    glutInitWindowPosition(400, 100)
     window = glutCreateWindow("Battle Cars")
 
-    glutDisplayFunc(PaintWorld)
+    #glutDisplayFunc(PaintWorld)
     
     #glutFullScreen()
     

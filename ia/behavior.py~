@@ -16,26 +16,30 @@ def getSteering(targets,target,agent,obs,ts,flag):
     if flag == "Wander":
         steeringWander = wander(face,agent,target)
     elif flag == "Pursue":
-        steeringPursue = Pursue(seek,target,agent)
+        steeringPursue = Pursue(target,agent)
     elif flag == "Seek":
         steeringSeek = seek(agent, target, "seek")
     elif flag == "Astar":
         path = pathfindAStar(agent, target, ts)
-        print "begin"
-        for i in path:
-            print i.toNode.node
-        print "end"
+        #print "begin"
+        #for i in path:
+        #    print i.toNode.node
+        #print "end"
         triag = ts[0]
-        for i in ts:
+        #if path == []:
+        #    print "En el mismo Triangulo..."
+        if path != [] and path != -1:
+            for i in ts:
         	if i.node==path[0].toNode.node:
-        		triag = i
-        targetAstar = triag.centerOfMass()	
-        nodeTarget = Agent()
-        nodeTarget.position[0] = targetAstar[0]
-        nodeTarget.position[2] = targetAstar[1]	
-        steeringSeek = seek(agent, nodeTarget, "seek")
+                    triag = i
+    
+            targetAstar = triag.centerOfMass() 
+            nodeTarget = Agent()
+            nodeTarget.position[0] = targetAstar[0]
+            nodeTarget.position[2] = targetAstar[1]	
+            steeringAstar = onlyseek(nodeTarget, agent)
         
-
+    #print target.velocity
     steeringObstacleAvoidance = collisionDetect2(agent,obs)
     steeringSeparation = separation(agent, targets)
 
@@ -44,14 +48,9 @@ def getSteering(targets,target,agent,obs,ts,flag):
     SeekWeight = 3.0
     AstarWeigth = 3.0
     ObstacleAvoidanceWeight = 10.0
-    SeparationWeigth = 70.0
+    SeparationWeigth = 150.0
 
     if (steeringObstacleAvoidance.linear == [0,0,0]):
-        PursueWeight = 3.0
-        WanderWeight = 3.0
-        SeekWeigth = 3.0
-        AstarWeigth = 3.0
-        SeparationWeigth = 70.0
         ObstacleAvoidanceWeight = 0.0
 
     # Create the steering structure for accumulation
@@ -97,5 +96,5 @@ def getSteering(targets,target,agent,obs,ts,flag):
     	for behavior in behavior_astar:
             temp = behavior[0].scale_steering(behavior[1])
             steering = sum_steering(steering, temp)
-   
+    target.position = addition(target.position,vectorTimes(target.velocity , 1))
     return steering

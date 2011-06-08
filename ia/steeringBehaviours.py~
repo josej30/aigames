@@ -24,7 +24,6 @@ def getNewOrientation(currentOrientation, velocity):
    		return currentOrientation
 
 
-
 def onlyseek(agent, target):
 	
 	# Create the structure for output
@@ -89,7 +88,7 @@ def seek(agent, target, flag):
 
 	#checks the agent position
 	
-	print target.velocity
+	#print target.velocity
 	if agent.position[1] > 0:
 		print "restabdo"
 		print steering.linear
@@ -110,6 +109,9 @@ def seek(agent, target, flag):
 
 	# Output the steering
 	steering.angular = 0
+
+	#target.position = addition(target.position,vectorTimes(target.velocity , 1))
+
 	
 	return steering
 
@@ -120,11 +122,11 @@ def aligne(agent, target):
 
      	# Holds the max angular acceleration and rotation
      	# of the character
-     	maxAngularAcceleration = .4
-    	maxRotation = 10
+     	maxAngularAcceleration = 1
+    	maxRotation = .1
      
      	# Holds the radius for arriving at the target
-     	targetRadius = 2
+     	targetRadius = 4
 
      	# Holds the radius for beginning to slow down
      	slowRadius = 1
@@ -214,7 +216,7 @@ def Pursue(target, agent):
 
      	# Holds the maximum prediction time
      	maxPrediction = 1
-  
+  	
 
      	# OVERRIDES the target data in seek (in other words
      	# this class has two bits of data called target:
@@ -233,7 +235,7 @@ def Pursue(target, agent):
 
        # Work out our current speed
        	speed = vectorLength(agent.velocity)
-       	print speed
+       	#print "speed " +str(speed)
 
        # Check if speed is too small to give a reasonable
        # prediction time
@@ -247,12 +249,13 @@ def Pursue(target, agent):
       		prediction = distance / speed
 
        # Put the target together
-       	print "pursue " + str(target.velocity)
-       	target.position = addition(target.position,vectorTimes(target.velocity , prediction))
+	#print "pursue " + str(target.velocity)
+       	#target.position = addition(target.position,vectorTimes(target.velocity , prediction))
 
-       # 2. Delegate to seek
+	# 2. Delegate to seek
 	steering = seek(agent, target, "seek")
 
+	
 	return steering
 
 
@@ -294,7 +297,7 @@ def CollisionPursue(seek,target, agent):
 
        # Put the target together
        
-       	target.position = addition(target.position,vectorTimes(target.velocity , prediction))
+       	#target.position = addition(target.position,vectorTimes(target.velocity , prediction))
        	
 
        # 2. Delegate to seek

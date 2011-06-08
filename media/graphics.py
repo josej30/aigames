@@ -13,7 +13,7 @@ from structures.obstacles import *
 from structures.steeringOutput import *
 from structures.triangle import Triangle
 from ia.steeringBehaviours import *
-from ia.behavior import *
+from ia.behavior2 import *
 from ia.jumps import *
 
 ############### TODO ESTO DEBERIA IR EN EL MAIN ###########

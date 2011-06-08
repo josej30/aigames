@@ -71,8 +71,8 @@ player.maxSpeed = 0.5
 player.maxAcceleration = 0.5
 
 #if sys_behavior == "Seek" or sys_behavior == "Astar":
-#    player.maxSpeed = 25.0
-#    player.maxAcceleration = 25.0
+player.maxSpeed = 25.0
+player.maxAcceleration = 10.0
 
 # How many enemies the user wants?
 if sys_enemies == '1':
@@ -347,9 +347,9 @@ def PaintWorld():
         # Get end just before calculating new positions,
         # velocities and accelerations
         time2 = datetime.now()
-    
+    	
         time = ( (time2 - time1).microseconds ) / 1000000.0
-
+	#print time
         # Updating player stats
         updatePlayer(player,time,obstacle_ob)
 

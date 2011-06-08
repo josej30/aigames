@@ -467,7 +467,8 @@ def pathfindAStar(enemy, player, ts):
 
 	# Reverse the path, and return it
 
+	#player.position = addition(player.position,vectorTimes(player.velocity , 1))
 	path.reverse()
-
+	#target.position = addition(target.position,vectorTimes(target.velocity , 1))
 	return path
 
