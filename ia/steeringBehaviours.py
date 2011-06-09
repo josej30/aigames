@@ -90,10 +90,10 @@ def seek(agent, target, flag):
 	
 	#print target.velocity
 	if agent.position[1] > 0:
-		print "restabdo"
-		print steering.linear
+		#print "restando"
+		#print steering.linear
 		# Acceleration in y-axes (gravity)
-		steering.linear = airSubstraction(targetVelocity,agent.velocity)
+		steering.linear = substraction(targetVelocity,agent.velocity)
 		
 	else:
 		steering.linear = substraction(targetVelocity,agent.velocity)

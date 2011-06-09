@@ -67,12 +67,10 @@ enemy4.orientation = 100.0
 player = Agent()
 player.position = [28,0,10] 
 player.orientation = 777.0
-player.maxSpeed = 0.5
-player.maxAcceleration = 0.5
-
-#if sys_behavior == "Seek" or sys_behavior == "Astar":
-player.maxSpeed = 25.0
-player.maxAcceleration = 10.0
+player.maxSpeedy = 40.0
+player.maxAccelerationy = 120.0
+player.maxSpeed = 10.0
+player.maxAcceleration = 15.0
 
 # How many enemies the user wants?
 if sys_enemies == '1':
@@ -357,21 +355,21 @@ def PaintWorld():
 
         # Updating enemies stats
         if sys_enemies == '1':
-            enemy1.update(steering1,time,obstacle_ob)
+            enemy1.update(steering1,time,obstacle_ob,"auto")
         elif sys_enemies == '2':
-            enemy1.update(steering1,time,obstacle_ob)
-            enemy2.update(steering2,time,obstacle_ob)
+            enemy1.update(steering1,time,obstacle_ob,"auto")
+            enemy2.update(steering2,time,obstacle_ob,"auto")
         elif sys_enemies == '3':
-            enemy1.update(steering1,time,obstacle_ob)
-            enemy2.update(steering2,time,obstacle_ob)
-            enemy3.update(steering3,time,obstacle_ob)
+            enemy1.update(steering1,time,obstacle_ob,"auto")
+            enemy2.update(steering2,time,obstacle_ob,"auto")
+            enemy3.update(steering3,time,obstacle_ob,"auto")
         elif sys_enemies == '4':
-            enemy1.update(steering1,time,obstacle_ob)
-            enemy2.update(steering2,time,obstacle_ob)
-            enemy3.update(steering3,time,obstacle_ob)
-            enemy4.update(steering4,time,obstacle_ob)
+            enemy1.update(steering1,time,obstacle_ob,"auto")
+            enemy2.update(steering2,time,obstacle_ob,"auto")
+            enemy3.update(steering3,time,obstacle_ob,"auto")
+            enemy4.update(steering4,time,obstacle_ob,"auto")
         for col in ans:
-            col[0].update(col[1],time,obstacle_ob)
+            col[0].update(col[1],time,obstacle_ob,"auto")
 
         # Get initial time just after calculating everything
         time1 = datetime.now()
@@ -634,22 +632,22 @@ def keyOperations():
     if keyBuffer[100]:
         steering = SteeringOutput()
         steering.linear = [-acc,0,0]
-        player.update(steering,time,obstacle_ob)
+        player.update(steering,time,obstacle_ob,"manual")
         #print "Left"
     if keyBuffer[101]:
         steering = SteeringOutput()
         steering.linear = [0,0,-acc]
-        player.update(steering,time,obstacle_ob)
+        player.update(steering,time,obstacle_ob,"manual")
         #print "Up"
     if keyBuffer[102]:
         steering = SteeringOutput()
         steering.linear = [acc,0,0]
-        player.update(steering,time,obstacle_ob)
+        player.update(steering,time,obstacle_ob,"manual")
         #print "Right"
     if keyBuffer[103]:
         steering = SteeringOutput()
         steering.linear = [0,0,acc]
-        player.update(steering,time,obstacle_ob)
+        player.update(steering,time,obstacle_ob,"manual")
         #print "Down"
     if keyBuffer[42]:
         scheduleJumpAction(player)

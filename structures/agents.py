@@ -7,8 +7,10 @@ from physics.rules import inside_ob
 
 class Agent:
 
-	maxSpeed = 12
-	maxAcceleration = 15
+	maxSpeed = 12.0
+	maxAcceleration = 15.0
+	maxSpeedy = 10.0
+	maxAccelerationy = 15.0
 	radius = 0
 	position = [0,0,0]   # a 2 or 3D vector
 	orientation = 0.0    # a single floating point value
@@ -18,7 +20,7 @@ class Agent:
 	def __init__(self):
 		self.radius = 1
 	
-	def update (self, steering, time, obs):
+	def update (self, steering, time, obs, flag):
 
 		# Update the position and orientation
 		
@@ -38,8 +40,8 @@ class Agent:
 				self.position[1] = ob.height
 				grav = False
 
-		if self.position[1] > 0:		
-			steering.linear[1] = -40.0
+		if self.position[1] > 0 and flag == "auto":		
+			steering.linear[1] = -self.maxAccelerationy
 			
 		if not grav:
 			steering.linear[1] = 0
@@ -47,13 +49,15 @@ class Agent:
 		
 		# And the velocity and the rotation
 		self.velocity = vectorPlus(self.velocity,vectorTimes(steering.linear,time))
-		#self.orientation += steering.angular*time
+		self.orientation += steering.angular*time
 
 		if self.position[1] <= 0 and self.velocity[1] <= 0:
 			self.velocity[1] = 0
 
 		# The velocity is along this direction, at full speed
 		# If this is too fast, clip it to the max speed
-		if vectorLength(self.velocity) > self.maxSpeed:
+		if vectorLengthnoy(self.velocity) > self.maxSpeed:
 			self.velocity = normalize(self.velocity)
-			self.velocity = vectorTimes(self.velocity,self.maxSpeed)
+#			self.velocity[0] = self.velocity[0]*(self.maxSpeed/2)
+#			self.velocity[2] = self.velocity[2]*(self.maxSpeed/2)
+			self.velocity = vectorTimes(self.velocity,self.maxSpeed/2)

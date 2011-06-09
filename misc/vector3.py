@@ -30,8 +30,10 @@ def vectorDivide(v,x):
 	return [ v[0]/x, v[1]/x, v[2]/x ]
 
 def vectorLength(vector):
-	#print "longitud vector " + str(sqrt(pow(vector[0],2) + pow(vector[1],2) + pow(vector[2],2)))
 	return sqrt(pow(vector[0],2) + pow(vector[1],2) + pow(vector[2],2))
+
+def vectorLengthnoy(vector):
+	return sqrt(pow(vector[0],2) + pow(vector[2],2))
 
 def orientationAsVector(v):
 	return [sin(v),0,cos(v)]

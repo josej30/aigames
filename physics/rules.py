@@ -60,7 +60,7 @@ def updatePlayer(player,time,obs):
     steering.linear[0] = -player.velocity[0]
     steering.linear[2] = -player.velocity[2]
 
-    player.update(steering,time,obs)
+    player.update(steering,time,obs,"auto")
 
     if abs(player.velocity[0]) <= 0.01:
         player.velocity[0] = 0
@@ -70,9 +70,31 @@ def updatePlayer(player,time,obs):
 
 def inside_ob(agent,ob):
     
-    if agent.position[0] > (ob.x-(ob.widex)/2.0) and agent.position[0] < (ob.x+(ob.widex)/2.0) and agent.position[2] > (ob.z-(ob.widez)/2.0) and agent.position[2] < (ob.z+(ob.widez)/2.0):
-        if agent.position[1] < ob.height:
+    # Case when the agent is on an obstacle and it wants to fall
+    if agent.position[1] == ob.height:
+        if agent.position[0] > (ob.x-(ob.widex)/2.0-agent.radius)and agent.position[0] < (ob.x+(ob.widex)/2.0+agent.radius) and agent.position[2] > (ob.z-(ob.widez)/2.0-agent.radius) and agent.position[2] < (ob.z+(ob.widez)/2.0+agent.radius):
             return True
+
+    # Case when the agent is landing on the obstacle
+    # We use a epsilon of 0.1
+    if agent.position[1] > ob.height-(0.1) and agent.position[1] < ob.height+(0.1) and agent.velocity[1] < 0:
+        if agent.position[0] > (ob.x-(ob.widex)/2.0-agent.radius)and agent.position[0] < (ob.x+(ob.widex)/2.0+agent.radius) and agent.position[2] > (ob.z-(ob.widez)/2.0-agent.radius) and agent.position[2] < (ob.z+(ob.widez)/2.0+agent.radius):
+            return True
+        
+
+    # Case when the agent is just on the obstacle
+    if agent.position[1] < ob.height and agent.velocity[1] < 0:
+        if agent.position[0] > (ob.x-(ob.widex)/2.0-agent.radius)and agent.position[0] < (ob.x+(ob.widex)/2.0+agent.radius) and agent.position[2] > (ob.z-(ob.widez)/2.0-agent.radius) and agent.position[2] < (ob.z+(ob.widez)/2.0+agent.radius):
+            return True
+        
+
+    # Case when the agent is just on the obstacle
+#    if agent.position[1] < ob.height:
+#        if agent.position[0] > (ob.x-(ob.widex)/2.0)and agent.position[0] < (ob.x+(ob.widex)/2.0) and agent.position[2] > (ob.z-(ob.widez)/2.0) and agent.position[2] < (ob.z+(ob.widez)/2.0):
+#            return True
+        
+
+    return False
             
         
 
