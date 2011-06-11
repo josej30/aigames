@@ -20,7 +20,6 @@ from ia.jumps import *
 ############### O EN ALGUN LUGAR FUERA DE AQUI  ##########
 
 sys_enemies = sys.argv[1]
-sys_behavior = sys.argv[2]
 
 # Debug Option activated/desactivated
 debug = True
@@ -304,7 +303,8 @@ def PaintWorld():
 
         # Enemies
         for enemy in enemies:
-            drawAgent(enemy,'red')
+            if enemy.life > 0:
+                drawEnemy(enemy,'yellow')
 
         drawNavMesh(ts)
 
@@ -313,29 +313,75 @@ def PaintWorld():
         #############
         # Behaviour #
         #############
-    	if sys_behavior == "Wander":
-            steering1 = getSteering(characters,player,enemy1,obs,ts,"Wander")
-            steering2 = getSteering(characters,player,enemy2,obs,ts,"Wander")
-            steering3 = getSteering(characters,player,enemy3,obs,ts,"Wander")
-            steering4 = getSteering(characters,player,enemy4,obs,ts,"Wander")
-    	elif sys_behavior == "Pursue":
-            steering1 = getSteering(characters,player,enemy1,obs,ts,"Pursue")
-            steering2 = getSteering(characters,player,enemy2,obs,ts,"Pursue")
-            steering3 = getSteering(characters,player,enemy3,obs,ts,"Pursue")
-            steering4 = getSteering(characters,player,enemy4,obs,ts,"Pursue")
-	elif sys_behavior == "Seek":
-            steering1 = getSteering(characters,player,enemy1,obs,ts,"Seek")
-            steering2 = getSteering(characters,player,enemy2,obs,ts,"Seek")
-            steering3 = getSteering(characters,player,enemy3,obs,ts,"Seek")
-            steering4 = getSteering(characters,player,enemy4,obs,ts,"Seek")
-	elif sys_behavior == "Astar":
-            steering1 = getSteering(characters,player,enemy1,obs,ts,"Astar")
-#            steering2 = getSteering(characters,player,enemy2,obs,ts,"Astar")
-#            steering3 = getSteering(characters,player,enemy3,obs,ts,"Astar")
-#            steering4 = getSteering(characters,player,enemy4,obs,ts,"Astar")
-    	else:
-            print "USE: python battlecars.py num_enemies [ Wander | Pursue | Seek | Astar ]"
-            sys.exit()
+    	# if sys_behavior == "Wander":
+        #     if enemy1.life > 0:
+        #         steering1 = getSteering(characters,player,enemy1,obs,ts,"Wander")
+        #     if enemy2.life > 0:
+        #         steering2 = getSteering(characters,player,enemy2,obs,ts,"Wander")
+        #     if enemy3.life > 0:
+        #         steering3 = getSteering(characters,player,enemy3,obs,ts,"Wander")
+        #     if enemy4.life > 0:
+        #         steering4 = getSteering(characters,player,enemy4,obs,ts,"Wander")
+    	# elif sys_behavior == "Pursue":
+        #     if enemy1.life > 0:
+        #         steering1 = getSteering(characters,player,enemy1,obs,ts,"Pursue")
+        #     if enemy2.life > 0:
+        #         steering2 = getSteering(characters,player,enemy2,obs,ts,"Pursue")
+        #     if enemy3.life > 0:
+        #         steering3 = getSteering(characters,player,enemy3,obs,ts,"Pursue")
+        #     if enemy4.life > 0:
+        #         steering4 = getSteering(characters,player,enemy4,obs,ts,"Pursue")
+	# elif sys_behavior == "Seek":
+        #     if enemy1.life > 0:
+        #         steering1 = getSteering(characters,player,enemy1,obs,ts,"Seek")
+        #     if enemy2.life > 0:
+        #         steering2 = getSteering(characters,player,enemy2,obs,ts,"Seek")
+        #     if enemy3.life > 0:
+        #         steering3 = getSteering(characters,player,enemy3,obs,ts,"Seek")
+        #     if enemy4.life > 0:
+        #         steering4 = getSteering(characters,player,enemy4,obs,ts,"Seek")
+	# elif sys_behavior == "Astar":
+        #     if enemy1.life > 0:
+        #         steering1 = getSteering(characters,player,enemy1,obs,ts,"Astar")
+        #     if enemy2.life > 0:
+        #         steering2 = getSteering(characters,player,enemy2,obs,ts,"Astar")
+        #     if enemy3.life > 0:
+        #         steering3 = getSteering(characters,player,enemy3,obs,ts,"Astar")
+        #     if enemy4.life > 0:
+        #         steering4 = getSteering(characters,player,enemy4,obs,ts,"Astar")
+    	# else:
+        #     print "USE: python battlecars.py num_enemies [ Wander | Pursue | Seek | Astar ]"
+        #     sys.exit()
+
+        if enemy1.life > 0:
+            if enemy1.state == "wander":
+                steering1 = getSteering(characters,player,enemy1,obs,ts,"Wander")
+            elif enemy1.state == "pursue":
+                steering1 = getSteering(characters,player,enemy1,obs,ts,"Pursue")       
+            elif enemy1.state == "astar":
+                steering1 = getSteering(characters,player,enemy1,obs,ts,"Astar")
+        if enemy2.life > 0:
+            if enemy2.state == "wander":
+                steering2 = getSteering(characters,player,enemy2,obs,ts,"Wander")
+            elif enemy2.state == "pursue":
+                steering2 = getSteering(characters,player,enemy2,obs,ts,"Pursue")       
+            elif enemy2.state == "astar":
+                steering2 = getSteering(characters,player,enemy2,obs,ts,"Astar")
+        if enemy3.life > 0:
+            if enemy3.state == "wander":
+                steering3 = getSteering(characters,player,enemy3,obs,ts,"Wander")
+            elif enemy3.state == "pursue":
+                steering3 = getSteering(characters,player,enemy3,obs,ts,"Pursue")       
+            elif enemy3.state == "astar":
+                steering3 = getSteering(characters,player,enemy3,obs,ts,"Astar")
+        if enemy4.life > 0:
+            if enemy4.state == "wander":
+                steering4 = getSteering(characters,player,enemy4,obs,ts,"Wander")
+            elif enemy4.state == "pursue":
+                steering4 = getSteering(characters,player,enemy4,obs,ts,"Pursue")       
+            elif enemy4.state == "astar":
+                steering4 = getSteering(characters,player,enemy4,obs,ts,"Astar")
+
 
         ###########
         # Physics #
@@ -355,19 +401,29 @@ def PaintWorld():
 
         # Updating enemies stats
         if sys_enemies == '1':
-            enemy1.update(steering1,time,obstacle_ob,"auto")
+            if enemy1.life > 0:
+                enemy1.update(steering1,time,obstacle_ob,"auto")
         elif sys_enemies == '2':
-            enemy1.update(steering1,time,obstacle_ob,"auto")
-            enemy2.update(steering2,time,obstacle_ob,"auto")
+            if enemy1.life > 0:
+                enemy1.update(steering1,time,obstacle_ob,"auto")
+            if enemy2.life > 0:
+                enemy2.update(steering2,time,obstacle_ob,"auto")
         elif sys_enemies == '3':
-            enemy1.update(steering1,time,obstacle_ob,"auto")
-            enemy2.update(steering2,time,obstacle_ob,"auto")
-            enemy3.update(steering3,time,obstacle_ob,"auto")
+            if enemy1.life > 0:
+                enemy1.update(steering1,time,obstacle_ob,"auto")
+            if enemy2.life > 0:
+                enemy2.update(steering2,time,obstacle_ob,"auto")
+            if enemy3.life > 0:
+                enemy3.update(steering3,time,obstacle_ob,"auto")
         elif sys_enemies == '4':
-            enemy1.update(steering1,time,obstacle_ob,"auto")
-            enemy2.update(steering2,time,obstacle_ob,"auto")
-            enemy3.update(steering3,time,obstacle_ob,"auto")
-            enemy4.update(steering4,time,obstacle_ob,"auto")
+            if enemy1.life > 0:
+                enemy1.update(steering1,time,obstacle_ob,"auto")
+            if enemy2.life > 0:
+                enemy2.update(steering2,time,obstacle_ob,"auto")
+            if enemy3.life > 0:
+                enemy3.update(steering3,time,obstacle_ob,"auto")
+            if enemy4.life > 0:
+                enemy4.update(steering4,time,obstacle_ob,"auto")
         for col in ans:
             col[0].update(col[1],time,obstacle_ob,"auto")
 
@@ -577,35 +633,70 @@ def drawEnemy(enemy, color):
 
     glTranslatef(enemy.position[0], enemy.position[1]+1, enemy.position[2]);
 
-    if color == 'blue':
-        glColor3f(0.0,0.0,0.8);
-    elif color == 'red':
-        glColor3f(0.7,0.0,0.0);
-    elif color == 'cyan':
-        glColor3f(0.0,0.7,0.7);
-    elif color == 'yellow':
-        glColor3f(0.8,0.8,0.0);
-    elif color == 'purple':
-        glColor3f(0.8,0.0,0.8);
+    glColor3f(0.8,0.8,0.0);
+    if enemy.life <= 5:
+        glColor3f(0.7,0.0,0.0);        
 
-    glBegin(GL_QUADS);
-    glVertex3f(-3.0, 0.0, 1.0);
-    glVertex3f( -3.0, 0.0, -1.0);
-    glVertex3f( 1.0, 0.0, -1.0);
-    glVertex3f( 1.0, 0.0, 1.0);
+    glBegin(GL_QUADS);              
+
+    glVertex3f( 1.0, 1.0,-1.0);     
+    glVertex3f(-1.0, 1.0,-1.0);     
+    glVertex3f(-1.0, 1.0, 1.0);     
+    glVertex3f( 1.0, 1.0, 1.0);     
+    
+    glVertex3f( 1.0,-1.0, 1.0);     
+    glVertex3f(-1.0,-1.0, 1.0);     
+    glVertex3f(-1.0,-1.0,-1.0);     
+    glVertex3f( 1.0,-1.0,-1.0);
+    
+    glVertex3f( 1.0, 1.0, 1.0);     
+    glVertex3f(-1.0, 1.0, 1.0);     
+    glVertex3f(-1.0,-1.0, 1.0);     
+    glVertex3f( 1.0,-1.0, 1.0);     
+    
+    glColor3f(0.5,0.5,0.0);
+    if enemy.life <= 5:
+        glColor3f(0.5,0.0,0.0);
+
+    glVertex3f( 1.0,-1.0,-1.0);
+    glVertex3f(-1.0,-1.0,-1.0);
+    glVertex3f(-1.0, 1.0,-1.0);
+    glVertex3f( 1.0, 1.0,-1.0);
+    
+    glVertex3f(-1.0, 1.0, 1.0);
+    glVertex3f(-1.0, 1.0,-1.0);
+    glVertex3f(-1.0,-1.0,-1.0);
+    glVertex3f(-1.0,-1.0, 1.0);
+    
+    glVertex3f( 1.0, 1.0,-1.0);
+    glVertex3f( 1.0, 1.0, 1.0);
+    glVertex3f( 1.0,-1.0, 1.0);
+    glVertex3f( 1.0,-1.0,-1.0);
+
     glEnd();
 
-    glPopMatrix()
+    glPopMatrix()            
 
 
 # The function called whenever a key is pressed. Note the use of Python tuples to pass in: (key, x, y)  
 def keyPressed(key, x , y):
-    global keyBuffer, debug
+    global keyBuffer, debug, enemy1, enemy2, enemy3, enemy4, player
     
     # Print NavMesh (Debug Mode)
     if ord(key) == 112:
         debug = not debug
-
+    # Enemy1 is damaged
+    elif ord(key) == 49:
+        enemy1.life = enemy1.life - 1
+    # Enemy2 is damaged
+    elif ord(key) == 50:
+        enemy2.life = enemy2.life - 1
+    # Enemy3 is damaged
+    elif ord(key) == 51:
+        enemy3.life = enemy3.life - 1
+    # Enemy4 is damaged
+    elif ord(key) == 52:
+        enemy4.life = enemy4.life - 1
     else:
         keyBuffer[ord(key)+10] = True
 
