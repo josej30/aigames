@@ -10,6 +10,7 @@ def getSteering(targets,target,agent,obs,ts,flag):
 
     steeringPursue = SteeringOutput()
     steeringSeek = SteeringOutput()
+    steeringFlee = SteeringOutput()
     steeringWander = SteeringOutput()
     steeringAstar = SteeringOutput()
 
@@ -19,15 +20,11 @@ def getSteering(targets,target,agent,obs,ts,flag):
         steeringPursue = Pursue(target,agent)
     elif flag == "Seek":
         steeringSeek = seek(agent, target, "seek")
+    elif flag == "Flee":
+        steeringFlee = seek(agent, target, "flee")
     elif flag == "Astar":
         path = pathfindAStar(agent, target, ts)
-        #print "begin"
-        #for i in path:
-        #    print i.toNode.node
-        #print "end"
         triag = ts[0]
-        #if path == []:
-        #    print "En el mismo Triangulo..."
         if path != [] and path != -1:
             for i in ts:
         	if i.node==path[0].toNode.node:
@@ -39,13 +36,13 @@ def getSteering(targets,target,agent,obs,ts,flag):
             nodeTarget.position[2] = targetAstar[1]	
             steeringAstar = onlyseek(nodeTarget, agent)
         
-    #print target.velocity
     steeringObstacleAvoidance = collisionDetect2(agent,obs)
     steeringSeparation = separation(agent, targets)
 
     PursueWeight = 3.0
     WanderWeight = 3.0
     SeekWeight = 3.0
+    FleeWeight = 3.0
     AstarWeigth = 3.0
     ObstacleAvoidanceWeight = 10.0
     SeparationWeigth = 150.0
@@ -84,6 +81,16 @@ def getSteering(targets,target,agent,obs,ts,flag):
             [steeringSeparation,SeparationWeigth]
             ]
     	for behavior in behavior_seek:
+        	temp = behavior[0].scale_steering(behavior[1])
+        	steering = sum_steering(steering, temp)
+
+    elif flag == "Flee":
+        behavior_flee = [
+            [steeringFlee,FleeWeight],
+            [steeringObstacleAvoidance,ObstacleAvoidanceWeight],
+            [steeringSeparation,SeparationWeigth]
+            ]
+    	for behavior in behavior_flee:
         	temp = behavior[0].scale_steering(behavior[1])
         	steering = sum_steering(steering, temp)
 

@@ -1,4 +1,5 @@
-from agents import *
+from structures.agents import *
+
 class KinematicWander:
 	agent = Agent()
 	maxSpeed = 2

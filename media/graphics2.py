@@ -12,6 +12,7 @@ from structures.walls import *
 from structures.obstacles import *
 from structures.steeringOutput import *
 from structures.triangle import *
+from structures.fsm import FSM
 from ia.steeringBehaviours import *
 from ia.behavior import *
 from ia.jumps import *
@@ -313,118 +314,39 @@ def PaintWorld():
         #############
         # Behaviour #
         #############
-    	# if sys_behavior == "Wander":
-        #     if enemy1.life > 0:
-        #         steering1 = getSteering(characters,player,enemy1,obs,ts,"Wander")
-        #     if enemy2.life > 0:
-        #         steering2 = getSteering(characters,player,enemy2,obs,ts,"Wander")
-        #     if enemy3.life > 0:
-        #         steering3 = getSteering(characters,player,enemy3,obs,ts,"Wander")
-        #     if enemy4.life > 0:
-        #         steering4 = getSteering(characters,player,enemy4,obs,ts,"Wander")
-    	# elif sys_behavior == "Pursue":
-        #     if enemy1.life > 0:
-        #         steering1 = getSteering(characters,player,enemy1,obs,ts,"Pursue")
-        #     if enemy2.life > 0:
-        #         steering2 = getSteering(characters,player,enemy2,obs,ts,"Pursue")
-        #     if enemy3.life > 0:
-        #         steering3 = getSteering(characters,player,enemy3,obs,ts,"Pursue")
-        #     if enemy4.life > 0:
-        #         steering4 = getSteering(characters,player,enemy4,obs,ts,"Pursue")
-	# elif sys_behavior == "Seek":
-        #     if enemy1.life > 0:
-        #         steering1 = getSteering(characters,player,enemy1,obs,ts,"Seek")
-        #     if enemy2.life > 0:
-        #         steering2 = getSteering(characters,player,enemy2,obs,ts,"Seek")
-        #     if enemy3.life > 0:
-        #         steering3 = getSteering(characters,player,enemy3,obs,ts,"Seek")
-        #     if enemy4.life > 0:
-        #         steering4 = getSteering(characters,player,enemy4,obs,ts,"Seek")
-	# elif sys_behavior == "Astar":
-        #     if enemy1.life > 0:
-        #         steering1 = getSteering(characters,player,enemy1,obs,ts,"Astar")
-        #     if enemy2.life > 0:
-        #         steering2 = getSteering(characters,player,enemy2,obs,ts,"Astar")
-        #     if enemy3.life > 0:
-        #         steering3 = getSteering(characters,player,enemy3,obs,ts,"Astar")
-        #     if enemy4.life > 0:
-        #         steering4 = getSteering(characters,player,enemy4,obs,ts,"Astar")
-    	# else:
-        #     print "USE: python battlecars.py num_enemies [ Wander | Pursue | Seek | Astar ]"
-        #     sys.exit()
 
-        if enemy1.life > 0:
-            if enemy1.state == "wander":
-                steering1 = getSteering(characters,player,enemy1,obs,ts,"Wander")
-            elif enemy1.state == "pursue":
-                steering1 = getSteering(characters,player,enemy1,obs,ts,"Pursue")       
-            elif enemy1.state == "astar":
-                steering1 = getSteering(characters,player,enemy1,obs,ts,"Astar")
-        if enemy2.life > 0:
-            if enemy2.state == "wander":
-                steering2 = getSteering(characters,player,enemy2,obs,ts,"Wander")
-            elif enemy2.state == "pursue":
-                steering2 = getSteering(characters,player,enemy2,obs,ts,"Pursue")       
-            elif enemy2.state == "astar":
-                steering2 = getSteering(characters,player,enemy2,obs,ts,"Astar")
-        if enemy3.life > 0:
-            if enemy3.state == "wander":
-                steering3 = getSteering(characters,player,enemy3,obs,ts,"Wander")
-            elif enemy3.state == "pursue":
-                steering3 = getSteering(characters,player,enemy3,obs,ts,"Pursue")       
-            elif enemy3.state == "astar":
-                steering3 = getSteering(characters,player,enemy3,obs,ts,"Astar")
-        if enemy4.life > 0:
-            if enemy4.state == "wander":
-                steering4 = getSteering(characters,player,enemy4,obs,ts,"Wander")
-            elif enemy4.state == "pursue":
-                steering4 = getSteering(characters,player,enemy4,obs,ts,"Pursue")       
-            elif enemy4.state == "astar":
-                steering4 = getSteering(characters,player,enemy4,obs,ts,"Astar")
+        fsm = FSM()
+        steerings = [SteeringOutput(),SteeringOutput(),SteeringOutput(),SteeringOutput()]
 
+        # Iterating through all the enemies
+        for i in range(0,len(enemies)):
+            enemy = enemies[i]
+            if enemy.life > 0:
+                # Updating the state on the FSM
+                enemy.state = fsm.update(enemy.state,enemy.life)
+                # Retrieving new Steering                
+                steerings[i] = getSteering(characters,player,
+                                           enemy,obs,ts,
+                                           enemy.state)
+        
 
-        ###########
-        # Physics #
-        ###########
-        ans = check_physics(characters,obs,obstacle_ob)
+        physics = check_physics(characters,obs,obstacle_ob)
         
         # Get end just before calculating new positions,
         # velocities and accelerations
         time2 = datetime.now()
     	
         time = ( (time2 - time1).microseconds ) / 1000000.0
-	#print time
+
         # Updating player stats
         updatePlayer(player,time,obstacle_ob)
 
-        #print player.velocity
-
         # Updating enemies stats
-        if sys_enemies == '1':
-            if enemy1.life > 0:
-                enemy1.update(steering1,time,obstacle_ob,"auto")
-        elif sys_enemies == '2':
-            if enemy1.life > 0:
-                enemy1.update(steering1,time,obstacle_ob,"auto")
-            if enemy2.life > 0:
-                enemy2.update(steering2,time,obstacle_ob,"auto")
-        elif sys_enemies == '3':
-            if enemy1.life > 0:
-                enemy1.update(steering1,time,obstacle_ob,"auto")
-            if enemy2.life > 0:
-                enemy2.update(steering2,time,obstacle_ob,"auto")
-            if enemy3.life > 0:
-                enemy3.update(steering3,time,obstacle_ob,"auto")
-        elif sys_enemies == '4':
-            if enemy1.life > 0:
-                enemy1.update(steering1,time,obstacle_ob,"auto")
-            if enemy2.life > 0:
-                enemy2.update(steering2,time,obstacle_ob,"auto")
-            if enemy3.life > 0:
-                enemy3.update(steering3,time,obstacle_ob,"auto")
-            if enemy4.life > 0:
-                enemy4.update(steering4,time,obstacle_ob,"auto")
-        for col in ans:
+        for i in range(0,len(enemies)):
+            if enemies[i].life > 0:
+                enemies[i].update(steerings[i],time,obstacle_ob,"auto")
+
+        for col in physics:
             col[0].update(col[1],time,obstacle_ob,"auto")
 
         # Get initial time just after calculating everything
@@ -635,7 +557,7 @@ def drawEnemy(enemy, color):
 
     glColor3f(0.8,0.8,0.0);
     if enemy.life <= 5:
-        glColor3f(0.7,0.0,0.0);        
+        glColor3f(0.7,0.0,0.0);
 
     glBegin(GL_QUADS);              
 
