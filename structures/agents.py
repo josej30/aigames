@@ -65,3 +65,14 @@ class Agent:
 #			self.velocity[0] = self.velocity[0]*(self.maxSpeed/2)
 #			self.velocity[2] = self.velocity[2]*(self.maxSpeed/2)
 			self.velocity = vectorTimes(self.velocity,self.maxSpeed/2)
+
+def agentNear(agent,chars,distance):
+	for char in chars:
+		if near(agent,char,distance):
+			return char
+	return None
+
+def near(agent,target,distance):
+	if sqrt((pow((agent.position[2]-target.position[2]),2.0)) +
+		(pow((agent.position[0]-target.position[0]),2.0)) ) < distance:
+			return True

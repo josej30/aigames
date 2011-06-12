@@ -338,8 +338,8 @@ def PaintWorld():
             enemy = enemies[i]
             if enemy.life > 0:
                 # Updating the state on the FSM
-                enemy.state = fsm.update(enemy.state,enemy.life)
-                # Retrieving new Steering                
+                enemy.state = fsm.update(enemy.state,enemy.life,enemy,characters)
+                # Retrieving the new steering
                 steerings[i] = getSteering(characters,player,
                                            enemy,obs,ts,
                                            enemy.state)
