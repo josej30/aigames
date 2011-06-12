@@ -335,30 +335,33 @@ def lookWhereYoureGoing(aligne,agent, target):
    	# 2. Delegate to align
    	return aligne(agent,target)
 
-def wander(face,agent,target):
+def wander(face,agent):
  
+	target = Agent()
  
      	# Holds the radius and forward offset of the wander
      	# circle.
      	wanderOffset = 4.0
-     	wanderRadius = 4.0
+     	wanderRadius = 15.0
  
      	# Holds the maximum rate at which the wander orientation
      	# can change 
-     	wanderRate = 10
+     	wanderRate = 1
 
      	# Holds the current orientation of the wander target
-     	wanderOrientation = 0
+     	wanderOrientation = randomBinomial() * 1000
 
      	# Again we dont need a new target
      	# ... Other data is derived from the superclass ...
       	# 1. Calculate the target to delegate to face
        	# Update the wander orientation
-       	wanderOrientation += randomBinomial() * wanderRate
+	factor = randomBinomial()
+	
+	minsum = randomBinomial()
+	wanderOrientation += factor * wanderRate
 
-                                            
-   	# Calculate the combined target orientation
-   	targetOrientation = wanderOrientation + agent.orientation
+	# Calculate the combined target orientation
+	targetOrientation = wanderOrientation #+ agent.orientation
 
    	# Calculate the center of the wander circle
    	target.position = addition(agent.position,  vectorTimes(orientationAsVector(agent.orientation),wanderOffset))
@@ -381,10 +384,56 @@ def wander(face,agent,target):
    	# 3. Now set the linear acceleration to be at full
    	# acceleration in the direction of the orientation
 
-   		steering.linear =vectorTimes(orientationAsVector(agent.orientation), agent.maxAcceleration)
+   		steering.linear = vectorTimes(orientationAsVector(agent.orientation), agent.maxAcceleration)
 
    	# Return it
    	
+	# glPushMatrix()
+
+	# glTranslatef(target.position[0], target.position[1]+1, target.position[2]);
+	    
+	# glColor3f(0.8,0.0,0.8);
+
+	# glBegin(GL_QUADS);              
+	
+	# glVertex3f( 1.0, 1.0,-1.0);     
+	# glVertex3f(-1.0, 1.0,-1.0);     
+	# glVertex3f(-1.0, 1.0, 1.0);     
+	# glVertex3f( 1.0, 1.0, 1.0);     
+	
+	# glVertex3f( 1.0,-1.0, 1.0);     
+	# glVertex3f(-1.0,-1.0, 1.0);     
+	# glVertex3f(-1.0,-1.0,-1.0);     
+	# glVertex3f( 1.0,-1.0,-1.0);
+	
+	# glVertex3f( 1.0, 1.0, 1.0);     
+	# glVertex3f(-1.0, 1.0, 1.0);     
+	# glVertex3f(-1.0,-1.0, 1.0);     
+	# glVertex3f( 1.0,-1.0, 1.0);     
+	
+	# glColor3f(0.5,0.0,0.5);
+	
+	# glVertex3f( 1.0,-1.0,-1.0);
+	# glVertex3f(-1.0,-1.0,-1.0);
+	# glVertex3f(-1.0, 1.0,-1.0);
+	# glVertex3f( 1.0, 1.0,-1.0);
+	
+	# glVertex3f(-1.0, 1.0, 1.0);
+	# glVertex3f(-1.0, 1.0,-1.0);
+	# glVertex3f(-1.0,-1.0,-1.0);
+	# glVertex3f(-1.0,-1.0, 1.0);
+	
+	# glVertex3f( 1.0, 1.0,-1.0);
+	# glVertex3f( 1.0, 1.0, 1.0);
+	# glVertex3f( 1.0,-1.0, 1.0);
+	# glVertex3f( 1.0,-1.0,-1.0);
+	
+	# glEnd();
+	
+	# glPopMatrix()
+
+	steering = seek(agent,target,"seek")
+
    	return steering
 
 def separation(agent, targets):
