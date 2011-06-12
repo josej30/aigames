@@ -7,8 +7,8 @@ import sys
 # Main Program for Battle Cars
 #
 
-if len(sys.argv) != 3:
-    print "USE: python battlecars.py num_enemies [ Wander | Pursue | Seek | Astar ]"
+if len(sys.argv) != 2:
+    print "USE: python battlecars.py num_enemies"
     sys.exit()
 
 execute()
