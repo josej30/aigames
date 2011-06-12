@@ -6,7 +6,9 @@ from ia.collisions import *
 from ia.aStar import *
 
 # Returns the acceleration required.
-def getSteering(targets,target,agent,obs,ts,flag):
+def getSteering(targets,target,agent,obs,ts):
+
+    flag = agent.state
 
     steeringPursue = SteeringOutput()
     steeringSeek = SteeringOutput()

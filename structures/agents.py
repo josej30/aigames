@@ -17,8 +17,9 @@ class Agent:
 	orientation = 0.0    # a single floating point value
 	velocity = [0,0,0]   # another 2 or 3D vector
 	rotation = 0.0       # a single floating point value
-	life = 7         # Agent's life
-	state = "Pursue"     # Agent's behavior
+	life = 20            # Agent's life
+	maxlife = 20         # Agent's max life
+	state = "Wander"     # Agent's behavior
 
 
 
@@ -69,8 +70,9 @@ class Agent:
 
 def agentNear(agent,chars,distance):
 	for char in chars:
-		if near(agent,char,distance):
-			return char
+		if agent.position != char.position:
+			if near(agent,char,distance):
+				return char
 	return None
 
 def near(agent,target,distance):

@@ -1,29 +1,31 @@
 from structures.agents import *
 
+distancePursue = 20
+
 class FSM:
 
-    def update(self,state,life,agent,characters):
+    def update(self,agent,characters):
 
-        fstate = state
+        fstate = agent.state
 
         # Find the correct state
-        if state == 'Pursue':
-            if life <= 5: 
+        if agent.state == 'Pursue':
+            if agent.life <= agent.maxlife*0.25: 
                 return "Flee"
+            if agentNear(agent,characters,distancePursue) == None:
+                return "Wander"
                 
-        elif state == 'Wander':
-            if life <= 5: 
+        elif agent.state == 'Wander':
+            if agent.life <= agent.maxlife*0.25: 
                 return "Flee"
-            near = agentNear(agent,characters,5)
-            if near != None:
-                #print "Pursue"
-                state = "Pursue"
+            if agentNear(agent,characters,distancePursue) != None:
+               return "Pursue"
 
-        elif state == 'Astar':
-            if life <= 5: 
+        elif agent.state == 'Astar':
+            if agent.life <= agent.maxlife*0.25: 
                 return "Flee"
 
-        elif state == 'Flee':
+        elif agent.state == 'Flee':
             return "Flee"
 
         return fstate
