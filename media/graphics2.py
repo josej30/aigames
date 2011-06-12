@@ -368,7 +368,10 @@ def PaintWorld():
 			steering = SteeringOutput()
 			# Acceleration in y-axes (gravity)
 			b.update(steering, time)
-			print "posicion " + str(b.position)
+
+			#Check bullet position
+			check_shot(bullet,enemies)
+			#print "posicion " + str(b.position)
         
        
 
@@ -661,14 +664,14 @@ def keyPressed(key, x , y):
     elif ord(key) == 52:
         enemy4.life = enemy4.life - 1
     elif ord(key) == 98:
-    	print "crear bala"
+    	#print "crear bala"
     	bullet = Bullet()
     	bullet.position = player.position
-    	bullet.velocity = vectorPlus(vectorTimes(player.velocity,20),[0,40,0 ])
+    	bullet.velocity = vectorPlus(vectorTimes(player.velocity,10),[10,10,10 ])
     	
     	bullet.orientation = player.orientation
-    	print"posicion jugador"+ str(player.position)
-    	print"posicion bullet"+ str(bullet.position)
+    	#print"posicion jugador"+ str(player.position)
+    	#print"posicion bullet"+ str(bullet.position)
     	bullets = bullets + [bullet]
     else:
         keyBuffer[ord(key)+10] = True
@@ -720,7 +723,7 @@ def keyOperations():
     if keyBuffer[42]:
         scheduleJumpAction(player)
         keyBuffer[42] = False
-        print "hola"
+      
         
 
     # Movements of the world

@@ -8,13 +8,13 @@ from physics.rules import inside_ob
 class Bullet:
 
 	
-	maxSpeed = 42.0
-	maxAcceleration = 45.0
-	maxSpeedy = 40.0
-	maxAccelerationy = 45.0
+	maxSpeed = 100.0
+	maxAcceleration = 100.0
+	maxSpeedy = 100.0
+	maxAccelerationy = 100.0
 	position = [0,0,0]   # a 2 or 3D vector
 	orientation = 0.0    # a single floating point value
-	velocity = [0,0,0]   # another 2 or 3D vector
+	velocity = [10,10,10]   # another 2 or 3D vector
 
 	def __init__(self):
 		self.radius = 1
@@ -27,7 +27,7 @@ class Bullet:
 	
 
 		if self.position[1] > 0:	
-			steering.linear[1] = -40
+			steering.linear[1] = -30
 			
 		
 		# And the velocity and the rotation
