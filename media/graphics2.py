@@ -333,9 +333,11 @@ def PaintWorld():
         fsm = FSM()
         steerings = [SteeringOutput(),SteeringOutput(),SteeringOutput(),SteeringOutput()]
 
+        print "---"
         # Iterating through all the enemies
         for i in range(0,len(enemies)):
             enemy = enemies[i]
+            print enemy.life
             if enemy.life > 0:
                 # Updating the state on the FSM
                 enemy.state = fsm.update(enemy.state,enemy.life,enemy,characters)
