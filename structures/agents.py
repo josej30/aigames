@@ -21,6 +21,7 @@ class Agent:
 	state = "pursue"     # Agent's behavior
 
 
+
 	def __init__(self):
 		self.radius = 1
 	

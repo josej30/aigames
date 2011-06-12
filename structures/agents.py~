@@ -17,8 +17,13 @@ class Agent:
 	orientation = 0.0    # a single floating point value
 	velocity = [0,0,0]   # another 2 or 3D vector
 	rotation = 0.0       # a single floating point value
-	life = 5          # Agent's life
+<<<<<<< HEAD
+	life = 7         # Agent's life
 	state = "pursue"     # Agent's behavior
+=======
+	life = 20            # Agent's life
+	state = "Pursue"     # Agent's behavior
+>>>>>>> 41805b16c5319435ef76c154a1e85d1bdc694ec1
 
 
 	def __init__(self):
@@ -65,3 +70,14 @@ class Agent:
 #			self.velocity[0] = self.velocity[0]*(self.maxSpeed/2)
 #			self.velocity[2] = self.velocity[2]*(self.maxSpeed/2)
 			self.velocity = vectorTimes(self.velocity,self.maxSpeed/2)
+
+def agentNear(agent,chars,distance):
+	for char in chars:
+		if near(agent,char,distance):
+			return char
+	return None
+
+def near(agent,target,distance):
+	if sqrt((pow((agent.position[2]-target.position[2]),2.0)) +
+		(pow((agent.position[0]-target.position[0]),2.0)) ) < distance:
+			return True
