@@ -12,6 +12,7 @@ from structures.walls import *
 from structures.obstacles import *
 from structures.steeringOutput import *
 from structures.triangle import *
+from structures.bullets import *
 from structures.fsm import FSM
 from ia.steeringBehaviours import *
 from ia.behavior import *
@@ -39,6 +40,12 @@ size = 100
 # Rotation angles for the floor
 rquadx = 0.0
 rquady = 0.0
+
+###############
+# Bullets #####
+###############
+
+bullets = []
 
 ################
 # Agents stuff #
@@ -270,7 +277,7 @@ def ReSizeWorld(Width, Height):
 # The main drawing function
 def PaintWorld():
     
-    global players, limits, obs, enemies, time2, time1, time, debug, ts
+    global players, limits, obs, enemies, time2, time1, time, debug, ts, bullets
 
     try:
 
@@ -302,12 +309,20 @@ def PaintWorld():
             # Objective
             drawAgent(player,'cyan')
 
+        #Bullets
+	for bullet in bullets:
+		drawBullet(bullet)
+	
         # Enemies
         for enemy in enemies:
             if enemy.life > 0:
                 drawEnemy(enemy,'yellow')
 
         drawNavMesh(ts)
+
+	
+
+        
 
         #######################
 
@@ -341,6 +356,23 @@ def PaintWorld():
         # Updating player stats
         updatePlayer(player,time,obstacle_ob)
 
+
+	#Updating bullets stats
+	for b in bullets:
+		if b.position[1] < 0:
+			bullets.remove(b)
+		else:
+			print b.velocity
+			steering = SteeringOutput()
+			# Acceleration in y-axes (gravity)
+			b.update(steering, time)
+			print "posicion " + str(b.position)
+        
+       
+
+        #print player.velocity
+
+
         # Updating enemies stats
         for i in range(0,len(enemies)):
             if enemies[i].life > 0:
@@ -361,6 +393,13 @@ def PaintWorld():
     except Exception, e:
         traceback.print_exc()
         sys.exit(-1)
+def drawBullet(bullet):
+	b =bullet.position
+	glPushMatrix()
+	glColor3f(1.0,1.0,1.0)
+	glTranslatef(b[0], b[1] , b[2])
+	glutSolidSphere(0.5,20,20)
+	glPopMatrix()
 
 def drawNavMesh(ts):
 
@@ -602,7 +641,7 @@ def drawEnemy(enemy, color):
 
 # The function called whenever a key is pressed. Note the use of Python tuples to pass in: (key, x, y)  
 def keyPressed(key, x , y):
-    global keyBuffer, debug, enemy1, enemy2, enemy3, enemy4, player
+    global keyBuffer, debug, enemy1, enemy2, enemy3, enemy4, player, bullets
     
     # Print NavMesh (Debug Mode)
     if ord(key) == 112:
@@ -619,6 +658,16 @@ def keyPressed(key, x , y):
     # Enemy4 is damaged
     elif ord(key) == 52:
         enemy4.life = enemy4.life - 1
+    elif ord(key) == 98:
+    	print "crear bala"
+    	bullet = Bullet()
+    	bullet.position = player.position
+    	bullet.velocity = vectorPlus(vectorTimes(player.velocity,20),[0,40,0 ])
+    	
+    	bullet.orientation = player.orientation
+    	print"posicion jugador"+ str(player.position)
+    	print"posicion bullet"+ str(bullet.position)
+    	bullets = bullets + [bullet]
     else:
         keyBuffer[ord(key)+10] = True
 
@@ -646,24 +695,31 @@ def keyOperations():
         steering = SteeringOutput()
         steering.linear = [-acc,0,0]
         player.update(steering,time,obstacle_ob,"manual")
+        player.orientation = getNewOrientation(player.orientation,player.velocity)
         #print "Left"
     if keyBuffer[101]:
         steering = SteeringOutput()
         steering.linear = [0,0,-acc]
         player.update(steering,time,obstacle_ob,"manual")
+        player.orientation = getNewOrientation(player.orientation,player.velocity)
         #print "Up"
     if keyBuffer[102]:
         steering = SteeringOutput()
         steering.linear = [acc,0,0]
         player.update(steering,time,obstacle_ob,"manual")
+        player.orientation = getNewOrientation(player.orientation,player.velocity)
         #print "Right"
     if keyBuffer[103]:
         steering = SteeringOutput()
         steering.linear = [0,0,acc]
         player.update(steering,time,obstacle_ob,"manual")
+        player.orientation = getNewOrientation(player.orientation,player.velocity)
         #print "Down"
     if keyBuffer[42]:
         scheduleJumpAction(player)
+        keyBuffer[42] = False
+        print "hola"
+        
 
     # Movements of the world
     if keyBuffer[107]:

@@ -4,6 +4,7 @@ from OpenGL.GLU import *
 from math import pow, sqrt
 from misc.vector3 import *
 from physics.rules import inside_ob
+from bullets import *
 
 class Agent:
 
@@ -17,7 +18,8 @@ class Agent:
 	velocity = [0,0,0]   # another 2 or 3D vector
 	rotation = 0.0       # a single floating point value
 	life = 20            # Agent's life
-	state = "Pursue"     # Agent's state
+	state = "pursue"     # Agent's behavior
+
 
 	def __init__(self):
 		self.radius = 1

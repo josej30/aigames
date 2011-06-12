@@ -4,56 +4,31 @@ from OpenGL.GLU import *
 from math import pow, sqrt
 from misc.vector3 import *
 from physics.rules import inside_ob
-from bullets import *
 
-class Agent:
+class Bullet:
 
-	maxSpeed = 12.0
-	maxAcceleration = 15.0
-	maxSpeedy = 10.0
-	maxAccelerationy = 15.0
-	radius = 0
+	
+	maxSpeed = 42.0
+	maxAcceleration = 45.0
+	maxSpeedy = 40.0
+	maxAccelerationy = 45.0
 	position = [0,0,0]   # a 2 or 3D vector
 	orientation = 0.0    # a single floating point value
 	velocity = [0,0,0]   # another 2 or 3D vector
-	rotation = 0.0       # a single floating point value
-	life = 20            # Agent's life
-<<<<<<< HEAD
-	state = "pursue"     # Agent's behavior
-	
-=======
-	state = "Pursue"     # Agent's state
->>>>>>> b83fc8bba6be77596558e0bfbfed802e5a2d8e8c
 
 	def __init__(self):
 		self.radius = 1
 	
-	def update (self, steering, time, obs, flag):
+	def update (self, steering,time):
 
 		# Update the position and orientation
 		
 		self.position = vectorPlus(self.position,vectorTimes(self.velocity,time))
-		self.orientation += self.rotation*time
+	
 
-		# Negative position check
-		if self.position[1] < 0.0 :
-			self.position[1] = 0.0
-
-		# We have to check wether or not
-		# the agent is inside (over) and obstacle. If so (or the
-		# agent is on the floor) we do not use the gravity
-		grav = True
-		for ob in obs:
-			if inside_ob(self,ob):
-				self.position[1] = ob.height
-				grav = False
-
-		if self.position[1] > 0 and flag == "auto":		
-			steering.linear[1] = -self.maxAccelerationy
+		if self.position[1] > 0:	
+			steering.linear[1] = -40
 			
-		if not grav:
-			steering.linear[1] = 0
-			self.velocity[1] = 0
 		
 		# And the velocity and the rotation
 		self.velocity = vectorPlus(self.velocity,vectorTimes(steering.linear,time))
