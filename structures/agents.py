@@ -19,7 +19,7 @@ class Agent:
 	rotation = 0.0       # a single floating point value
 	life = 20            # Agent's life
 	state = "pursue"     # Agent's behavior
-	
+
 
 	def __init__(self):
 		self.radius = 1
