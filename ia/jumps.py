@@ -16,7 +16,7 @@ canAchieve = True
 maxSpeed = 15
 
 # Holds the maximum vertical jump velocity
-maxYVelocity = 10
+maxYVelocity = 5
 maxVelocity = 5
 
 # Retrieve the steering for this jump

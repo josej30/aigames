@@ -3,6 +3,7 @@ from OpenGL.GLUT import *
 from OpenGL.GLU import *
 
 from datetime import datetime
+from random import random
 import traceback
 import sys
 
@@ -47,6 +48,12 @@ rquady = 0.0
 
 bullets = []
 
+########
+# Food #
+########
+
+food = []
+
 ################
 # Agents stuff #
 ################
@@ -74,8 +81,8 @@ enemy4.orientation = 100.0
 player = Agent()
 player.position = [28,0,10] 
 player.orientation = 777.0
-player.maxSpeedy = 40.0
-player.maxAccelerationy = 120.0
+player.maxSpeedy = 20.0
+player.maxAccelerationy = 40.0
 player.maxSpeed = 10.0
 player.maxAcceleration = 15.0
 
@@ -259,7 +266,6 @@ def InitWorld(Width, Height):
     
     # Calculate The Aspect Ratio Of The Window
     gluPerspective(45.0, float(Width)/float(Height), 0.1, 100.0)
-
     glMatrixMode(GL_MODELVIEW)
 
 # The function called when our window is resized (which shouldn't happen if you enable fullscreen, below)
@@ -293,6 +299,8 @@ def PaintWorld():
         #######################
         # Draw the Objects
 
+        drawLife(players[0],enemies)
+
         # Plane
         drawPlane()
 
@@ -303,6 +311,9 @@ def PaintWorld():
         drawObstacle(obstacle1)
         drawObstacle(obstacle2)
         drawObstacle(obstacle3)
+
+        # Draw Food
+        drawFood(food)
 
 	# Player
         for player in players:
@@ -338,11 +349,10 @@ def PaintWorld():
             enemy = enemies[i]
             if enemy.life > 0:
                 # Updating the state on the FSM
-                enemy.state = fsm.update(enemy.state,enemy.life)
-                # Retrieving new Steering                
+                enemy.state = fsm.update(enemy,characters,food)
+                # Retrieving the new steering
                 steerings[i] = getSteering(characters,player,
-                                           enemy,obs,ts,
-                                           enemy.state)
+                                           enemy,obs,ts,food)
         
 
         physics = check_physics(characters,obs,obstacle_ob)
@@ -396,6 +406,7 @@ def PaintWorld():
     except Exception, e:
         traceback.print_exc()
         sys.exit(-1)
+
 def drawBullet(bullet):
 	b =bullet.position
 	glPushMatrix()
@@ -526,6 +537,61 @@ def drawPlane():
     glVertex3f(50.0, 0.0, -50.0)      
     glVertex3f(-50.0, 0.0, -50.0)     
     glEnd()                           
+
+def drawLife(player,enemies):
+
+    x = -45.0
+    y = 55.0
+
+    bar_len = 10
+
+    life_size = (bar_len*1.0)/(player.maxlife*1.0)
+    fringe = max(0,(life_size*player.life))
+
+    # Player Life
+    glColor3f(0.0, 1.0, 0.0)           
+    glBegin(GL_QUADS)                 
+    glVertex3f(x, y, 50.0)      
+    glVertex3f(x+fringe, y, 50.0)       
+    glVertex3f(x+fringe, y-2, 50.0)      
+    glVertex3f(x, y-2, 50.0)      
+    glEnd()     
+
+    glColor3f(1.0, 0.0, 0.0)           
+    glBegin(GL_QUADS)                 
+    glVertex3f(x+fringe, y, 50.0)      
+    glVertex3f(x+bar_len, y, 50.0)       
+    glVertex3f(x+bar_len, y-2, 50.0)      
+    glVertex3f(x+fringe, y-2, 50.0) 
+    glEnd()     
+
+    x = x+15
+
+    # Enemies Lifes
+    for enemy in enemies:
+
+        life_size = (bar_len*1.0)/(enemy.maxlife*1.0)
+
+        fringe = max(0,(life_size*enemy.life))
+
+        glColor3f(0.0, 1.0, 0.0)           
+        glBegin(GL_QUADS)                 
+        glVertex3f(x, y, 50.0)      
+        glVertex3f(x+fringe, y, 50.0)       
+        glVertex3f(x+fringe, y-2, 50.0)      
+        glVertex3f(x, y-2, 50.0)      
+        glEnd()     
+        
+        glColor3f(1.0, 0.0, 0.0)           
+        glBegin(GL_QUADS)                 
+        glVertex3f(x+fringe, y, 50.0)      
+        glVertex3f(x+bar_len, y, 50.0)       
+        glVertex3f(x+bar_len, y-2, 50.0)      
+        glVertex3f(x+fringe, y-2, 50.0) 
+        glEnd()     
+        
+        x = x+15
+
     
 def drawAgent(agent, color):
 
@@ -598,7 +664,7 @@ def drawEnemy(enemy, color):
     glTranslatef(enemy.position[0], enemy.position[1]+1, enemy.position[2]);
 
     glColor3f(0.8,0.8,0.0);
-    if enemy.life <= 5:
+    if enemy.life <= enemy.maxlife*0.25:
         glColor3f(0.7,0.0,0.0);
 
     glBegin(GL_QUADS);              
@@ -619,7 +685,7 @@ def drawEnemy(enemy, color):
     glVertex3f( 1.0,-1.0, 1.0);     
     
     glColor3f(0.5,0.5,0.0);
-    if enemy.life <= 5:
+    if enemy.life <= enemy.maxlife*0.25:
         glColor3f(0.5,0.0,0.0);
 
     glVertex3f( 1.0,-1.0,-1.0);
@@ -641,7 +707,39 @@ def drawEnemy(enemy, color):
 
     glPopMatrix()            
 
+def createFood(food):
+    
+    global ts
 
+    r = 1.0    
+    while r > 0.6:
+        r = random()
+    r = int(r*100)
+    t = None
+    for i in ts:
+        if r == i.node:
+            t = i
+            break
+    
+    food.append(t)
+
+def drawFood(food):
+
+    global characters
+
+    # Check if someone is eating and recovering its life
+    check_food(food,characters)
+
+    for f in food:
+        pos = f.centerOfMass()
+
+        # Drawing the food
+        glPushMatrix()
+        glColor3f(0.8,0.2,0.0)
+        glTranslatef(pos[0], 1 , pos[1])
+        glutSolidSphere(1.0,20,20)
+        glPopMatrix()
+        
 # The function called whenever a key is pressed. Note the use of Python tuples to pass in: (key, x, y)  
 def keyPressed(key, x , y):
     global keyBuffer, debug, enemy1, enemy2, enemy3, enemy4, player, bullets
@@ -661,11 +759,14 @@ def keyPressed(key, x , y):
     # Enemy4 is damaged
     elif ord(key) == 52:
         enemy4.life = enemy4.life - 1
+    # Create food
+    elif ord(key) == 110:
+        createFood(food)
     elif ord(key) == 98:
     	#print "crear bala"
     	bullet = Bullet()
     	bullet.position = player.position
-    	bullet.velocity = vectorPlus(vectorTimes(player.velocity,10),[10,40,10 ])
+    	bullet.velocity = vectorPlus(vectorTimes(player.velocity,10),[10,10,10])
     	
     	bullet.orientation = player.orientation
     	#print"posicion jugador"+ str(player.position)
@@ -721,19 +822,21 @@ def keyOperations():
     if keyBuffer[42]:
         scheduleJumpAction(player)
         keyBuffer[42] = False
-      
-        
 
+        
     # Movements of the world
     if keyBuffer[107]:
+        #print "a"
         rquadx = rquadx - step
     if keyBuffer[129]:
+        #print "w"
         rquady = rquady - step
     if keyBuffer[125]:
-        rquady = rquady + step   
+        #print "s"
+        rquady = rquady + step  
     if keyBuffer[110]:
+        #print "d"
         rquadx = rquadx + step
-
     # Quitting the game
     if keyBuffer[37]:
         sys.exit()
@@ -746,10 +849,10 @@ def execute():
     glutInitWindowPosition(400, 100)
     window = glutCreateWindow("Battle Cars")
 
-    #glutDisplayFunc(PaintWorld)
+    glutDisplayFunc(PaintWorld)
     
     #glutFullScreen()
-    
+
     glutIdleFunc(PaintWorld)
     glutReshapeFunc(ReSizeWorld)
 

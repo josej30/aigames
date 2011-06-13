@@ -81,8 +81,8 @@ enemy4.orientation = 100.0
 player = Agent()
 player.position = [28,0,10] 
 player.orientation = 777.0
-player.maxSpeedy = 40.0
-player.maxAccelerationy = 120.0
+player.maxSpeedy = 20.0
+player.maxAccelerationy = 60.0
 player.maxSpeed = 10.0
 player.maxAcceleration = 15.0
 
