@@ -30,6 +30,5 @@ class FSM:
         elif agent.state == 'Flee':
             if len(food) > 0:
                 return "Astar"
-            return "Flee"
 
         return fstate

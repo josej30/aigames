@@ -86,7 +86,7 @@ def check_food(food,agents):
         for agent in agents:
             a = agent.position
             if ((a[0]-1.0) <= b[0]<= (a[0]+1)) and (a[2]-1.0) <= b[1]<= (a[2]+1):
-                agent.life = agent.life + (agent.maxlife*0.5)
+                agent.life = min(agent.life+(agent.maxlife*0.5),agent.maxlife)
                 food.remove(f)
                 break
             

@@ -85,6 +85,7 @@ player.maxSpeedy = 40.0
 player.maxAccelerationy = 120.0
 player.maxSpeed = 10.0
 player.maxAcceleration = 15.0
+player.player = True
 
 # How many enemies the user wants?
 if sys_enemies == '1':
@@ -326,14 +327,13 @@ def PaintWorld():
 	
         # Enemies
         for enemy in enemies:
-            if enemy.life > 0:
-                drawEnemy(enemy,'yellow')
+            if enemy.life <= 0:
+                enemies.remove(enemy)    
+                characters.remove(enemy)
+                break
+            drawEnemy(enemy,'yellow')
 
-        drawNavMesh(ts)
-
-	
-
-        
+        drawNavMesh(ts)        
 
         #######################
 

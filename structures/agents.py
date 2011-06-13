@@ -20,6 +20,7 @@ class Agent:
 	life = 20            # Agent's life
 	maxlife = 20         # Agent's max life
 	state = "Wander"     # Agent's behavior
+	player = False       # Player or enemy
 
 	def __init__(self):
 		self.radius = 1
@@ -69,7 +70,7 @@ class Agent:
 def agentNear(agent,chars,distance):
 	for char in chars:
 		if agent.position != char.position:
-			if near(agent,char,distance):
+			if near(agent,char,distance) and char.player:
 				return char
 	return None
 
