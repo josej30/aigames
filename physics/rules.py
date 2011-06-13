@@ -79,10 +79,17 @@ def check_shot(bullet,agents):
 			print "HOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO"
 	
 
-#def check_food(food,agents):
+def check_food(food,agents):
     
-#    for f in food:
-#        for a in agents:
+    for f in food:
+        b = f.centerOfMass()
+        for agent in agents:
+            a = agent.position
+            if ((a[0]-1.0) <= b[0]<= (a[0]+1)) and (a[2]-1.0) <= b[1]<= (a[2]+1):
+                agent.life = agent.life + (agent.maxlife*0.5)
+                food.remove(f)
+                break
+            
             
 		
 def inside_ob(agent,ob):

@@ -725,6 +725,11 @@ def createFood(food):
 
 def drawFood(food):
 
+    global characters
+
+    # Check if someone is eating and recovering its life
+    check_food(food,characters)
+
     for f in food:
         pos = f.centerOfMass()
 

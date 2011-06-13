@@ -22,8 +22,10 @@ class FSM:
                return "Pursue"
 
         elif agent.state == 'Astar':
-            if agent.life <= agent.maxlife*0.25 and len(food) <= 0: 
+            if agent.life <= agent.maxlife*0.25 and len(food) <= 0:
                 return "Flee"
+            if agent.life > agent.maxlife*0.25:
+                return "Wander"
 
         elif agent.state == 'Flee':
             if len(food) > 0:
