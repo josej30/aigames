@@ -105,6 +105,3 @@ def getTriangle(triangles,point):
 	for triangle in triangles:
 		if triangle.pointInTriangle(point):
 			return triangle
-
-
-

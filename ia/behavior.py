@@ -6,7 +6,7 @@ from ia.collisions import *
 from ia.aStar import *
 
 # Returns the acceleration required.
-def getSteering(targets,target,agent,obs,ts):
+def getSteering(targets,target,agent,obs,ts,food):
 
     flag = agent.state
 
@@ -18,14 +18,33 @@ def getSteering(targets,target,agent,obs,ts):
 
     if flag == "Wander":
         steeringWander = wander(face,agent)
+
     elif flag == "Pursue":
         steeringPursue = Pursue(target,agent)
+
     elif flag == "Seek":
         steeringSeek = seek(agent, target, "seek")
+
     elif flag == "Flee":
         steeringFlee = seek(agent, target, "flee")
+
     elif flag == "Astar":
-        path = pathfindAStar(agent, target, ts)
+        
+        # Finding the closest food
+        closestDist = 99999999999999
+        closest = None
+        for f in food:
+            c = f.centerOfMass()
+            euclid = sqrt((pow((agent.position[2]-c[1]),2.0)) + (pow((agent.position[0]-c[0]),2.0)) )
+            if euclid < closestDist:
+                closestDist = euclid
+                closest = f
+            
+        foodAgent = Agent()
+        foodAgent.position[0] = closest.centerOfMass()[0]
+        foodAgent.position[2] = closest.centerOfMass()[1]
+
+        path = pathfindAStar(agent, foodAgent, ts)
         triag = ts[0]
         if path != [] and path != -1:
             for i in ts:

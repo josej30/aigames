@@ -4,7 +4,7 @@ distancePursue = 20
 
 class FSM:
 
-    def update(self,agent,characters):
+    def update(self,agent,characters,food):
 
         fstate = agent.state
 
@@ -22,10 +22,12 @@ class FSM:
                return "Pursue"
 
         elif agent.state == 'Astar':
-            if agent.life <= agent.maxlife*0.25: 
+            if agent.life <= agent.maxlife*0.25 and len(food) <= 0: 
                 return "Flee"
 
         elif agent.state == 'Flee':
+            if len(food) > 0:
+                return "Astar"
             return "Flee"
 
         return fstate

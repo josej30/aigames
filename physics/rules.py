@@ -78,7 +78,9 @@ def check_shot(bullet,agents):
 			agent.life =  agent.life -1
 			print "HOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO"
 	
-	
+
+def check_food(food,agents):
+    
 		
 def inside_ob(agent,ob):
     

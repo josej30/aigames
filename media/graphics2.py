@@ -3,6 +3,7 @@ from OpenGL.GLUT import *
 from OpenGL.GLU import *
 
 from datetime import datetime
+from random import random
 import traceback
 import sys
 
@@ -46,6 +47,12 @@ rquady = 0.0
 ###############
 
 bullets = []
+
+########
+# Food #
+########
+
+food = []
 
 ################
 # Agents stuff #
@@ -305,6 +312,9 @@ def PaintWorld():
         drawObstacle(obstacle2)
         drawObstacle(obstacle3)
 
+        # Draw Food
+        drawFood(food)
+
 	# Player
         for player in players:
             # Objective
@@ -339,10 +349,10 @@ def PaintWorld():
             enemy = enemies[i]
             if enemy.life > 0:
                 # Updating the state on the FSM
-                enemy.state = fsm.update(enemy,characters)
+                enemy.state = fsm.update(enemy,characters,food)
                 # Retrieving the new steering
                 steerings[i] = getSteering(characters,player,
-                                           enemy,obs,ts)
+                                           enemy,obs,ts,food)
         
 
         physics = check_physics(characters,obs,obstacle_ob)
@@ -396,6 +406,7 @@ def PaintWorld():
     except Exception, e:
         traceback.print_exc()
         sys.exit(-1)
+
 def drawBullet(bullet):
 	b =bullet.position
 	glPushMatrix()
@@ -696,7 +707,34 @@ def drawEnemy(enemy, color):
 
     glPopMatrix()            
 
+def createFood(food):
+    
+    global ts
 
+    r = 1.0    
+    while r > 0.6:
+        r = random()
+    r = int(r*100)
+    t = None
+    for i in ts:
+        if r == i.node:
+            t = i
+            break
+    
+    food.append(t)
+
+def drawFood(food):
+
+    for f in food:
+        pos = f.centerOfMass()
+
+        # Drawing the food
+        glPushMatrix()
+        glColor3f(0.8,0.2,0.0)
+        glTranslatef(pos[0], 1 , pos[1])
+        glutSolidSphere(1.0,20,20)
+        glPopMatrix()
+        
 # The function called whenever a key is pressed. Note the use of Python tuples to pass in: (key, x, y)  
 def keyPressed(key, x , y):
     global keyBuffer, debug, enemy1, enemy2, enemy3, enemy4, player, bullets
@@ -716,11 +754,14 @@ def keyPressed(key, x , y):
     # Enemy4 is damaged
     elif ord(key) == 52:
         enemy4.life = enemy4.life - 1
+    # Create food
+    elif ord(key) == 110:
+        createFood(food)
     elif ord(key) == 98:
     	#print "crear bala"
     	bullet = Bullet()
     	bullet.position = player.position
-    	bullet.velocity = vectorPlus(vectorTimes(player.velocity,10),[10,10,10 ])
+    	bullet.velocity = vectorPlus(vectorTimes(player.velocity,10),[10,10,10])
     	
     	bullet.orientation = player.orientation
     	#print"posicion jugador"+ str(player.position)
