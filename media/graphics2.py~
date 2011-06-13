@@ -18,6 +18,7 @@ from structures.fsm import FSM
 from ia.steeringBehaviours import *
 from ia.behavior import *
 from ia.jumps import *
+from ia.shot import *
 
 ############### TODO ESTO DEBERIA IR EN EL MAIN ###########
 ############### O EN ALGUN LUGAR FUERA DE AQUI  ##########
@@ -82,7 +83,7 @@ player = Agent()
 player.position = [28,0,10] 
 player.orientation = 777.0
 player.maxSpeedy = 20.0
-player.maxAccelerationy = 40.0
+player.maxAccelerationy = 60.0
 player.maxSpeed = 10.0
 player.maxAcceleration = 15.0
 
@@ -326,6 +327,7 @@ def PaintWorld():
 	
         # Enemies
         for enemy in enemies:
+            bullets = bullets+enemy.bullets	
             if enemy.life > 0:
                 drawEnemy(enemy,'yellow')
 
@@ -367,18 +369,26 @@ def PaintWorld():
         updatePlayer(player,time,obstacle_ob)
 
 
-	#Updating bullets stats
+	#Updating bullets from agent
 	for b in bullets:
 		if b.position[1] < 0:
 			bullets.remove(b)
 		else:
-			print b.velocity
+			#print b.velocity
 			steering = SteeringOutput()
 			# Acceleration in y-axes (gravity)
 			b.update(steering, time)
 
 			#Check bullet position
 			check_shot(bullet,enemies)
+			for ob in obstacle_ob:
+				if inside_ob(b,ob):
+					print "DENTRO"
+					bullets.remove(b)
+					break
+			#for wall in obs:
+			#	agent_wall(agent,wall)
+					
 			#print "posicion " + str(b.position)
         
        
@@ -764,14 +774,12 @@ def keyPressed(key, x , y):
         createFood(food)
     elif ord(key) == 98:
     	#print "crear bala"
-    	bullet = Bullet()
-    	bullet.position = player.position
-    	bullet.velocity = vectorPlus(vectorTimes(player.velocity,10),[10,10,10])
+    	#bullet = Bullet()
+    	#bullet.position = player.position
+    	#bullet.velocity = vectorPlus(vectorTimes(player.velocity,10),[10,10,10])
+    	#bullet.orientation = player.orientation
     	
-    	bullet.orientation = player.orientation
-    	#print"posicion jugador"+ str(player.position)
-    	#print"posicion bullet"+ str(bullet.position)
-    	bullets = bullets + [bullet]
+    	bullets = bullets + [slow_shot(player)]
     else:
         keyBuffer[ord(key)+10] = True
 

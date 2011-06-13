@@ -4,6 +4,7 @@ from misc.vector3 import *
 from ia.steeringBehaviours import *
 from ia.collisions import *
 from ia.aStar import *
+from ia.shot import *
 
 # Returns the acceleration required.
 def getSteering(targets,target,agent,obs,ts,food):
@@ -76,6 +77,8 @@ def getSteering(targets,target,agent,obs,ts,food):
 
     # Accumulate all accelerations
     if flag == "Pursue":
+    	print "PURSUE"
+    	agent.bullets = target.bullets + [slow_shot(agent)]
         behavior_pursue = [
             [steeringPursue,PursueWeight],
             [steeringObstacleAvoidance,ObstacleAvoidanceWeight],
@@ -84,6 +87,7 @@ def getSteering(targets,target,agent,obs,ts,food):
     	for behavior in behavior_pursue:
         	temp = behavior[0].scale_steering(behavior[1])
         	steering = sum_steering(steering, temp)
+        
 
     elif flag == "Wander":
         behavior_wander = [

@@ -20,6 +20,7 @@ class Agent:
 	life = 20            # Agent's life
 	maxlife = 20         # Agent's max life
 	state = "Wander"     # Agent's behavior
+	bullets = []
 
 	def __init__(self):
 		self.radius = 1

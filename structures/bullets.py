@@ -15,9 +15,10 @@ class Bullet:
 	position = [0,0,0]   # a 2 or 3D vector
 	orientation = 0.0    # a single floating point value
 	velocity = [10,10,10]   # another 2 or 3D vector
+	radius = .5
 
 	def __init__(self):
-		self.radius = 1
+		self.radius = .5
 	
 	def update (self, steering,time):
 

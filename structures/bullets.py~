@@ -27,7 +27,7 @@ class Bullet:
 	
 
 		if self.position[1] > 0:	
-			steering.linear[1] = -50
+			steering.linear[1] = -30
 			
 		
 		# And the velocity and the rotation
