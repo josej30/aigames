@@ -62,10 +62,10 @@ class Agent:
 		# The velocity is along this direction, at full speed
 		# If this is too fast, clip it to the max speed
 		if vectorLengthnoy(self.velocity) > self.maxSpeed:
-			self.velocity = normalize(self.velocity)
+			self.velocity = normalize1(self.velocity)
 #			self.velocity[0] = self.velocity[0]*(self.maxSpeed/2)
 #			self.velocity[2] = self.velocity[2]*(self.maxSpeed/2)
-			self.velocity = vectorTimes(self.velocity,self.maxSpeed/2)
+			self.velocity = vectorTimes1(self.velocity,self.maxSpeed/2)
 
 def agentNear(agent,chars,distance):
 	for char in chars:

@@ -7,12 +7,19 @@ def normalize(vector):
 		return [vector[0]/factor,vector[1]/factor,vector[2]/factor]
 	else:
 		return vector
-
+def normalize1(vector):
+	factor = sqrt(pow(vector[0],2) + vector[1] + pow(vector[2],2))
+	if factor != 0:
+		return [vector[0]/factor,vector[1],vector[2]/factor]
+	else:
+		return vector
 def vectorPlus(v,x):
 	return [ v[0]+x[0], v[1]+x[1], v[2] + x[2] ]
 	
 def vectorTimes(v,x):
 	return [ v[0]*x, v[1]*x, v[2]*x ]
+def vectorTimes1(v,x):
+	return [ v[0]*x, v[1], v[2]*x ]
 
 def substraction(v1,v2):
 	return [ v1[0]-v2[0], -5, v1[2]-v2[2] ]
