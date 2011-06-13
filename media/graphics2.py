@@ -62,27 +62,31 @@ enemy1 = Agent()
 enemy1.position = [40,0,-40]
 enemy1.velocity = [0,0,0]
 enemy1.orientation = 100.0
+enemy1.color = 1
 
 enemy2 = Agent()
 enemy2.position = [40,0,40]
 enemy2.velocity = [0,0,0]
 enemy2.orientation = 100.0
+enemy2.color = 2
 
 enemy3 = Agent()
 enemy3.position = [-40,0,40]
 enemy3.velocity = [0,0,0]
 enemy3.orientation = 100.0
+enemy3.color = 3
 
 enemy4 = Agent()
 enemy4.position = [-40,0,-40]
 enemy4.velocity = [0,0,0]
 enemy4.orientation = 100.0
+enemy4.color = 4
 
 player = Agent()
 player.position = [28,0,10] 
 player.orientation = 777.0
-player.maxSpeedy = 20.0
-player.maxAccelerationy = 60.0
+player.maxSpeedy = 40.0
+player.maxAccelerationy = 120.0
 player.maxSpeed = 10.0
 player.maxAcceleration = 15.0
 player.player = True
@@ -319,7 +323,7 @@ def PaintWorld():
 	# Player
         for player in players:
             # Objective
-            drawAgent(player,'cyan')
+            drawAgent(player)
 
         #Bullets
 	for bullet in bullets:
@@ -331,7 +335,7 @@ def PaintWorld():
                 enemies.remove(enemy)    
                 characters.remove(enemy)
                 break
-            drawEnemy(enemy,'yellow')
+            drawEnemy(enemy)
 
         drawNavMesh(ts)        
 
@@ -545,6 +549,14 @@ def drawLife(player,enemies):
 
     bar_len = 10
 
+    glColor3f(0.9,0.9,0.9);
+    glBegin(GL_QUADS)                 
+    glVertex3f(x, y+0.5, 50.0)      
+    glVertex3f(x+bar_len, y+0.5, 50.0)       
+    glVertex3f(x+bar_len, y, 50.0)      
+    glVertex3f(x, y, 50.0)      
+    glEnd()     
+
     life_size = (bar_len*1.0)/(player.maxlife*1.0)
     fringe = max(0,(life_size*player.life))
 
@@ -570,10 +582,26 @@ def drawLife(player,enemies):
     # Enemies Lifes
     for enemy in enemies:
 
-        life_size = (bar_len*1.0)/(enemy.maxlife*1.0)
+        # Enemy color
+        if enemy.color == 1:
+            glColor3f(0.9,0.9,0.0);
+        elif enemy.color == 2:
+            glColor3f(0.9,0.0,0.9);
+        elif enemy.color == 3:
+            glColor3f(0.0,0.0,0.9);
+        elif enemy.color == 4:
+            glColor3f(0.0,0.9,0.9);
+        glBegin(GL_QUADS)                 
+        glVertex3f(x, y+0.5, 50.0)      
+        glVertex3f(x+bar_len, y+0.5, 50.0)       
+        glVertex3f(x+bar_len, y, 50.0)      
+        glVertex3f(x, y, 50.0)      
+        glEnd()     
 
+        life_size = (bar_len*1.0)/(enemy.maxlife*1.0)
         fringe = max(0,(life_size*enemy.life))
 
+        # Enemy Life
         glColor3f(0.0, 1.0, 0.0)           
         glBegin(GL_QUADS)                 
         glVertex3f(x, y, 50.0)      
@@ -593,25 +621,15 @@ def drawLife(player,enemies):
         x = x+15
 
     
-def drawAgent(agent, color):
+def drawAgent(agent):
 
     glPushMatrix()
 
     glTranslatef(agent.position[0], agent.position[1]+1, agent.position[2]);
 
-    if color == 'blue':
-        glColor3f(0.0,0.0,0.8);
-    elif color == 'red':
-        glColor3f(0.7,0.0,0.0);
-    elif color == 'cyan':
-        glColor3f(0.0,0.7,0.7);
-    elif color == 'yellow':
-        glColor3f(0.8,0.8,0.0);
-    elif color == 'purple':
-        glColor3f(0.8,0.0,0.8);
-
     glBegin(GL_QUADS);              
 
+    glColor3f(0.8,0.8,0.8);
     glVertex3f( 1.0, 1.0,-1.0);     
     glVertex3f(-1.0, 1.0,-1.0);     
     glVertex3f(-1.0, 1.0, 1.0);     
@@ -626,18 +644,8 @@ def drawAgent(agent, color):
     glVertex3f(-1.0, 1.0, 1.0);     
     glVertex3f(-1.0,-1.0, 1.0);     
     glVertex3f( 1.0,-1.0, 1.0);     
-    
-    if color == 'blue':
-        glColor3f(0.0,0.0,0.5);
-    elif color == 'red':
-        glColor3f(0.5,0.0,0.0);
-    elif color == 'cyan':
-        glColor3f(0.0,0.4,0.4);
-    elif color == 'yellow':
-        glColor3f(0.5,0.5,0.0);
-    elif color == 'purple':
-        glColor3f(0.5,0.0,0.5);
 
+    glColor3f(0.6,0.6,0.6);
     glVertex3f( 1.0,-1.0,-1.0);
     glVertex3f(-1.0,-1.0,-1.0);
     glVertex3f(-1.0, 1.0,-1.0);
@@ -657,13 +665,22 @@ def drawAgent(agent, color):
 
     glPopMatrix()            
 
-def drawEnemy(enemy, color):
+def drawEnemy(enemy):
 
     glPushMatrix()
 
     glTranslatef(enemy.position[0], enemy.position[1]+1, enemy.position[2]);
 
-    glColor3f(0.8,0.8,0.0);
+    # Yellow
+    if enemy.color == 1:
+        glColor3f(0.8,0.8,0.0);
+    elif enemy.color == 2:
+        glColor3f(0.8,0.0,0.8);
+    elif enemy.color == 3:
+        glColor3f(0.0,0.0,0.8);
+    elif enemy.color == 4:
+        glColor3f(0.0,0.7,0.7);
+
     if enemy.life <= enemy.maxlife*0.25:
         glColor3f(0.7,0.0,0.0);
 
@@ -684,7 +701,16 @@ def drawEnemy(enemy, color):
     glVertex3f(-1.0,-1.0, 1.0);     
     glVertex3f( 1.0,-1.0, 1.0);     
     
-    glColor3f(0.5,0.5,0.0);
+    # Yellow
+    if enemy.color == 1:
+        glColor3f(0.5,0.5,0.0);
+    elif enemy.color == 2:
+        glColor3f(0.5,0.0,0.5);
+    elif enemy.color == 3:
+        glColor3f(0.0,0.0,0.5);
+    elif enemy.color == 4:
+        glColor3f(0.0,0.4,0.4);
+
     if enemy.life <= enemy.maxlife*0.25:
         glColor3f(0.5,0.0,0.0);
 

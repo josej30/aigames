@@ -21,6 +21,7 @@ class Agent:
 	maxlife = 20         # Agent's max life
 	state = "Wander"     # Agent's behavior
 	player = False       # Player or enemy
+	color = 0            # Agent's color
 
 	def __init__(self):
 		self.radius = 1
