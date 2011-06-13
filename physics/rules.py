@@ -79,8 +79,11 @@ def check_shot(bullet,agents):
 			print "HOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO"
 	
 
-def check_food(food,agents):
+#def check_food(food,agents):
     
+#    for f in food:
+#        for a in agents:
+            
 		
 def inside_ob(agent,ob):
     
