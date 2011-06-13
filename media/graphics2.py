@@ -18,6 +18,7 @@ from structures.fsm import FSM
 from ia.steeringBehaviours import *
 from ia.behavior import *
 from ia.jumps import *
+from ia.shot import *
 
 ############### TODO ESTO DEBERIA IR EN EL MAIN ###########
 ############### O EN ALGUN LUGAR FUERA DE AQUI  ##########
@@ -46,7 +47,8 @@ rquady = 0.0
 # Bullets #####
 ###############
 
-bullets = []
+enemy_bullets = []
+player_bullets = []
 
 ########
 # Food #
@@ -85,7 +87,7 @@ enemy4.color = 4
 player = Agent()
 player.position = [28,0,10] 
 player.orientation = 777.0
-player.maxSpeedy = 40.0
+player.maxSpeedy = 30.0
 player.maxAccelerationy = 120.0
 player.maxSpeed = 10.0
 player.maxAcceleration = 15.0
@@ -288,7 +290,7 @@ def ReSizeWorld(Width, Height):
 # The main drawing function
 def PaintWorld():
     
-    global players, limits, obs, enemies, time2, time1, time, debug, ts, bullets
+    global players, limits, obs, enemies, time2, time1, time, debug, ts, enemy_bullets, player_bullets
 
     try:
 
@@ -320,23 +322,24 @@ def PaintWorld():
         # Draw Food
         drawFood(food)
 
-        if len(players) == 0:
-            print "GAME OVER! LOOSER! :D"
-            sys.exit(-1)
-
 	# Player
         for player in players:
             # Objective
-            #if player.life <= 0:
-            #    players.remove(player)
             drawAgent(player)
 
-        #Bullets
-	for bullet in bullets:
-		drawBullet(bullet)
+        #Agent's Bullets
+	for bullet in player_bullets:
+		drawBullet(bullet,1)
+		
+	#Agent' Bullets
+	for bullet in enemy_bullets:
+		drawBullet(bullet,2)
+		
 	
         # Enemies
         for enemy in enemies:
+	    enemy_bullets = enemy_bullets + enemy.bullets
+	    enemy.bullets = []
             if enemy.life <= 0:
                 enemies.remove(enemy)    
                 characters.remove(enemy)
@@ -377,20 +380,45 @@ def PaintWorld():
         updatePlayer(player,time,obstacle_ob)
 
 
-	#Updating bullets stats
-	for b in bullets:
+	#Updating agent's bullets from agent
+	for b in player_bullets:
 		if b.position[1] < 0:
-			bullets.remove(b)
+			player_bullets.remove(b)
 		else:
-			print b.velocity
+			#print b.velocity
 			steering = SteeringOutput()
 			# Acceleration in y-axes (gravity)
 			b.update(steering, time)
 
 			#Check bullet position
-			check_shot(bullet,enemies)
+			check_shot(b,enemies)
+			for ob in obstacle_ob:
+				if inside_ob(b,ob):
+					
+					player_bullets.remove(b)
+					break
+			#for wall in obs:
+			#	agent_wall(agent,wall)
+					
 			#print "posicion " + str(b.position)
-        
+			
+        #Updating enemy's bullets 
+	for b in enemy_bullets:
+		if b.position[1] < 0:
+			enemy_bullets.remove(b)
+		else:
+			#print b.velocity
+			steering = SteeringOutput()
+			# Acceleration in y-axes (gravity)
+			b.update(steering, time)
+
+			#Check bullet position
+			check_shot(b,[player])
+			for ob in obstacle_ob:
+				if inside_ob(b,ob):
+					
+					enemy_bullets.remove(b)
+					break
        
 
         #print player.velocity
@@ -417,13 +445,25 @@ def PaintWorld():
         traceback.print_exc()
         sys.exit(-1)
 
-def drawBullet(bullet):
+def drawBullet(bullet,color):
 	b =bullet.position
 	glPushMatrix()
-	glColor3f(1.0,1.0,1.0)
-	glTranslatef(b[0], b[1] , b[2])
-	glutSolidSphere(0.5,20,20)
-	glPopMatrix()
+
+	if color == 1:
+		glColor3f(1.0,1.0,1.0)
+		glTranslatef(b[0], b[1] , b[2])
+		glutSolidSphere(0.5,20,20)
+		glPopMatrix()
+		
+	else:
+		glColor3f(.0,.0,.0)
+		glTranslatef(b[0], b[1] , b[2])
+		glutSolidSphere(0.5,20,20)
+		glPopMatrix()
+		
+	#glTranslatef(b[0], b[1] , b[2])
+	#sglutSolidSphere(0.5,20,20)
+	#glPopMatrix()
 
 def drawNavMesh(ts):
 
@@ -774,7 +814,7 @@ def drawFood(food):
         
 # The function called whenever a key is pressed. Note the use of Python tuples to pass in: (key, x, y)  
 def keyPressed(key, x , y):
-    global keyBuffer, debug, enemy1, enemy2, enemy3, enemy4, player, bullets
+    global keyBuffer, debug, enemy1, enemy2, enemy3, enemy4, player, player_bullets
     
     # Print NavMesh (Debug Mode)
     if ord(key) == 112:
@@ -796,14 +836,12 @@ def keyPressed(key, x , y):
         createFood(food)
     elif ord(key) == 98:
     	#print "crear bala"
-    	bullet = Bullet()
-    	bullet.position = player.position
-    	bullet.velocity = vectorPlus(vectorTimes(player.velocity,10),[10,10,10])
+    	#bullet = Bullet()
+    	#bullet.position = player.position
+    	#bullet.velocity = vectorPlus(vectorTimes(player.velocity,10),[10,10,10])
+    	#bullet.orientation = player.orientation
     	
-    	bullet.orientation = player.orientation
-    	#print"posicion jugador"+ str(player.position)
-    	#print"posicion bullet"+ str(bullet.position)
-    	bullets = bullets + [bullet]
+    	player_bullets = player_bullets + [slow_shot(player,2)]
     else:
         keyBuffer[ord(key)+10] = True
 
