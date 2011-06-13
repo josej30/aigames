@@ -322,7 +322,7 @@ def PaintWorld():
 
         if len(players) == 0:
             print "GAME OVER! LOOSER! :D"
-            sys.exit(0)
+            sys.exit(-1)
 
 	# Player
         for player in players:
