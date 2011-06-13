@@ -88,7 +88,7 @@ player = Agent()
 player.position = [28,0,10] 
 player.orientation = 777.0
 player.maxSpeedy = 40.0
-player.maxAccelerationy = 120.0
+player.maxAccelerationy = 100.0
 player.maxSpeed = 10.0
 player.maxAcceleration = 15.0
 player.player = True
@@ -339,6 +339,7 @@ def PaintWorld():
         # Enemies
         for enemy in enemies:
 	    enemy_bullets = enemy_bullets + enemy.bullets
+	    enemy.bullets = []
             if enemy.life <= 0:
                 enemies.remove(enemy)    
                 characters.remove(enemy)

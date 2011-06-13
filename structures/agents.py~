@@ -22,6 +22,7 @@ class Agent:
 	state = "Wander"     # Agent's behavior
 	bullets = []	     # Agent's bullets
 	player = False       # Player or enemy
+	time = 10	     # shotting interval
 
 
 	def __init__(self):
