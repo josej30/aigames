@@ -324,7 +324,13 @@ def PaintWorld():
 
 	# Player
         for player in players:
-            # Objective
+            if player.life == 0:
+                print ""
+                print "    GAME OVER...    "
+                print ""
+                print "    Thanks for playing Battle Cubes :D   "
+                print ""
+                sys.exit(0)
             drawAgent(player)
 
         #Agent's Bullets
