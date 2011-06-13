@@ -77,8 +77,12 @@ def getSteering(targets,target,agent,obs,ts,food):
 
     # Accumulate all accelerations
     if flag == "Pursue":
-    	print "PURSUE"
-    	agent.bullets = target.bullets + [slow_shot(target)]
+
+    	#shot interval
+    	agent.time = agent.time+1
+    	if agent.time%10 ==0: 
+    		agent.bullets = agent.bullets + [slow_shot(agent)]
+    	
         behavior_pursue = [
             [steeringPursue,PursueWeight],
             [steeringObstacleAvoidance,ObstacleAvoidanceWeight],
