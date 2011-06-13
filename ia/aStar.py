@@ -1,6 +1,7 @@
 from structures.nodeRecord import *
 from structures.Connection import *
 from structures.triangle import *
+from structures.agents import *
 import sys
 
 def minNode( nodeList ):
@@ -382,7 +383,8 @@ def pathfindAStar(enemy, player, ts):
 	   			# to calculate its heuristic without calling
 	   			# the possibly expensive heuristic function
 
-	   			endNodeHeuristic = 0.0#endNodeRecord.cost - endNodeRecord.costSoFar
+	   			#endNodeHeuristic = 0.0
+	   			endNodeHeuristic = endNodeRecord.cost - endNodeRecord.costSoFar
 	   		   # Skip if the node is openList and we've not
 
    			# found a better route
@@ -400,7 +402,7 @@ def pathfindAStar(enemy, player, ts):
 
 			      	# the possibly expensive heuristic function
 			 
-			      	endNodeHeuristic = 0.0 #endNodeRecord. - endNodeRecord.costSoFar
+	   			endNodeHeuristic = endNodeRecord.cost - endNodeRecord.costSoFar
 			 
 			 
 			# Otherwise we know we've got an unvisited
@@ -412,7 +414,10 @@ def pathfindAStar(enemy, player, ts):
 			      	# We'll need to calculate the heuristic value
 			      	# using the function, since we dont have an
 			      	# existing record to use
-			      	endNodeHeuristic = 0.0 #heuristic.estimate(endNode)
+			      	endNodeHeuristic = 0.0 
+				# Euclidian distance
+				endNodeHeuristic = sqrt((pow((player.position[2]-enemy.position[2]),2.0)) + (pow((player.position[0]-enemy.position[0]),2.0)) )
+			      	#endNodeHeuristic = heuristic.estimate(endNode)
 			 
 			# We're here if we need to update the node
 			# Update the cost, estimate and connection
