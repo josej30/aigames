@@ -923,11 +923,11 @@ def execute():
     glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH)
     glutInitWindowSize(640, 480)
     glutInitWindowPosition(400, 100)
-    window = glutCreateWindow("Battle Cars")
+    window = glutCreateWindow("Battle Cubes")
 
     glutDisplayFunc(PaintWorld)
     
-    #glutFullScreen()
+#    glutFullScreen()
 
     glutIdleFunc(PaintWorld)
     glutReshapeFunc(ReSizeWorld)
