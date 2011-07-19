@@ -95,6 +95,7 @@ player.player = True
 
 # How many enemies the user wants?
 if sys_enemies == '1':
+    
     enemies = [enemy1]
 elif sys_enemies == '2':
     enemies = [enemy1,enemy2]
@@ -244,6 +245,7 @@ for i in range(0,len(segments2)):
     obs.append( { 'height': obstacle2.height, 'seg': segments2[i] , 'normal': normals2[i] } )
     obstacle_ob.append(obstacle2)
 
+
 ######################
 # 3st Obstacle Stuff #
 ######################
@@ -260,6 +262,7 @@ for i in range(0,len(segments3)):
 
 # Number of the glut window.
 window = 0
+
 
 # A general OpenGL initialization function.  Sets all of the initial parameters. 
 def InitWorld(Width, Height):
@@ -918,13 +921,18 @@ def keyOperations():
         sys.exit()
 
 def execute():
-
+    
+    
     glutInit(sys.argv)
+    
     glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH)
-    glutInitWindowSize(640, 480)
-    glutInitWindowPosition(400, 100)
-    window = glutCreateWindow("Battle Cubes")
 
+    glutInitWindowSize(640, 480)
+    
+    glutInitWindowPosition(400, 100)
+    print "hola"
+    window = glutCreateWindow("Battle Cubes")
+    
     glutDisplayFunc(PaintWorld)
     
 #    glutFullScreen()
@@ -938,5 +946,5 @@ def execute():
     glutSpecialUpFunc(keySpecialUp)
 
     InitWorld(640, 480)
-
+    
     glutMainLoop()
