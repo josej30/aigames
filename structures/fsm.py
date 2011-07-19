@@ -24,14 +24,16 @@ class FSM:
         elif agent.state == 'Astar':
             if agent.life <= agent.maxlife*0.25 and len(food) <= 0:
                 ret = "Flee"
-            if agent.life > agent.maxlife*0.25 and (not is_firing):
+            elif agent.life > agent.maxlife*0.25 and (not is_firing):
                 ret = "Wander"
-            if agent.life > agent.maxlife*0.25 and is_firing:
+            elif agent.life > agent.maxlife*0.25 and is_firing:
                 ret = "Astar"
-            if agentNear(agent,characters,distancePursue) != None:
-                ret = "Pursue"
             else:
                 ret = "Astar"
+
+            if agentNear(agent,characters,distancePursue) != None:
+                ret = "Pursue"
+
             return ret
 
         elif agent.state == 'Flee':
