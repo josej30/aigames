@@ -1,7 +1,7 @@
 class nodeRecord:
 	node = 0
 	connection = ()
-       	costSoFar = 10000 
+       	costSoFar = 1000000 
        	estimatedTotalCost = 0
        	def __init__(self,a):
 		self.node = a

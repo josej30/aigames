@@ -1,4 +1,4 @@
-from media.graphics2 import *
+from media.graphics import *
 from misc.misc import *
 from misc.vector3 import *
 from structures.segments import *

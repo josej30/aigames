@@ -4,7 +4,7 @@ distancePursue = 20
 
 class FSM:
 
-    def update(self,agent,characters,food):
+    def update(self,agent,characters,food,is_firing):
 
         fstate = agent.state
 
@@ -23,9 +23,16 @@ class FSM:
 
         elif agent.state == 'Astar':
             if agent.life <= agent.maxlife*0.25 and len(food) <= 0:
-                return "Flee"
-            if agent.life > agent.maxlife*0.25:
-                return "Wander"
+                ret = "Flee"
+            if agent.life > agent.maxlife*0.25 and (not is_firing):
+                ret = "Wander"
+            if agent.life > agent.maxlife*0.25 and is_firing:
+                ret = "Astar"
+            if agentNear(agent,characters,distancePursue) != None:
+                ret = "Pursue"
+            else:
+                ret = "Astar"
+            return ret
 
         elif agent.state == 'Flee':
             if len(food) > 0:

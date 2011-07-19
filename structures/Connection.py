@@ -4,6 +4,8 @@ class Connection:
 
       cost = 0.0
 
+      costPlus = 0.0
+
       fromNode = nodeRecord(0)
 
       toNode = nodeRecord(0)

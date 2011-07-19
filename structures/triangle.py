@@ -105,3 +105,16 @@ def getTriangle(triangles,point):
 	for triangle in triangles:
 		if triangle.pointInTriangle(point):
 			return triangle
+
+	if point[0]>0:
+		for i in triangles:
+			if i.node==5:
+				return i
+	elif point[2]<-25:
+		for i in triangles:
+			if i.node==30:
+				return i
+	else:
+		for i in triangles:
+			if i.node==34:
+				return i
